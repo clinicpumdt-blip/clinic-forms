@@ -39,15 +39,15 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .progress-bar{height:4px;background:var(--border)}
 .progress-fill{height:4px;background:var(--brand);transition:width 0.4s ease}
 
-.content{flex:1;padding:32px;padding-bottom:140px}
+.content{flex:1;padding:36px 32px;padding-bottom:140px}
 
 .step-header{margin-bottom:32px}
 .step-badge{display:inline-block;background:var(--brand-light);color:var(--brand-dark);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;margin-bottom:8px}
 .step-title{font-size:24px;font-weight:700;color:var(--text);line-height:1.3}
 .step-desc{font-size:16px;font-weight:400;color:var(--muted);margin-top:6px;line-height:1.6}
 
-.card{background:#fff;border-radius:20px;border:none;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:28px;margin-bottom:28px}
-.card-label{font-size:15px;font-weight:400;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;display:flex;align-items:center;gap:7px}
+.card{background:#fff;border-radius:20px;border:none;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:28px 32px;margin-bottom:28px}
+.card-label{font-size:15px;font-weight:400;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;display:flex;align-items:center;gap:7px}
 .card-label::before{content:'';width:3px;height:13px;background:var(--brand);border-radius:2px;display:inline-block}
 
 /* TAG BUTTONS */
@@ -64,8 +64,8 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .radio-sub{font-size:14px;font-weight:400;color:var(--muted);margin-top:4px}
 
 /* GRID BUTTONS */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 .grid-btn{border:1px solid #93AA6D;border-radius:14px;padding:22px;background:rgba(255,255,255,0.70);font-size:16px;font-weight:500;color:var(--text);cursor:pointer;text-align:center;font-family:'Montserrat','Pretendard',sans-serif;transition:all 0.12s;user-select:none}
 .grid-btn.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15);color:#455546}
 
@@ -125,7 +125,7 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .section-sub{font-size:12px;font-weight:600;color:var(--muted);margin:12px 0 6px}
 
 /* PROVOKE ITEMS */
-.provoke-item{border:1px solid #93AA6D;border-radius:12px;padding:13px 16px;background:rgba(255,255,255,0.70);cursor:pointer;display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;transition:all 0.12s;user-select:none}
+.provoke-item{border:1px solid #93AA6D;border-radius:12px;padding:13px 16px;background:rgba(255,255,255,0.70);cursor:pointer;display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;transition:all 0.12s;user-select:none}
 .provoke-item.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15)}
 .p-check{width:20px;height:20px;border-radius:5px;border:1px solid #93AA6D;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;transition:all 0.12s}
 .provoke-item.sel .p-check{background:#93AA6D;border-color:#93AA6D}
@@ -136,8 +136,8 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .p-desc{font-size:14px;font-weight:400;color:var(--muted);margin-top:3px;line-height:1.5}
 
 /* UNIFIED SELECTION ITEMS */
-.sel-wrap{display:flex;flex-direction:column;gap:10px}
-.sel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sel-wrap{display:flex;flex-direction:column;gap:12px}
+.sel-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .sel-item{border:1px solid #93AA6D;border-radius:12px;padding:16px 20px;background:rgba(255,255,255,0.70);cursor:pointer;display:flex;align-items:center;gap:12px;transition:all 0.12s;user-select:none}
 .sel-item.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15)}
 .sel-box{width:24px;height:24px;border-radius:6px;border:1px solid #93AA6D;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;background:#fff;transition:all 0.12s}
@@ -150,6 +150,38 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .sel-grid .sel-item.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15)}
 .sel-grid .sel-item.sel .sel-name{color:#455546}
 .sel-grid .sel-item.sel .sel-box{background:#93AA6D;border-color:#93AA6D}
+
+/* BODY SELECTOR */
+.svg-wrap{width:100%;overflow-x:auto}
+.svg-wrap svg{width:100%;height:auto;display:block}
+.cls-5{fill:none;stroke:#231815;stroke-miterlimit:10;stroke-width:.25px}
+.cls-6{fill:#efefef}
+.hotspot{cursor:pointer}
+.hs{fill:#93AA6D;opacity:0;transition:opacity 0.15s}
+.hs.on{opacity:0.38}
+.hr{fill:none;stroke:#93AA6D;stroke-width:2;opacity:0;transition:opacity 0.15s}
+.hr.on{opacity:1}
+/* PART GRID */
+.pb-section{background:#ffffff;border-radius:16px;padding:28px 32px;box-shadow:0 1px 4px rgba(0,0,0,0.06);margin-bottom:28px}
+.pb-section-title{font-size:13px;font-weight:700;color:#455546;border-left:3px solid #DDAB63;padding-left:8px;margin-bottom:14px}
+.pb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:520px){.pb-grid{grid-template-columns:repeat(2,1fr)}}
+.pb-cell{display:flex;flex-direction:column;gap:6px}
+.pb-item{width:100%;background:#ffffff;border:1px solid #e8e2d9;border-radius:14px;padding:18px 20px;font-size:16px;font-weight:600;color:#455546;cursor:pointer;font-family:'Pretendard',sans-serif;transition:all 0.12s;user-select:none;display:flex;align-items:center;gap:10px}
+.pb-item.on{background:#e8f0eb;border-color:#93AA6D;color:#455546}
+.pb-check{width:20px;height:20px;border-radius:5px;border:1px solid #93AA6D;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;background:#fff;transition:all 0.12s}
+.pb-item.on .pb-check{background:#93AA6D;border-color:#93AA6D}
+.pb-toggles{display:none;justify-content:center;gap:4px;flex-wrap:wrap}
+.pb-toggles.vis{display:flex}
+.pb-btn{background:#fff;border:1px solid #C8BFB0;border-radius:6px;padding:3px 10px;font-size:12px;color:#888;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all 0.12s;user-select:none}
+.pb-btn.on{background:#93AA6D;border-color:#93AA6D;color:#fff;font-weight:600}
+.body-sel-box{background:#f5f5f0;border-radius:12px;padding:.9rem 1.1rem;min-height:52px;margin-top:1rem}
+.sel-title{font-size:12px;color:#888;margin-bottom:7px}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{background:rgba(147,170,109,0.1);border:1px solid #93AA6D;border-radius:20px;padding:3px 10px;font-size:12px;color:#455546;display:flex;align-items:center;gap:4px;cursor:pointer}
+.tag-x{font-size:11px;color:#93AA6D;font-weight:bold}
+.empty-t{font-size:13px;color:#aaa;font-style:italic}
+.reset-b{margin-top:9px;font-size:12px;color:#aaa;cursor:pointer;background:none;border:none;padding:0;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -308,6 +340,89 @@ function makeFatigue(containerId, key){
   }
 }
 
+// ── 신체 부위 선택 ──
+const SOLO_PARTS=new Set(['머리','가슴','등','허리','엉치']);
+const romMapping={'머리':'경추','목':'경추','어깨':'견관절','팔꿈치':'주관절','손목':'수관절','발목':'족관절','무릎':'슬관절','고관절':'고관절','허리':'요추','엉치':'천골','등':'흉추'};
+// {partName: {solo?:true} | {open:bool,rt:bool,lt:bool,rl:bool}}
+const bodyS={};
+
+function togPart(name){
+  const cell=document.querySelector('[data-area="'+name+'"]');
+  if(SOLO_PARTS.has(name)){
+    if(bodyS[name]){
+      delete bodyS[name];
+      if(cell){const it=cell.querySelector('.pb-item');it.classList.remove('on');const ch=it.querySelector('.pb-check');if(ch)ch.textContent='';}
+    } else {
+      bodyS[name]={solo:true};
+      if(cell){const it=cell.querySelector('.pb-item');it.classList.add('on');const ch=it.querySelector('.pb-check');if(ch)ch.textContent='✓';}
+    }
+  } else {
+    if(bodyS[name]){
+      delete bodyS[name];
+      if(cell){const it=cell.querySelector('.pb-item');it.classList.remove('on');const ch=it.querySelector('.pb-check');if(ch)ch.textContent='';const tg=cell.querySelector('.pb-toggles');if(tg){tg.classList.remove('vis');tg.querySelectorAll('.pb-btn').forEach(b=>b.classList.remove('on'));}}
+    } else {
+      bodyS[name]={open:true,rt:false,lt:false,rl:false};
+      if(cell){const it=cell.querySelector('.pb-item');it.classList.add('on');const ch=it.querySelector('.pb-check');if(ch)ch.textContent='✓';const tg=cell.querySelector('.pb-toggles');if(tg)tg.classList.add('vis');}
+    }
+  }
+  D.subArea=buildSubArea();
+  computeRomActive();
+  renderBodySel();
+}
+
+function togSide(name,side){
+  if(!bodyS[name]) return;
+  const s=bodyS[name];
+  if(side==='rl'){s.rl=!s.rl;if(s.rl){s.rt=false;s.lt=false;}}
+  else if(side==='rt'){s.rt=!s.rt;if(s.rt)s.rl=false;}
+  else if(side==='lt'){s.lt=!s.lt;if(s.lt)s.rl=false;}
+  const cell=document.querySelector('[data-area="'+name+'"]');
+  if(cell){
+    const tg=cell.querySelector('.pb-toggles');
+    if(tg){tg.querySelector('[data-side="rt"]').classList.toggle('on',!!s.rt);tg.querySelector('[data-side="lt"]').classList.toggle('on',!!s.lt);tg.querySelector('[data-side="rl"]').classList.toggle('on',!!s.rl);}
+  }
+  D.subArea=buildSubArea();
+  computeRomActive();
+  renderBodySel();
+}
+
+function buildSubArea(){
+  const arr=[];
+  Object.entries(bodyS).forEach(([nm,s])=>{
+    if(s.solo){arr.push(nm);}
+    else{const p=[];if(s.rl)p.push('RL');else{if(s.rt)p.push('Rt.');if(s.lt)p.push('Lt.');}if(p.length)arr.push(nm+' '+p.join(' '));}
+  });
+  return new Set(arr);
+}
+
+function computeRomActive(){
+  const active=new Set();
+  Array.from(buildSubArea()).forEach(label=>{
+    const nm=label.split(' ')[0];
+    if(romMapping[nm]) active.add(romMapping[nm]);
+  });
+  D.romActive=Array.from(active);
+}
+
+function renderBodySel(){
+  const tl=document.getElementById('tlist');
+  if(!tl) return;
+  const arr=Array.from(buildSubArea());
+  if(!arr.length){tl.innerHTML='<span class="empty-t">선택된 부위가 없습니다</span>';return;}
+  tl.innerHTML='';
+  arr.forEach(label=>{
+    const t=document.createElement('span');t.className='tag';t.textContent=label;tl.appendChild(t);
+  });
+}
+
+function resetBodyAll(){
+  for(const k in bodyS) delete bodyS[k];
+  D.subArea=new Set();D.romActive=[];
+  document.querySelectorAll('.pb-item').forEach(b=>{b.classList.remove('on');const ch=b.querySelector('.pb-check');if(ch)ch.textContent='';});
+  document.querySelectorAll('.pb-toggles').forEach(t=>{t.classList.remove('vis');t.querySelectorAll('.pb-btn').forEach(b=>b.classList.remove('on'));});
+  renderBodySel();
+}
+
 // ── 렌더 ──
 function updateNav(){
   const pills = document.getElementById('pills');
@@ -362,87 +477,61 @@ function s0(c){
 
 // STEP 1 — 증상부위
 function s1(c){
+  const upperParts=['머리','목','어깨','팔','팔꿈치','손목','손','손가락'];
+  const lowerParts=['가슴','등','허리','엉치','고관절','무릎','발목','발','발가락'];
+
   c.innerHTML=`
     <div class="step-header">
       <div class="step-badge">STEP 2 / ${STEPS}</div>
       <div class="step-title">지금 가장 많이 불편한 곳은 어디인가요?</div>
-      <div class="step-desc">여러 곳이 불편하셔도 가장 먼저 치료받고 싶은 부위 하나만 선택해 주세요.<br><br>품듯한의원은 1부위 집중 치료 방식으로 진행됩니다.<br>해당 부위가 호전된 이후, 다른 부위는 동일하게 증상을 다시 확인하여 그에 맞는 치료를 제안드립니다.</div>
+      <div class="step-desc">불편한 부위를 선택하면 좌우 방향을 지정할 수 있습니다.</div>
     </div>
-    <div class="card">
-      <div class="card-label">어디가 불편하세요?</div>
-      <div style="display:flex;flex-direction:column;gap:10px" id="cat-main"></div>
-      <div id="sub-spine" style="display:none" class="sub-area">
-        <div class="sub-area-title">척추 — 세부 부위 (다중선택 가능)</div>
-        <div class="tag-wrap" id="sub-spine-tags"></div>
-      </div>
-      <div id="sub-upper" style="display:none" class="sub-area">
-        <div class="sub-area-title">상지 — 세부 부위 (다중선택 가능)</div>
-        <div class="tag-wrap" id="sub-upper-tags"></div>
-      </div>
-      <div id="sub-lower" style="display:none" class="sub-area">
-        <div class="sub-area-title">하지 — 세부 부위 (다중선택 가능)</div>
-        <div class="tag-wrap" id="sub-lower-tags"></div>
-      </div>
+    <div class="pb-section">
+      <div class="pb-section-title">상체</div>
+      <div class="pb-grid" id="upper-grid"></div>
+    </div>
+    <div class="pb-section">
+      <div class="pb-section-title">하체 / 체간</div>
+      <div class="pb-grid" id="lower-grid"></div>
+    </div>
+    <div class="body-sel-box">
+      <p class="sel-title">선택된 부위</p>
+      <div class="tags" id="tlist"><span class="empty-t">선택된 부위가 없습니다</span></div>
+      <button class="reset-b" onclick="resetBodyAll()">전체 초기화</button>
     </div>`;
 
-  const cats = [
-    {v:'척추 — Spine', icon:'🦴', sub:'경추 C-spine · 흉추 T-spine · 요추 L-spine'},
-    {v:'상지 — Upper', icon:'💪', sub:'어깨 · 팔꿈치 · 손목 · 손 · 손가락'},
-    {v:'하지 — Lower', icon:'🦵', sub:'고관절 · 무릎 · 발목 · 발 · 발가락'},
-  ];
-
-  const wrap = document.getElementById('cat-main');
-  cats.forEach(item=>{
-    const div=document.createElement('div');
-    div.className='cat-row'+(D.catMain===item.v?' sel':'');
-    div.style.cssText='border:1px solid #93AA6D;border-radius:12px;padding:14px 16px;background:rgba(255,255,255,0.70);cursor:pointer;display:flex;align-items:center;gap:14px;transition:all 0.12s;user-select:none';
-    if(D.catMain===item.v) div.style.borderColor='#93AA6D', div.style.background='rgba(147,170,109,0.15)';
-    div.innerHTML=`
-      <span style="font-size:28px;flex-shrink:0">${item.icon}</span>
-      <div>
-        <div style="font-size:17px;font-weight:700;color:var(--text)">${item.v}</div>
-        <div style="font-size:14px;font-weight:400;color:var(--muted);margin-top:2px">${item.sub}</div>
-      </div>`;
-    div.addEventListener('click',()=>{
-      wrap.querySelectorAll('.cat-row').forEach(x=>{
-        x.style.borderColor='#93AA6D'; x.style.background='rgba(255,255,255,0.70)';
-      });
-      div.style.borderColor='#93AA6D'; div.style.background='rgba(147,170,109,0.15)';
-      setVal('catMain',item.v);
-      D.subArea=new Set();
-      document.getElementById('sub-spine').style.display='none';
-      document.getElementById('sub-upper').style.display='none';
-      document.getElementById('sub-lower').style.display='none';
-      if(item.v.includes('척추')){
-        document.getElementById('sub-spine').style.display='block';
-        document.getElementById('sub-spine-tags').innerHTML='';
-        makeTags('sub-spine-tags','subArea',['목','등','허리','엉치'],true);
-      } else if(item.v.includes('Upper')){
-        document.getElementById('sub-upper').style.display='block';
-        document.getElementById('sub-upper-tags').innerHTML='';
-        makeTags('sub-upper-tags','subArea',['어깨','팔꿈치','손목','손','손가락'],true);
-      } else if(item.v.includes('Lower')){
-        document.getElementById('sub-lower').style.display='block';
-        document.getElementById('sub-lower-tags').innerHTML='';
-        makeTags('sub-lower-tags','subArea',['고관절','무릎','발목','발','발가락'],true);
+  function buildGrid(containerId, parts){
+    const container=document.getElementById(containerId);
+    parts.forEach(nm=>{
+      const s=bodyS[nm]||{};
+      const isSolo=SOLO_PARTS.has(nm);
+      const isOn=isSolo?!!s.solo:!!(s.open||s.rt||s.lt||s.rl);
+      const cell=document.createElement('div');
+      cell.className='pb-cell';cell.dataset.area=nm;
+      const btn=document.createElement('button');
+      btn.className='pb-item'+(isOn?' on':'');
+      btn.innerHTML=`<span class="pb-check">${isOn?'✓':''}</span><span>${nm}</span>`;
+      btn.addEventListener('click',()=>togPart(nm));
+      cell.appendChild(btn);
+      if(!isSolo){
+        const tg=document.createElement('div');
+        tg.className='pb-toggles'+(isOn?' vis':'');
+        ['rt','lt','rl'].forEach(side=>{
+          const b=document.createElement('button');
+          b.className='pb-btn'+((s[side])?' on':'');
+          b.dataset.side=side;
+          b.textContent=side==='rt'?'Rt.':side==='lt'?'Lt.':'RL';
+          b.addEventListener('click',e=>{e.stopPropagation();togSide(nm,side);});
+          tg.appendChild(b);
+        });
+        cell.appendChild(tg);
       }
+      container.appendChild(cell);
     });
-    wrap.appendChild(div);
-  });
-
-  // 이전 선택값 복원
-  if(D.catMain){
-    if(D.catMain.includes('척추')){
-      document.getElementById('sub-spine').style.display='block';
-      makeTags('sub-spine-tags','subArea',['목','등','허리','엉치'],true);
-    } else if(D.catMain.includes('Upper')){
-      document.getElementById('sub-upper').style.display='block';
-      makeTags('sub-upper-tags','subArea',['어깨','팔꿈치','손목','손','손가락'],true);
-    } else if(D.catMain.includes('Lower')){
-      document.getElementById('sub-lower').style.display='block';
-      makeTags('sub-lower-tags','subArea',['고관절','무릎','발목','발','발가락'],true);
-    }
   }
+  buildGrid('upper-grid',upperParts);
+  buildGrid('lower-grid',lowerParts);
+  renderBodySel();
 }
 
 // STEP 2 — 발생 시기 + 원인 (순서 변경)
@@ -853,8 +942,8 @@ async function saveSurvey(){
       name: D.name||'',
       age: D.age||'',
       gender: D.gender||'',
-      catMain: D.catMain||'',
       subArea: getSet('subArea'),
+      romActive: D.romActive||[],
       muscle: getSet('muscle'),
       nerve: getSet('nerve'),
       nrs: D.nrs||'',

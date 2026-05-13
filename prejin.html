@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUMDT 예진 시스템 v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+:root {
+  --navy: #2d3830;
+  --navy2: #455546;
+  --teal: #DDAB63;
+  --teal-light: #FBF5E8;
+  --teal-mid: #EDD9A3;
+  --bg: #FAF8F4;
+  --white: #fff;
+  --border: #C5D5DA;
+  --text: #455546;
+  --muted: #7B98A0;
+  --red: #D1745D;
+  --red-bg: #FAE9E4;
+  --amber: #C49340;
+  --amber-bg: #FBF5E8;
+  --green: #6B8550;
+  --green-bg: #E8EFD9;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.6}
+
+/* TOPBAR */
+.topbar{background:var(--navy);height:52px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.t-left{display:flex;align-items:center;gap:12px}
+.logo{font-family:'Inter',monospace;color:#E5DECF;font-size:14px;letter-spacing:.06em}
+.t-title{color:rgba(255,255,255,.8);font-size:13px}
+.t-badge{background:var(--teal);color:#fff;font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.04em}
+.pt-tag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:7px;padding:4px 12px;color:#fff;font-size:12px;display:flex;align-items:center;gap:7px}
+.pt-tag span{color:rgba(255,255,255,.45);font-size:10px}
+
+/* CODE LOOKUP */
+.code-bar{background:#3d4e3e;padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.code-bar-label{color:rgba(255,255,255,.8);font-size:12px;flex-shrink:0}
+.code-input{border:1.5px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:18px;font-weight:700;font-family:'Inter',monospace;background:rgba(255,255,255,.1);color:#fff;width:100px;text-align:center;letter-spacing:4px;outline:none}
+.code-input::placeholder{color:rgba(255,255,255,.3);letter-spacing:2px}
+.code-input:focus{border-color:#DDAB63}
+.code-btn{background:#DDAB63;color:#455546;border:none;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif}
+.code-status{font-size:12px;font-weight:500}
+
+/* LEFT */
+.left{padding:20px;overflow-y:auto}
+
+/* PRESET BAR */
+.preset-bar{background:#fff;border-radius:10px;border:1px solid var(--border);padding:14px 16px;margin-bottom:16px}
+.preset-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.preset-btns{display:flex;flex-wrap:wrap;gap:7px}
+.preset-btn{border:1.5px solid var(--border);border-radius:8px;padding:6px 13px;background:#fff;font-size:12px;font-weight:500;cursor:pointer;color:var(--text);font-family:'Montserrat','Pretendard',sans-serif;transition:all .15s}
+.preset-btn:hover{border-color:var(--teal);background:var(--teal-light);color:var(--teal)}
+
+/* SECTION */
+.sec{background:#fff;border-radius:10px;border:1px solid var(--border);margin-bottom:12px;overflow:hidden}
+.sec-head{display:flex;align-items:center;gap:9px;padding:11px 16px;background:var(--navy2);cursor:pointer;user-select:none}
+.sec-num{background:var(--teal);color:#fff;width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:'Inter',monospace;flex-shrink:0}
+.sec-label{color:#fff;font-size:12px;font-weight:700;flex:1}
+.sec-sub{color:rgba(255,255,255,.45);font-size:10px;letter-spacing:.04em}
+.arr{color:rgba(255,255,255,.4);font-size:11px;transition:transform .2s}
+.sec.closed .arr{transform:rotate(-90deg)}
+.sec.closed .sec-body{display:none}
+.sec-body{padding:14px 16px}
+
+/* GROUP HEADER */
+.grp-head{background:var(--bg);border-radius:8px;padding:8px 12px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.grp-badge{font-size:10px;font-weight:700;color:var(--teal);background:var(--teal-light);padding:2px 8px;border-radius:20px;letter-spacing:.04em}
+.grp-title{font-size:12px;font-weight:700;color:var(--navy2)}
+
+/* FIELD */
+.field{margin-bottom:13px}
+.field:last-child{margin-bottom:0}
+.f-label{font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.f-label::before{content:'';width:2px;height:12px;background:var(--teal);border-radius:2px;display:inline-block}
+.f-divider{border:none;border-top:1px dashed var(--border);margin:12px 0}
+
+/* CHECK / RADIO */
+.ck-wrap{display:flex;flex-wrap:wrap;gap:6px}
+.ck,.rk{display:flex;align-items:center;gap:5px;border:1.5px solid var(--border);border-radius:7px;padding:6px 11px;cursor:pointer;user-select:none;font-size:12px;background:#fff;transition:all .12s;color:var(--text)}
+.ck:hover,.rk:hover{border-color:var(--teal);background:var(--teal-light)}
+.ck.on{border-color:var(--teal);background:var(--teal-light);color:var(--teal);font-weight:500}
+.rk.on{border-color:var(--teal);background:var(--teal-light);color:var(--teal);font-weight:500}
+.dot{width:13px;height:13px;border:1.5px solid var(--border);border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.ck.on .dot{background:var(--teal);border-color:var(--teal)}
+.ck.on .dot::after{content:'✓';color:#fff;font-size:8px;font-weight:700}
+.rdot{width:13px;height:13px;border:1.5px solid var(--border);border-radius:50%;flex-shrink:0;transition:all .12s}
+.rk.on .rdot{border-color:var(--teal);background:var(--teal);box-shadow:inset 0 0 0 3px #fff}
+
+/* NRS */
+.nrs-wrap{display:flex;gap:5px;flex-wrap:wrap}
+.nrs-b{width:50px;height:40px;border-radius:7px;border:2px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-size:13px;font-weight:700;font-family:'Inter',monospace;transition:all .12s;background:#fff;color:var(--muted)}
+.nrs-b:hover{border-color:var(--teal)}
+.nrs-b.on{border-color:var(--teal);background:var(--teal);color:#fff;transform:scale(1.08)}
+.nrs-b[data-v="1~2"]{border-color:#93AA6D}
+.nrs-b[data-v="3~4"]{border-color:#DDAB63}
+.nrs-b[data-v="5~6"]{border-color:#C49340}
+.nrs-b[data-v="7~8"]{border-color:#D1745D}
+.nrs-b[data-v="9~10"]{border-color:#A54038;color:#A54038}
+.nrs-b.on{border-color:var(--teal)!important;color:#fff!important}
+.nrs-sub{font-size:9px;font-weight:400;margin-top:1px}
+
+/* ROM TABLE */
+.rom-table{width:100%;border-collapse:collapse;font-size:12px}
+.rom-table th{background:var(--bg);padding:6px 8px;text-align:left;font-weight:700;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border)}
+.rom-table td{padding:6px 8px;border-bottom:1px solid #f0f4f8;vertical-align:middle}
+.rom-table tr:last-child td{border-bottom:none}
+.rom-motion{font-weight:500;color:var(--navy)}
+.rom-opts{display:flex;gap:5px}
+.rom-opt{border:1.5px solid var(--border);border-radius:6px;padding:4px 9px;cursor:pointer;font-size:11px;font-weight:500;background:#fff;transition:all .12s;font-family:'Montserrat','Pretendard',sans-serif;color:var(--muted)}
+.rom-opt:hover{border-color:var(--teal)}
+.rom-opt.on-normal{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.rom-opt.on-limit{border-color:var(--amber);background:var(--amber-bg);color:var(--amber)}
+.rom-opt.on-severe{border-color:var(--red);background:var(--red-bg);color:var(--red)}
+.pain-opt{border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:10px;background:#fff;transition:all .12s;font-family:'Montserrat','Pretendard',sans-serif;color:var(--muted)}
+.pain-opt.on{border-color:#e07070;background:#fdf0ee;color:var(--red);font-weight:500}
+
+/* TEXT / DATE INPUT */
+.t-input,.d-input{width:100%;border:1px solid var(--border);border-radius:7px;padding:7px 10px;font-size:12px;font-family:'Montserrat','Pretendard',sans-serif;color:var(--text);outline:none;background:#fff;transition:border-color .2s}
+.t-input:focus,.d-input:focus{border-color:var(--teal)}
+.t-area{width:100%;border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:12px;font-family:'Montserrat','Pretendard',sans-serif;color:var(--text);outline:none;resize:vertical;min-height:52px;background:#fff;transition:border-color .2s}
+.t-area:focus{border-color:var(--teal)}
+.cond-field{display:none;margin-top:8px;padding:10px 12px;background:var(--bg);border-radius:7px;border-left:3px solid var(--teal)}
+.cond-field.show{display:block}
+
+/* SEVERITY */
+.sev-wrap{display:flex;gap:7px;flex-wrap:wrap}
+.sev-btn{border:2px solid var(--border);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:12px;font-weight:500;background:#fff;font-family:'Montserrat','Pretendard',sans-serif;transition:all .12s;color:var(--muted)}
+.sev-btn.on-g{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.sev-btn.on-a{border-color:var(--amber);background:var(--amber-bg);color:var(--amber)}
+.sev-btn.on-r{border-color:var(--red);background:var(--red-bg);color:var(--red)}
+
+/* GEN BTN */
+.gen-btn{width:100%;background:var(--teal);color:#fff;border:none;border-radius:10px;padding:14px;font-size:14px;font-weight:700;font-family:'Montserrat','Pretendard',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+.gen-btn:hover{background:#C49340}
+.gen-btn:disabled{opacity:.6;cursor:not-allowed}
+.dots{display:inline-flex;gap:4px}
+.dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.7);animation:blink 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}
+.dots span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+
+/* RIGHT PANEL */
+.right{background:#FAF8F4;border-left:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:52px;height:calc(100vh - 52px)}
+.r-head{padding:14px 18px;border-bottom:1px solid var(--border);background:#fff;flex-shrink:0}
+.r-head-title{font-size:13px;font-weight:700;color:var(--navy)}
+.r-head-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.r-body{flex:1;overflow-y:auto;padding:14px}
+.r-foot{padding:10px 14px;border-top:1px solid var(--border);background:#fff;display:flex;gap:7px;flex-shrink:0}
+
+/* SOAP BLOCKS */
+.soap-blk{background:#fff;border-radius:9px;border:1px solid var(--border);margin-bottom:10px;overflow:hidden}
+.soap-blk-head{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--border)}
+.stag{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'Inter',monospace;flex-shrink:0}
+.s-s{background:#D8E8EC;color:#4A7880}
+.s-o{background:#E8EFD9;color:#6B8550}
+.s-a{background:#FBF5E8;color:#C49340}
+.s-p{background:#EDE8DF;color:#455546}
+.soap-blk-title{font-size:11px;font-weight:700;color:var(--text)}
+.soap-blk-body{padding:10px 12px;font-size:12px;line-height:1.8;color:var(--text);white-space:pre-wrap;min-height:44px}
+
+.class-badge{display:inline-flex;align-items:center;padding:5px 10px;border-radius:7px;font-size:11px;font-weight:700}
+.cl-A{background:#E8EFD9;color:#6B8550}
+.cl-B{background:#D8E8EC;color:#4A7880}
+.cl-C{background:#FBF5E8;color:#C49340}
+.cl-D{background:#EDE8DF;color:#455546}
+.cl-E{background:#FAE9E4;color:#A54038}
+.cl-F{background:#E5DECF;color:#7B98A0}
+
+.strat-card{background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:8px;padding:10px 13px;margin-bottom:10px}
+.strat-title{font-size:10px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.strat-body{font-size:12px;color:var(--navy2);line-height:1.6}
+
+.sum-row{display:flex;gap:6px;padding:4px 0;border-bottom:.5px solid #FAF8F4;font-size:11px}
+.sum-row:last-child{border:none}
+.sum-k{color:var(--muted);min-width:72px;flex-shrink:0}
+.sum-v{color:var(--text);font-weight:500}
+
+.copy-btn,.reset-btn{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px 14px;font-size:11px;cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif;color:var(--muted);transition:all .15s}
+.copy-btn:hover,.reset-btn:hover{color:var(--teal);border-color:var(--teal)}
+
+.empty{text-align:center;padding:40px 16px;color:var(--muted)}
+.empty-icon{font-size:36px;opacity:.25;margin-bottom:10px}
+
+/* 2-col info grid */
+.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.i-field label{display:block;font-size:10px;color:var(--muted);font-weight:500;margin-bottom:3px}
+.i-field input,.i-field select{width:100%;border:1px solid var(--border);border-radius:7px;padding:7px 9px;font-size:12px;font-family:'Montserrat','Pretendard',sans-serif;color:var(--text);outline:none;background:#fff;transition:border-color .2s}
+.i-field input:focus,.i-field select:focus{border-color:var(--teal)}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:1fr 420px;min-height:calc(100vh - 86px)}
+@media(max-width:900px){.layout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="t-left">
+    <span class="logo">PUMDT</span>
+    <span class="t-title">상담부 예진 시스템</span>
+    <span class="t-badge">STAFF v2</span>
+  </div>
+  <div class="pt-tag"><span>환자</span><strong id="pt-name-tag">—</strong></div>
+</div>
+
+<div class="code-bar">
+  <span class="code-bar-label">📋 환자 코드 입력</span>
+  <input class="code-input" id="code-input" placeholder="1234" maxlength="4">
+  <button class="code-btn" onclick="loadSurvey()">불러오기</button>
+  <span class="code-status" id="code-status" style="color:rgba(255,255,255,.6)">환자가 설문 완료 후 받은 4자리 코드를 입력하세요</span>
+</div>
+
+<div class="layout">
+<div class="left">
+
+<!-- PRESET -->
+<div class="preset-bar">
+  <div class="preset-title">빠른 프리셋 — 자주 오는 패턴 선택 시 관련 항목 자동 체크</div>
+  <div class="preset-btns">
+    <button class="preset-btn" onclick="applyPreset('acute-lumbar')">⚡ 급성 요통</button>
+    <button class="preset-btn" onclick="applyPreset('chronic-cervical')">🔄 만성 경추</button>
+    <button class="preset-btn" onclick="applyPreset('acute-knee')">🦵 급성 무릎</button>
+    <button class="preset-btn" onclick="applyPreset('shoulder-rotator')">💪 어깨 회전근</button>
+    <button class="preset-btn" onclick="applyPreset('trauma')">🚗 외상·교통사고</button>
+    <button class="reset-btn" onclick="clearAll()" style="margin-left:auto">↺ 전체 초기화</button>
+  </div>
+</div>
+
+<!-- ===== 그룹1: CC ===== -->
+<div class="sec" id="sec-cc">
+  <div class="sec-head" onclick="toggleSec('sec-cc')">
+    <div class="sec-num">CC</div>
+    <div class="sec-label">주 호소 — Chief Complaint</div>
+    <span class="sec-sub">Subjective</span>
+    <span class="arr">▾</span>
+  </div>
+  <div class="sec-body">
+
+    <!-- 1. 통증부위 -->
+    <div class="field">
+      <div class="f-label">1. 통증부위</div>
+      <input type="text" class="t-input" id="f-region" placeholder="예: 요추, 경추, 승모근" oninput="updateTag()">
+      <div class="ck-wrap" id="g-side" style="margin-top:8px">
+        <div class="rk" onclick="radio('g-side',this,'Rt.');toggleCond('cond-side-detail',false)"><div class="rdot"></div>Rt.</div>
+        <div class="rk" onclick="radio('g-side',this,'Lt.');toggleCond('cond-side-detail',false)"><div class="rdot"></div>Lt.</div>
+        <div class="rk" onclick="radio('g-side',this,'RL');toggleCond('cond-side-detail',true)"><div class="rdot"></div>RL</div>
+      </div>
+      <div class="cond-field" id="cond-side-detail">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px">우세측</div>
+        <div class="ck-wrap" id="g-side-detail">
+          <div class="rk" onclick="radio('g-side-detail',this,'Rt. > Lt.')"><div class="rdot"></div>Rt. &gt; Lt.</div>
+          <div class="rk" onclick="radio('g-side-detail',this,'Lt. > Rt.')"><div class="rdot"></div>Lt. &gt; Rt.</div>
+          <div class="rk" onclick="radio('g-side-detail',this,'Rt. = Lt.')"><div class="rdot"></div>Rt. = Lt.</div>
+        </div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 2. 발생시점 -->
+    <div class="field">
+      <div class="f-label">2. 발생시점</div>
+      <div class="ck-wrap" id="g-onset-time">
+        <div class="rk" onclick="radio('g-onset-time',this,'당일')"><div class="rdot"></div>당일</div>
+        <div class="rk" onclick="radio('g-onset-time',this,'1주일 이내')"><div class="rdot"></div>1주일 이내</div>
+        <div class="rk" onclick="radio('g-onset-time',this,'2~4주')"><div class="rdot"></div>2~4주</div>
+        <div class="rk" onclick="radio('g-onset-time',this,'1~3개월')"><div class="rdot"></div>1~3개월</div>
+        <div class="rk" onclick="radio('g-onset-time',this,'3~5개월')"><div class="rdot"></div>3~5개월</div>
+        <div class="rk" onclick="radio('g-onset-time',this,'6개월 이상')"><div class="rdot"></div>6개월 이상</div>
+        <div class="rk" onclick="radio('g-onset-time',this,'1년 이상')"><div class="rdot"></div>1년 이상</div>
+      </div>
+      <div style="margin-top:8px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:11px;color:var(--muted);min-width:60px">발생일자</span>
+        <input type="date" class="d-input" id="f-onset-date" style="width:160px">
+        <span style="font-size:10px;color:var(--muted)">(상해·교통사고 시 필수)</span>
+      </div>
+      <div style="margin-top:8px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:11px;color:var(--muted);min-width:60px">자동분류</span>
+        <span id="auto-class" style="font-size:12px;font-weight:700;color:var(--teal)">—</span>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 2-4 경과 -->
+    <div class="field">
+      <div class="f-label">진행경과</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:8px;padding:7px 10px;background:var(--bg);border-radius:6px;border-left:3px solid var(--teal-mid)">처음 통증 발생 이후, 치료와 무관하게 지금까지 증상이 어떻게 변했는지 확인<br><span style="color:#b45309">※ 치료 효과와는 별개의 항목임을 직원이 구분할 수 있도록</span></div>
+      <div class="ck-wrap" id="g-progress">
+        <div class="rk" onclick="radio('g-progress',this,'변화 없음')"><div class="rdot"></div>변화 없음</div>
+        <div class="rk" onclick="radio('g-progress',this,'점점 악화')"><div class="rdot"></div>점점 악화</div>
+        <div class="rk" onclick="radio('g-progress',this,'점점 호전')"><div class="rdot"></div>점점 호전</div>
+        <div class="rk" onclick="radio('g-progress',this,'반복 재발')"><div class="rdot"></div>반복 재발</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 3. 과거력 -->
+    <div class="field">
+      <div class="f-label">3. 과거력</div>
+      <div class="ck-wrap" id="g-history">
+        <div class="rk" onclick="radio('g-history',this,'통증부위 첫 발생');toggleCond('cond-recur',false)"><div class="rdot"></div>통증부위 첫 발생</div>
+        <div class="rk" onclick="radio('g-history',this,'동일부위 재발');toggleCond('cond-recur',true)"><div class="rdot"></div>동일부위 재발</div>
+      </div>
+      <div class="cond-field" id="cond-recur">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px">재발 유형</div>
+        <div class="ck-wrap" id="g-recur-type">
+          <div class="rk" onclick="radio('g-recur-type',this,'완전히 좋아졌다가 재발')"><div class="rdot"></div>완전히 좋아졌다가 재발</div>
+          <div class="rk" onclick="radio('g-recur-type',this,'완전히 낫지 않고 지속')"><div class="rdot"></div>완전히 낫지 않고 지속</div>
+        </div>
+      </div>
+      <div style="margin-top:8px">
+        <textarea class="t-area" id="f-history-detail" placeholder="과거력 세부내용 (이전 치료, 진단명 등)..."></textarea>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 4. 발생계기 -->
+    <div class="field">
+      <div class="f-label">4. 발생계기</div>
+      <div class="ck-wrap" id="g-trigger">
+        <div class="ck" onclick="chk(this,'trigger','외상')"><div class="dot"></div>외상</div>
+        <div class="ck" onclick="chk(this,'trigger','특정동작 중 발생')"><div class="dot"></div>특정동작 중</div>
+        <div class="ck" onclick="chk(this,'trigger','반복사용')"><div class="dot"></div>반복사용</div>
+        <div class="ck" onclick="chk(this,'trigger','자세문제')"><div class="dot"></div>자세문제</div>
+        <div class="ck" onclick="chk(this,'trigger','수면 후')"><div class="dot"></div>수면 후</div>
+        <div class="ck" onclick="chk(this,'trigger','운동 중 발생')"><div class="dot"></div>운동 중</div>
+        <div class="ck" onclick="chk(this,'trigger','수술 후')"><div class="dot"></div>수술 후</div>
+        <div class="ck" onclick="chk(this,'trigger','원인불명')"><div class="dot"></div>원인불명</div>
+      </div>
+      <div style="margin-top:8px">
+        <textarea class="t-area" id="f-trigger-detail" placeholder="발생계기 세부내용..."></textarea>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 5. 통증유발 -->
+    <div class="field">
+      <div class="f-label">5. 통증유발</div>
+      <div class="ck-wrap">
+        <div class="ck" onclick="chk(this,'provoke','움직임 시 발생');toggleCond('cond-p1',this.classList.contains('on'));updatePersistVisibility()"><div class="dot"></div>움직임 시 발생</div>
+        <div class="ck" onclick="chk(this,'provoke','특정동작 시 발생');toggleCond('cond-p2',this.classList.contains('on'));updatePersistVisibility()"><div class="dot"></div>특정동작 시 발생</div>
+        <div class="ck" onclick="chk(this,'provoke','자세변경 시 발생');toggleCond('cond-p3',this.classList.contains('on'));updatePersistVisibility()"><div class="dot"></div>자세변경 시 발생</div>
+        <div class="ck" onclick="chk(this,'provoke','체위변경 시 발생');toggleCond('cond-p4',this.classList.contains('on'));updatePersistVisibility()"><div class="dot"></div>체위변경 시 발생</div>
+        <div class="ck" onclick="chk(this,'provoke','휴식 시 발생');updatePersistVisibility()"><div class="dot"></div>휴식 시 발생</div>
+        <div class="ck" onclick="chk(this,'provoke','자발통');updatePersistVisibility()"><div class="dot"></div>자발통</div>
+      </div>
+      <div class="cond-field" id="cond-p1"><input class="t-input" id="f-p1" placeholder="움직임 세부동작..."></div>
+      <div class="cond-field" id="cond-p2"><input class="t-input" id="f-p2" placeholder="특정동작 세부내용..."></div>
+      <div class="cond-field" id="cond-p3"><input class="t-input" id="f-p3" placeholder="자세변경 세부동작..."></div>
+      <div class="cond-field" id="cond-p4"><input class="t-input" id="f-p4" placeholder="체위변경 세부동작..."></div>
+      <div style="margin-top:8px">
+        <textarea class="t-area" id="f-provoke-free" placeholder="세부 동작 입력 (예: 허리 숙일 때, 팔 들어올릴 때...)"></textarea>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 6. 통증악화 -->
+    <div class="field">
+      <div class="f-label">6. 통증악화 시간대</div>
+      <div class="ck-wrap" id="g-worsen">
+        <div class="ck" onclick="chk(this,'worsen','기상 시 강직')"><div class="dot"></div>기상 시 강직</div>
+        <div class="ck" onclick="chk(this,'worsen','오후 악화')"><div class="dot"></div>오후 악화</div>
+        <div class="ck" onclick="chk(this,'worsen','저녁 악화')"><div class="dot"></div>저녁 악화</div>
+        <div class="ck" onclick="chk(this,'worsen','야간통')"><div class="dot"></div>야간통</div>
+        <div class="ck" onclick="chk(this,'worsen','휴식 시 악화')"><div class="dot"></div>휴식 시 악화</div>
+        <div class="ck" onclick="chk(this,'worsen','날씨 변화')"><div class="dot"></div>날씨 변화</div>
+        <div class="ck" onclick="chk(this,'worsen','시간대 일정 없음')"><div class="dot"></div>시간대 일정 없음</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 7. 통증완화 -->
+    <div class="field">
+      <div class="f-label">7. 통증완화 요인</div>
+      <div class="ck-wrap" id="g-relieve">
+        <div class="ck" onclick="chk(this,'relieve','움직임 시 완화')"><div class="dot"></div>움직임 시 완화</div>
+        <div class="ck" onclick="chk(this,'relieve','휴식 시 완화')"><div class="dot"></div>휴식 시 완화</div>
+        <div class="ck" onclick="chk(this,'relieve','특정동작 시 완화')"><div class="dot"></div>특정동작 시 완화</div>
+        <div class="ck" onclick="chk(this,'relieve','자세변화 시 완화')"><div class="dot"></div>자세변화 시 완화</div>
+      </div>
+      <div style="margin-top:8px">
+        <input class="t-input" id="f-relieve-detail" placeholder="동작·자세변화 상세...">
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 8. 통증양상 -->
+    <div class="field">
+      <div class="f-label">8. 통증양상 — 근육성</div>
+      <div class="ck-wrap" id="g-muscle">
+        <div class="ck" onclick="chk(this,'muscle','쑤심')"><div class="dot"></div>쑤심</div>
+        <div class="ck" onclick="chk(this,'muscle','뻐근')"><div class="dot"></div>뻐근</div>
+        <div class="ck" onclick="chk(this,'muscle','묵직')"><div class="dot"></div>묵직</div>
+        <div class="ck" onclick="chk(this,'muscle','욱씬')"><div class="dot"></div>욱씬</div>
+        <div class="ck" onclick="chk(this,'muscle','당김')"><div class="dot"></div>당김</div>
+        <div class="ck" onclick="chk(this,'muscle','결림')"><div class="dot"></div>결림</div>
+      </div>
+      <div class="f-label" style="margin-top:10px">통증양상 — 신경성</div>
+      <div class="ck-wrap" id="g-nerve">
+        <div class="ck" onclick="chk(this,'nerve','전격통')"><div class="dot"></div>전격통</div>
+        <div class="ck" onclick="chk(this,'nerve','작열통')"><div class="dot"></div>작열통</div>
+        <div class="ck" onclick="chk(this,'nerve','자통')"><div class="dot"></div>자통</div>
+        <div class="ck" onclick="chk(this,'nerve','감각저하')"><div class="dot"></div>감각저하</div>
+        <div class="ck" onclick="chk(this,'nerve','감각이상')"><div class="dot"></div>감각이상</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 9. 범위 -->
+    <div class="field">
+      <div class="f-label">9. 통증범위</div>
+      <div class="ck-wrap" id="g-range">
+        <div class="ck" onclick="chk(this,'range','국소 통증')"><div class="dot"></div>국소 통증</div>
+        <div class="ck" onclick="chk(this,'range','방사 통증')"><div class="dot"></div>방사 통증</div>
+        <div class="ck" onclick="chk(this,'range','광범위 통증')"><div class="dot"></div>광범위 통증</div>
+        <div class="ck" onclick="chk(this,'range','국소 압통')"><div class="dot"></div>국소 압통</div>
+        <div class="ck" onclick="chk(this,'range','광범위 압통')"><div class="dot"></div>광범위 압통</div>
+      </div>
+      <div style="margin-top:8px">
+        <input class="t-input" id="f-muscle-loc" placeholder="통증발생 근육위치...">
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 10. NRS -->
+    <div class="field">
+      <div class="f-label">10. 통증강도 NRS</div>
+      <div class="nrs-wrap" id="g-nrs">
+        <div class="nrs-b" data-v="1~2" onclick="nrsSel(this,'1~2')">1~2<span class="nrs-sub">경미</span></div>
+        <div class="nrs-b" data-v="3~4" onclick="nrsSel(this,'3~4')">3~4<span class="nrs-sub">불편</span></div>
+        <div class="nrs-b" data-v="5~6" onclick="nrsSel(this,'5~6')">5~6<span class="nrs-sub">아픔</span></div>
+        <div class="nrs-b" data-v="7~8" onclick="nrsSel(this,'7~8')">7~8<span class="nrs-sub">심한</span></div>
+        <div class="nrs-b" data-v="9~10" onclick="nrsSel(this,'9~10')">9~10<span class="nrs-sub">극심</span></div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 11. 지속시간 -->
+    <div class="field">
+      <div class="f-label">11. 지속시간</div>
+      <div class="ck-wrap" id="g-duration">
+        <div class="rk" onclick="radio('g-duration',this,'&lt; 30min')"><div class="rdot"></div>&lt; 30min</div>
+        <div class="rk" onclick="radio('g-duration',this,'30min ~ 1hr')"><div class="rdot"></div>30min ~ 1hr</div>
+        <div class="rk" onclick="radio('g-duration',this,'1 ~ 3hr')"><div class="rdot"></div>1 ~ 3hr</div>
+        <div class="rk" onclick="radio('g-duration',this,'3 ~ 6hr')"><div class="rdot"></div>3 ~ 6hr</div>
+        <div class="rk" onclick="radio('g-duration',this,'6hr 이상')"><div class="rdot"></div>6hr 이상</div>
+        <div class="rk" onclick="radio('g-duration',this,'수일 지속')"><div class="rdot"></div>수일 지속</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 12. 지속유무 (조건부: 휴식 시 발생 또는 자발통 선택 시에만 표시) -->
+    <div id="wrap-persist" style="display:none">
+      <div class="field">
+        <div class="f-label">12. 지속유무</div>
+        <div class="ck-wrap" id="g-persist">
+          <div class="rk" onclick="radio('g-persist',this,'지속성 통증')"><div class="rdot"></div>지속성 통증</div>
+          <div class="rk" onclick="radio('g-persist',this,'간헐적 통증')"><div class="rdot"></div>간헐적 통증</div>
+          <div class="rk" onclick="radio('g-persist',this,'지속성 불편감')"><div class="rdot"></div>지속성 불편감</div>
+          <div class="rk" onclick="radio('g-persist',this,'간헐적 불편감')"><div class="rdot"></div>간헐적 불편감</div>
+        </div>
+      </div>
+      <hr class="f-divider">
+    </div>
+
+    <!-- 13. 기능제한 -->
+    <div class="field">
+      <div class="f-label">13. 기능 수행</div>
+      <div class="ck-wrap" id="g-func-perf">
+        <div class="rk" onclick="radio('g-func-perf',this,'정상수행')"><div class="rdot"></div>정상수행</div>
+        <div class="rk" onclick="radio('g-func-perf',this,'통증동반 수행')"><div class="rdot"></div>통증동반 수행</div>
+        <div class="rk" onclick="radio('g-func-perf',this,'수행불가')"><div class="rdot"></div>수행불가</div>
+      </div>
+      <div class="f-label" style="margin-top:10px">기능제한 항목</div>
+      <div class="ck-wrap">
+        <div class="ck" onclick="chk(this,'func','일상생활 기능 제한')"><div class="dot"></div>일상생활</div>
+        <div class="ck" onclick="chk(this,'func','사회적 역할 제한')"><div class="dot"></div>사회적 역할</div>
+        <div class="ck" onclick="chk(this,'func','보행 제한');toggleCond('cond-walk',this.classList.contains('on'))"><div class="dot"></div>보행 제한</div>
+        <div class="ck" onclick="chk(this,'func','좌위 제한');toggleCond('cond-sit',this.classList.contains('on'))"><div class="dot"></div>좌위 제한</div>
+        <div class="ck" onclick="chk(this,'func','기립 제한');toggleCond('cond-stand',this.classList.contains('on'))"><div class="dot"></div>기립 제한</div>
+        <div class="ck" onclick="chk(this,'func','체위변경 제한')"><div class="dot"></div>체위변경</div>
+        <div class="ck" onclick="chk(this,'func','수면방해')"><div class="dot"></div>수면방해</div>
+      </div>
+      <div class="cond-field" id="cond-walk"><input class="t-input" id="f-walk-time" placeholder="통증 유발 보행 시간 (예: 10분)"></div>
+      <div class="cond-field" id="cond-sit"><input class="t-input" id="f-sit-time" placeholder="통증 유발 좌위 시간 (예: 30분)"></div>
+      <div class="cond-field" id="cond-stand"><input class="t-input" id="f-stand-time" placeholder="통증 유발 기립 시간 (예: 20분)"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== 그룹2: PE ===== -->
+<div class="sec" id="sec-pe">
+  <div class="sec-head" onclick="toggleSec('sec-pe')">
+    <div class="sec-num">PE</div>
+    <div class="sec-label">신체검사 — Physical Exam</div>
+    <span class="sec-sub">Objective</span>
+    <span class="arr">▾</span>
+  </div>
+  <div class="sec-body">
+
+    <!-- 13. 보행 -->
+    <div class="field">
+      <div class="f-label">14. 보행확인 <span style="font-size:10px;font-weight:400;color:var(--muted);letter-spacing:0;text-transform:none">— 요추·하지 증상 시 확인</span></div>
+      <div class="ck-wrap" id="g-gait">
+        <div class="rk" onclick="radio('g-gait',this,'정상 보행')"><div class="rdot"></div>정상 보행</div>
+        <div class="rk" onclick="radio('g-gait',this,'보행 불가')"><div class="rdot"></div>보행 불가</div>
+        <div class="rk" onclick="radio('g-gait',this,'보행 불안정')"><div class="rdot"></div>보행 불안정</div>
+        <div class="rk" onclick="radio('g-gait',this,'절뚝거림')"><div class="rdot"></div>절뚝거림</div>
+        <div class="rk" onclick="radio('g-gait',this,'보조기사용')"><div class="rdot"></div>보조기사용</div>
+        <div class="rk" onclick="radio('g-gait',this,'도움 보행')"><div class="rdot"></div>도움 보행</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 14. ROM -->
+    <div class="field">
+      <div class="f-label">15. ROM 평가</div>
+      <div style="margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span style="font-size:11px;color:var(--muted)">부위 선택</span>
+        <div class="ck-wrap" id="g-rom-region">
+          <div class="rk" onclick="radio('g-rom-region',this,'경추');showROM('cervical')"><div class="rdot"></div>경추</div>
+          <div class="rk" onclick="radio('g-rom-region',this,'요추');showROM('lumbar')"><div class="rdot"></div>요추</div>
+          <div class="rk" onclick="radio('g-rom-region',this,'견관절');showROM('shoulder')"><div class="rdot"></div>견관절</div>
+          <div class="rk" onclick="radio('g-rom-region',this,'슬관절');showROM('knee')"><div class="rdot"></div>슬관절</div>
+          <div class="rk" onclick="radio('g-rom-region',this,'고관절');showROM('hip')"><div class="rdot"></div>고관절</div>
+          <div class="rk" onclick="radio('g-rom-region',this,'족관절');showROM('ankle')"><div class="rdot"></div>족관절</div>
+          <div class="rk" onclick="radio('g-rom-region',this,'수관절');showROM('wrist')"><div class="rdot"></div>수관절</div>
+          <div class="rk" onclick="radio('g-rom-region',this,'주관절');showROM('elbow')"><div class="rdot"></div>주관절</div>
+        </div>
+      </div>
+      <div id="rom-table-wrap">
+        <table class="rom-table">
+          <thead><tr><th>동작</th><th>등급</th><th>통증유발</th></tr></thead>
+          <tbody id="rom-tbody"></tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px">
+        <div class="f-label" style="margin-bottom:6px">특이소견</div>
+        <div class="ck-wrap" style="margin-bottom:7px">
+          <div class="ck" onclick="chk(this,'rom-sign','Heat(열감)')"><div class="dot"></div>열감</div>
+          <div class="ck" onclick="chk(this,'rom-sign','Edema(부종)')"><div class="dot"></div>부종</div>
+          <div class="ck" onclick="chk(this,'rom-sign','Erythema(발적)')"><div class="dot"></div>발적</div>
+        </div>
+        <input class="t-input" id="f-rom-note" placeholder="ROM 특이사항...">
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== 그룹3: PI ===== -->
+<div class="sec" id="sec-pi">
+  <div class="sec-head" onclick="toggleSec('sec-pi')">
+    <div class="sec-num">PI</div>
+    <div class="sec-label">치료력 — Past Illness</div>
+    <span class="sec-sub">Subjective</span>
+    <span class="arr">▾</span>
+  </div>
+  <div class="sec-body">
+
+    <div class="field">
+      <div class="f-label">16. 영상검진</div>
+      <div class="ck-wrap">
+        <div class="ck" onclick="chk(this,'imaging','X-ray')"><div class="dot"></div>X-ray</div>
+        <div class="ck" onclick="chk(this,'imaging','MRI')"><div class="dot"></div>MRI</div>
+        <div class="ck" onclick="chk(this,'imaging','CT')"><div class="dot"></div>CT</div>
+        <div class="ck" onclick="chk(this,'imaging','Ultrasound')"><div class="dot"></div>Ultrasound</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <div class="field">
+      <div class="f-label">17. 물리치료</div>
+      <div class="ck-wrap">
+        <div class="ck" onclick="chk(this,'ptx','전기치료(TENS)')"><div class="dot"></div>전기치료</div>
+        <div class="ck" onclick="chk(this,'ptx','체외충격파')"><div class="dot"></div>체외충격파</div>
+        <div class="ck" onclick="chk(this,'ptx','도수치료')"><div class="dot"></div>도수치료</div>
+        <div class="ck" onclick="chk(this,'ptx','재활운동')"><div class="dot"></div>재활운동</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <div class="field">
+      <div class="f-label">18. 한방치료</div>
+      <div class="ck-wrap">
+        <div class="ck" onclick="chk(this,'ktx','침')"><div class="dot"></div>침</div>
+        <div class="ck" onclick="chk(this,'ktx','추나')"><div class="dot"></div>추나</div>
+        <div class="ck" onclick="chk(this,'ktx','약침')"><div class="dot"></div>약침</div>
+        <div class="ck" onclick="chk(this,'ktx','한약')"><div class="dot"></div>한약</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <div class="field">
+      <div class="f-label">19. 약물·주사</div>
+      <div class="ck-wrap">
+        <div class="ck" onclick="chk(this,'inj','경구약')"><div class="dot"></div>경구약</div>
+        <div class="ck" onclick="chk(this,'inj','스테로이드')"><div class="dot"></div>스테로이드</div>
+        <div class="ck" onclick="chk(this,'inj','프롤로')"><div class="dot"></div>프롤로</div>
+        <div class="ck" onclick="chk(this,'inj','신경차단술')"><div class="dot"></div>신경차단술</div>
+        <div class="ck" onclick="chk(this,'inj','주사치료(종류불명)')"><div class="dot"></div>주사(종류불명)</div>
+      </div>
+      <div style="margin-top:8px"><input class="t-input" id="f-inj-detail" placeholder="약물·주사 상세내용..."></div>
+    </div>
+    <hr class="f-divider">
+
+    <div class="field">
+      <div class="f-label">20. 수술·기타</div>
+      <div class="ck-wrap">
+        <div class="ck" onclick="chk(this,'surg','디스크 수술')"><div class="dot"></div>디스크 수술</div>
+        <div class="ck" onclick="chk(this,'surg','협착 수술')"><div class="dot"></div>협착 수술</div>
+        <div class="ck" onclick="chk(this,'surg','보조기 착용')"><div class="dot"></div>보조기 착용</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <div class="field">
+      <div class="f-label">20. 치료효과 · 지속성</div>
+      <div class="ck-wrap" id="g-tx-effect">
+        <div class="rk" onclick="radio('g-tx-effect',this,'효과 없음')"><div class="rdot"></div>효과 없음</div>
+        <div class="rk" onclick="radio('g-tx-effect',this,'일시적 호전')"><div class="rdot"></div>일시적 호전</div>
+        <div class="rk" onclick="radio('g-tx-effect',this,'부분 호전')"><div class="rdot"></div>부분 호전</div>
+        <div class="rk" onclick="radio('g-tx-effect',this,'거의 완전 회복')"><div class="rdot"></div>거의 완전 회복</div>
+      </div>
+      <div class="ck-wrap" id="g-tx-persist" style="margin-top:7px">
+        <div class="rk" onclick="radio('g-tx-persist',this,'금방 재발')"><div class="rdot"></div>금방 재발</div>
+        <div class="rk" onclick="radio('g-tx-persist',this,'일정기간 유지후 재발')"><div class="rdot"></div>일정기간 유지후 재발</div>
+        <div class="rk" onclick="radio('g-tx-persist',this,'유지중')"><div class="rdot"></div>유지중</div>
+        <div class="rk" onclick="radio('g-tx-persist',this,'점점 악화')"><div class="rdot"></div>점점 악화</div>
+        <div class="rk" onclick="radio('g-tx-persist',this,'변동반복')"><div class="rdot"></div>변동반복</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== 그룹4: PH/SH ===== -->
+<div class="sec" id="sec-sh">
+  <div class="sec-head" onclick="toggleSec('sec-sh')">
+    <div class="sec-num">SH</div>
+    <div class="sec-label">환자 배경 — PH · SH</div>
+    <span class="sec-sub">Subjective</span>
+    <span class="arr">▾</span>
+  </div>
+  <div class="sec-body">
+
+    <div class="field">
+      <div class="f-label">21. 과거병력</div>
+      <div class="ck-wrap">
+        <div class="ck" onclick="chk(this,'pmhx','OP')"><div class="dot"></div>OP</div>
+        <div class="ck" onclick="chk(this,'pmhx','HTN')"><div class="dot"></div>HTN</div>
+        <div class="ck" onclick="chk(this,'pmhx','DM')"><div class="dot"></div>DM</div>
+        <div class="ck" onclick="chk(this,'pmhx','HL')"><div class="dot"></div>HL</div>
+        <div class="ck" onclick="chk(this,'pmhx','Hepa')"><div class="dot"></div>Hepa</div>
+        <div class="ck" onclick="chk(this,'pmhx','TB')"><div class="dot"></div>TB</div>
+        <div class="ck" onclick="chk(this,'pmhx','C-spine HNP')"><div class="dot"></div>C-HNP</div>
+        <div class="ck" onclick="chk(this,'pmhx','C-spine stenosis')"><div class="dot"></div>C-stenosis</div>
+        <div class="ck" onclick="chk(this,'pmhx','L-spine HNP')"><div class="dot"></div>L-HNP</div>
+        <div class="ck" onclick="chk(this,'pmhx','L-spine stenosis')"><div class="dot"></div>L-stenosis</div>
+        <div class="ck" onclick="chk(this,'pmhx','Antithrombotic')"><div class="dot"></div>Antithrombotic</div>
+        <div class="ck" onclick="chk(this,'pmhx','Hypo')"><div class="dot"></div>Hypo</div>
+        <div class="ck" onclick="chk(this,'pmhx','Hyper')"><div class="dot"></div>Hyper</div>
+      </div>
+      <div style="margin-top:8px"><input class="t-input" id="f-meds" placeholder="복용약 상세..."></div>
+    </div>
+    <hr class="f-divider">
+
+    <div class="field">
+      <div class="f-label">22. 생활패턴</div>
+      <div class="ck-wrap" id="g-lifestyle">
+        <div class="rk" onclick="radio('g-lifestyle',this,'정적형·고정자세')"><div class="rdot"></div>정적형·고정자세</div>
+        <div class="rk" onclick="radio('g-lifestyle',this,'동적형·이동중심')"><div class="rdot"></div>동적형·이동중심</div>
+        <div class="rk" onclick="radio('g-lifestyle',this,'반복형·반복작업')"><div class="rdot"></div>반복형·반복작업</div>
+        <div class="rk" onclick="radio('g-lifestyle',this,'복합형·혼합')"><div class="rdot"></div>복합형·혼합</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <div class="field">
+      <div class="f-label">23. 운동</div>
+      <div class="ck-wrap" id="g-exercise">
+        <div class="rk" onclick="radio('g-exercise',this,'None')"><div class="rdot"></div>None</div>
+        <div class="rk" onclick="radio('g-exercise',this,'1~2회/week')"><div class="rdot"></div>1~2회/week</div>
+        <div class="rk" onclick="radio('g-exercise',this,'3~4회/week')"><div class="rdot"></div>3~4회/week</div>
+        <div class="rk" onclick="radio('g-exercise',this,'5회↑/week')"><div class="rdot"></div>5회↑/week</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <div class="field">
+      <div class="f-label">24. 수면</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:5px">수면시간</div>
+          <div class="ck-wrap" id="g-sleep-time">
+            <div class="rk" onclick="radio('g-sleep-time',this,'6시간↑')"><div class="rdot"></div>6시간↑</div>
+            <div class="rk" onclick="radio('g-sleep-time',this,'5시간↓')"><div class="rdot"></div>5시간↓</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:5px">기상상태</div>
+          <div class="ck-wrap" id="g-sleep-wake">
+            <div class="rk" onclick="radio('g-sleep-wake',this,'개운함')"><div class="rdot"></div>개운함</div>
+            <div class="rk" onclick="radio('g-sleep-wake',this,'피곤함')"><div class="rdot"></div>피곤함</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:5px">입면상태</div>
+          <div class="ck-wrap" id="g-sleep-onset">
+            <div class="rk" onclick="radio('g-sleep-onset',this,'쉽게 잠듦')"><div class="rdot"></div>쉽게 잠듦</div>
+            <div class="rk" onclick="radio('g-sleep-onset',this,'10~30분 소요')"><div class="rdot"></div>10~30분</div>
+            <div class="rk" onclick="radio('g-sleep-onset',this,'30분↑ 소요')"><div class="rdot"></div>30분↑</div>
+            <div class="rk" onclick="radio('g-sleep-onset',this,'잠들기 어려움')"><div class="rdot"></div>잠들기 어려움</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:5px">수면유지</div>
+          <div class="ck-wrap" id="g-sleep-maint">
+            <div class="rk" onclick="radio('g-sleep-maint',this,'잘 자는 편')"><div class="rdot"></div>잘 자는 편</div>
+            <div class="rk" onclick="radio('g-sleep-maint',this,'1~2회 깸')"><div class="rdot"></div>1~2회 깸</div>
+            <div class="rk" onclick="radio('g-sleep-maint',this,'자주 깸')"><div class="rdot"></div>자주 깸</div>
+            <div class="rk" onclick="radio('g-sleep-maint',this,'거의 못잠')"><div class="rdot"></div>거의 못잠</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <div class="field" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div>
+        <div class="f-label">25. 음주</div>
+        <div class="ck-wrap" id="g-alcohol">
+          <div class="rk" onclick="radio('g-alcohol',this,'None')"><div class="rdot"></div>None</div>
+          <div class="rk" onclick="radio('g-alcohol',this,'1~2/month')"><div class="rdot"></div>1~2/month</div>
+          <div class="rk" onclick="radio('g-alcohol',this,'1~2/week')"><div class="rdot"></div>1~2/week</div>
+          <div class="rk" onclick="radio('g-alcohol',this,'3↑/week')"><div class="rdot"></div>3↑/week</div>
+        </div>
+      </div>
+      <div>
+        <div class="f-label">26. 흡연</div>
+        <div class="ck-wrap" id="g-smoke">
+          <div class="rk" onclick="radio('g-smoke',this,'None')"><div class="rdot"></div>None</div>
+          <div class="rk" onclick="radio('g-smoke',this,'Ex-smoker')"><div class="rdot"></div>Ex</div>
+          <div class="rk" onclick="radio('g-smoke',this,'<1/2 pack/day')"><div class="rdot"></div>&lt;1/2 pack</div>
+          <div class="rk" onclick="radio('g-smoke',this,'1/2~1 pack/day')"><div class="rdot"></div>1/2~1 pack</div>
+          <div class="rk" onclick="radio('g-smoke',this,'1↑ pack/day')"><div class="rdot"></div>1↑ pack</div>
+        </div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <!-- 피로도 결과 카드 -->
+    <div class="field">
+      <div class="f-label">피로도 — 설문 자동 입력</div>
+      <div id="fatigue-card" style="background:var(--bg);border-radius:8px;border:1px solid var(--border);padding:12px;font-size:12px;color:var(--muted);text-align:center">설문 데이터 없음</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== 그룹5: PLAN ===== -->
+<div class="sec" id="sec-plan">
+  <div class="sec-head" onclick="toggleSec('sec-plan')">
+    <div class="sec-num">Rx</div>
+    <div class="sec-label">치료계획 — Plan</div>
+    <span class="sec-sub">Plan</span>
+    <span class="arr">▾</span>
+  </div>
+  <div class="sec-body">
+
+    <div class="field">
+      <div class="f-label">27. 비급여 치료</div>
+      <div class="ck-wrap">
+        <div class="ck" onclick="chk(this,'plan-nhi','FBT 대용량 박리약침')"><div class="dot"></div>FBT 박리약침</div>
+        <div class="ck" onclick="chk(this,'plan-nhi','ACUREX 무통')"><div class="dot"></div>ACUREX 무통</div>
+        <div class="ck" onclick="chk(this,'plan-nhi','ACUREX 태반')"><div class="dot"></div>ACUREX 태반</div>
+        <div class="ck" onclick="chk(this,'plan-nhi','NK 도침')"><div class="dot"></div>NK 도침</div>
+        <div class="ck" onclick="chk(this,'plan-nhi','TET 매선')"><div class="dot"></div>TET 매선</div>
+        <div class="ck" onclick="chk(this,'plan-nhi','PEMF 전자기장 온열')"><div class="dot"></div>PEMF 온열</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <div class="field">
+      <div class="f-label">28. 한약</div>
+      <div class="ck-wrap">
+        <div class="ck" onclick="chk(this,'plan-herb','치료환')"><div class="dot"></div>치료환</div>
+        <div class="ck" onclick="chk(this,'plan-herb','MD 한약')"><div class="dot"></div>MD 한약</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <div class="field">
+      <div class="f-label">29. 건강보험 치료</div>
+      <div class="ck-wrap">
+        <div class="ck" onclick="chk(this,'plan-ins','침')"><div class="dot"></div>침</div>
+        <div class="ck" onclick="chk(this,'plan-ins','단순추나')"><div class="dot"></div>단순추나</div>
+        <div class="ck" onclick="chk(this,'plan-ins','복잡추나')"><div class="dot"></div>복잡추나</div>
+      </div>
+    </div>
+    <hr class="f-divider">
+
+    <div class="field">
+      <div class="f-label">상담부 메모</div>
+      <textarea class="t-area" id="f-memo" placeholder="이학적 검사 결과, 추가 관찰사항, 특이사항 등..." style="min-height:70px"></textarea>
+    </div>
+
+  </div>
+</div>
+
+<button class="gen-btn" id="gen-btn" onclick="generateSOAP()">
+  <span id="gen-label">✦ SOAP 자동 생성</span>
+  <div class="dots" id="gen-dots" style="display:none"><span></span><span></span><span></span></div>
+</button>
+
+</div><!-- /left -->
+
+<!-- RIGHT PANEL -->
+<div class="right">
+  <div class="r-head">
+    <div class="r-head-title">SOAP 요약 노트</div>
+    <div class="r-head-sub">체크 완료 후 자동 생성</div>
+  </div>
+  <div class="r-body" id="soap-output">
+    <div class="empty">
+      <div class="empty-icon">📋</div>
+      <p style="font-size:12px;line-height:1.8">왼쪽 항목을 체크하고<br>SOAP 생성 버튼을 눌러주세요</p>
+    </div>
+  </div>
+  <div class="r-foot">
+    <button class="copy-btn" id="copy-btn" onclick="copySOAP()" style="display:none">📋 복사</button>
+    <button class="reset-btn" id="reset-btn2" onclick="clearAll()" style="display:none">↺ 초기화</button>
+  </div>
+</div>
+
+</div><!-- /layout -->
+
+<script>
+const S = {};
+
+const SUPABASE_URL = 'https://lxxaqupljilvbtqnnyey.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Wao5CATvkJUs36XD3Lnlxg_5Hvq9TGq';
+
+async function loadSurvey(){
+  const code = document.getElementById('code-input').value.trim();
+  const status = document.getElementById('code-status');
+  if(code.length !== 4){ status.style.color='#f4c96a'; status.textContent='4자리 코드를 입력해 주세요.'; return; }
+
+  status.style.color='rgba(255,255,255,.6)';
+  status.textContent='불러오는 중...';
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/surveys?code=eq.${code}&order=created_at.desc&limit=1`, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`
+      }
+    });
+    const rows = await res.json();
+    if(!rows || rows.length === 0){
+      status.style.color='#f0a07a';
+      status.textContent='코드를 찾을 수 없습니다. 다시 확인해 주세요.';
+      return;
+    }
+
+    const d = JSON.parse(rows[0].data);
+
+    // 기본정보 채우기
+    if(d.name){ document.getElementById('f-region').value = d.subArea?.join(', ')||''; updateTag(); }
+    document.getElementById('pt-name-tag').textContent = d.name||'—';
+
+    // 환자 설문 데이터를 state에 저장
+    if(d.subArea?.length) S['rom-region'] = d.catMain||'';
+    if(d.nrs) { S['nrs'] = d.nrs; nrsVal = d.nrs; }
+    if(d.onset) { S['g-onset-time'] = d.onset; document.getElementById('auto-class').textContent = autoClass(d.onset); }
+    if(d.cause) S['g-trigger'] = d.cause;
+    if(d.painWhen) S['motion'] = d.painWhen;
+    if(d.worsen?.length) S['worsen'] = new Set(d.worsen);
+    if(d.freq) S['freq'] = d.freq;
+    if(d.duration) S['duration'] = d.duration;
+    if(d.hospital?.length) S['hospital'] = new Set(d.hospital);
+    if(d.imaging?.length) S['imaging'] = new Set(d.imaging);
+    if(d.ptx?.length) S['ptx'] = new Set(d.ptx);
+    if(d.ktx?.length) S['ktx'] = new Set(d.ktx);
+    if(d.inj?.length) S['inj'] = new Set(d.inj);
+    if(d.surg?.length) S['surg'] = new Set(d.surg);
+    if(d.txEffect) S['g-tx-effect'] = d.txEffect;
+    if(d.txPersist) S['g-tx-persist'] = d.txPersist;
+    if(d.pmhx?.length) S['pmhx'] = new Set(d.pmhx);
+    if(d.lifestyle?.length) S['g-lifestyle'] = d.lifestyle[0];
+    if(d.exercise) S['g-exercise'] = d.exercise;
+    if(d.sleepTime) S['g-sleep-time'] = d.sleepTime;
+    if(d.sleepMaint) S['g-sleep-maint'] = d.sleepMaint;
+    if(d.alcohol) S['g-alcohol'] = d.alcohol;
+    if(d.smoke) S['g-smoke'] = d.smoke;
+    if(d.fat1!==undefined) S['fat1'] = d.fat1;
+    if(d.fat2!==undefined) S['fat2'] = d.fat2;
+    if(d.fat3!==undefined) S['fat3'] = d.fat3;
+    if(d.fat4!==undefined) S['fat4'] = d.fat4;
+
+    // 통증 부위 표시
+    const region = (d.subArea||[]).join(', ');
+    document.getElementById('f-region').value = region;
+
+    // 설문 요약 표시
+    document.getElementById('code-status').style.color='#5dd6b3';
+    document.getElementById('code-status').textContent=`✓ ${d.name||'환자'} (${d.age||''}세 ${d.gender||''}) 설문 불러오기 완료`;
+
+    // 환자 설문 요약 카드 표시
+    showSurveySummary(d);
+
+    // 예진 화면 버튼 자동 체크
+    applyToUI(d);
+
+  } catch(e){
+    status.style.color='#f0a07a';
+    status.textContent='오류가 발생했습니다: ' + e.message;
+  }
+}
+
+function updatePersistVisibility() {
+  const p = S['provoke'];
+  const show = p instanceof Set && (p.has('휴식 시 발생') || p.has('자발통'));
+  document.getElementById('wrap-persist').style.display = show ? '' : 'none';
+}
+
+function applyToUI(d) {
+  // radio 버튼: groupId 컨테이너 안의 .rk 중 onclick에 val이 포함된 것을 클릭
+  function clickRK(groupId, val) {
+    if (!val) return;
+    const g = document.getElementById(groupId);
+    if (!g) return;
+    g.querySelectorAll('.rk').forEach(el => {
+      if ((el.getAttribute('onclick') || '').includes(`'${val}'`)) el.click();
+    });
+  }
+  // checkbox 버튼: onclick에 ,'key','val' 패턴이 있는 .ck를 클릭
+  function clickCK(key, val) {
+    if (!val) return;
+    document.querySelectorAll('.ck').forEach(el => {
+      if ((el.getAttribute('onclick') || '').includes(`,'${key}','${val}'`)) {
+        if (!el.classList.contains('on')) el.click();
+      }
+    });
+  }
+
+  // NRS
+  if (d.nrs) {
+    const nrsEl = document.querySelector(`.nrs-b[data-v="${d.nrs}"]`);
+    if (nrsEl && !nrsEl.classList.contains('on')) nrsSel(nrsEl, d.nrs);
+  }
+
+  // 발생시점 (onset) → g-onset-time
+  const onsetMap = {
+    '1주일 이내': '1주일 이내',
+    '1개월 전': '1~3개월',
+    '3개월 전': '3~5개월',
+    '6개월 전': '6개월 이상',
+    '1년 이상': '1년 이상',
+  };
+  if (d.onset && onsetMap[d.onset]) clickRK('g-onset-time', onsetMap[d.onset]);
+
+  // 발생 원인 (cause) → trigger checkboxes
+  const causeMap = {
+    '특정 동작·활동으로': '특정동작 중 발생',
+    '갑자기 원인 없이': '원인불명',
+    '서서히 점진적으로': '반복사용',
+    '사고·부상·수술 후': '외상',
+  };
+  if (d.cause && causeMap[d.cause]) clickCK('trigger', causeMap[d.cause]);
+
+  // 통증 악화 시간대 (worsen) → g-worsen checkboxes
+  const worsenMap = {
+    '아침에 일어날 때 뻣뻣함': '기상 시 강직',
+    '오후에 더 심해짐':        '오후 악화',
+    '저녁에 더 심해짐':        '저녁 악화',
+    '자다가 통증으로 깸':      '야간통',
+    '쉬고 있을 때 더 아픔':    '휴식 시 악화',
+    '날씨가 바뀔 때':          '날씨 변화',
+    '시간대와 상관없음':       '시간대 일정 없음',
+    // legacy 호환
+    '기상 직후':               '기상 시 강직',
+    '오후·저녁':               '오후 악화',
+    '가만히 있을 때':          '휴식 시 악화',
+    '날씨 변화':               '날씨 변화',
+    '상시 지속':               '시간대 일정 없음',
+  };
+  (d.worsen || []).forEach(v => {
+    if (worsenMap[v]) clickCK('worsen', worsenMap[v]);
+  });
+
+  // painWhen → 통증 유발/완화 checkboxes (배열 및 구버전 문자열 모두 지원)
+  const painWhenMap = {
+    '몸을 움직일 때':                  { provoke: '움직임 시 발생' },
+    '특정 동작을 할 때':               { provoke: '특정동작 시 발생' },
+    '자세를 바꿀 때':                  { provoke: '자세변경 시 발생' },
+    '눕거나 일어날 때':                { provoke: '체위변경 시 발생' },
+    '가만히 있을 때도 아픔':           { provoke: '휴식 시 발생' },
+    '때와 상관없이 갑자기 아픔':       { provoke: '자발통' },
+    '움직이거나 특정 동작을 할 때만':  { provoke: '움직임 시 발생' },
+    '움직이면 더 심해지고 쉬면 나아짐':{ provoke: '움직임 시 발생', relieve: '휴식 시 완화' },
+    '움직이면 오히려 풀리는 느낌':     { relieve: '움직임 시 완화' },
+    '가만히 있어도 계속 아픔':         { provoke: '휴식 시 발생' },
+    '때와 상관없이 갑자기 나타남':     { provoke: '자발통' },
+  };
+  const pWhenArr = Array.isArray(d.painWhen) ? d.painWhen : (d.painWhen ? [d.painWhen] : []);
+  pWhenArr.forEach(v => {
+    const m = painWhenMap[v];
+    if (!m) return;
+    if (m.provoke) clickCK('provoke', m.provoke);
+    if (m.relieve) clickCK('relieve', m.relieve);
+  });
+
+  // 지속유무 (persist) → g-persist
+  const persistMap = {
+    '항상 아파요':   '지속성 통증',
+    '항상 불편해요': '지속성 불편감',
+    '가끔 아파요':   '간헐적 통증',
+    '가끔 불편해요': '간헐적 불편감',
+  };
+  if (d.persist && persistMap[d.persist]) clickRK('g-persist', persistMap[d.persist]);
+
+  // 근육성 통증 (muscle) → g-muscle checkboxes
+  const muscleMap = {
+    '쑤시는듯함': ['쑤심'],
+    '뻐근·묵직함': ['뻐근', '묵직'],
+    '뻣뻣·경직됨': ['결림'],
+    '욱씬거림': ['욱씬'],
+    '당기는듯함': ['당김'],
+  };
+  (d.muscle || []).forEach(m => {
+    (muscleMap[m] || []).forEach(v => clickCK('muscle', v));
+  });
+
+  // 신경성 통증 (nerve) → g-nerve checkboxes
+  const nerveMap = {
+    '찌르는': ['자통'],
+    '조이는': ['감각이상'],
+    '저린감': ['감각이상'],
+    '시린감': ['감각이상'],
+    '화끈거림': ['작열통'],
+  };
+  (d.nerve || []).forEach(n => {
+    (nerveMap[n] || []).forEach(v => clickCK('nerve', v));
+  });
+
+  // 영상검진 (imaging)
+  const imagingMap = { 'X-ray': 'X-ray', 'MRI': 'MRI', 'CT': 'CT', '초음파': 'Ultrasound' };
+  (d.imaging || []).forEach(v => { if (imagingMap[v]) clickCK('imaging', imagingMap[v]); });
+
+  // 물리치료 (ptx)
+  const ptxMap = {
+    '전기치료': '전기치료(TENS)',
+    '체외충격파': '체외충격파',
+    '도수치료': '도수치료',
+    '재활운동': '재활운동',
+  };
+  (d.ptx || []).forEach(v => { if (ptxMap[v]) clickCK('ptx', ptxMap[v]); });
+
+  // 한방치료 (ktx) — 값 동일
+  (d.ktx || []).forEach(v => clickCK('ktx', v));
+
+  // 주사·약물 (inj)
+  const injMap = {
+    '스테로이드': '스테로이드',
+    '프롤로': '프롤로',
+    '경구약': '경구약',
+    'DNA/PDRN': '주사치료(종류불명)',
+    '연골': '주사치료(종류불명)',
+    '그외 주사치료': '주사치료(종류불명)',
+  };
+  (d.inj || []).forEach(v => { if (injMap[v]) clickCK('inj', injMap[v]); });
+
+  // 수술 (surg)
+  const surgMap = { '디스크 수술': '디스크 수술', '협착 수술': '협착 수술' };
+  (d.surg || []).forEach(v => { if (surgMap[v]) clickCK('surg', surgMap[v]); });
+
+  // 치료효과 (txEffect) → g-tx-effect
+  const txEffectMap = {
+    '변화 없음': '효과 없음',
+    '약간 호전 (10~30%)': '일시적 호전',
+    '부분 호전 (40~60%)': '부분 호전',
+    '많이 호전 (70~80%)': '거의 완전 회복',
+    '거의 회복 (90% 이상)': '거의 완전 회복',
+  };
+  if (d.txEffect && txEffectMap[d.txEffect]) clickRK('g-tx-effect', txEffectMap[d.txEffect]);
+
+  // 호전 지속 (txPersist) → g-tx-persist
+  const txPersistMap = {
+    '호전 지속 없음': '금방 재발',
+    '일시 호전 후 재발': '일정기간 유지후 재발',
+    '호전 유지': '유지중',
+    '반복 재발': '변동반복',
+  };
+  if (d.txPersist && txPersistMap[d.txPersist]) clickRK('g-tx-persist', txPersistMap[d.txPersist]);
+
+  // 과거병력 (pmhx)
+  const pmhxMap = {
+    '고혈압': 'HTN', '당뇨': 'DM', '고지혈증': 'HL', '간질환': 'Hepa', '결핵': 'TB',
+    '경추 디스크': 'C-spine HNP', '경추 협착증': 'C-spine stenosis',
+    '요추 디스크': 'L-spine HNP', '요추 협착증': 'L-spine stenosis',
+    '항응고제 복용': 'Antithrombotic', '갑상선 저하': 'Hypo', '갑상선 항진': 'Hyper',
+  };
+  (d.pmhx || []).forEach(v => { if (pmhxMap[v]) clickCK('pmhx', pmhxMap[v]); });
+
+  // 생활패턴 (lifestyle) → g-lifestyle
+  const lifestyleMap = {
+    '정적형 (앉아서 고정 자세)': '정적형·고정자세',
+    '동적형 (이동이 많은 활동)': '동적형·이동중심',
+    '반복형 (동일 동작 반복)': '반복형·반복작업',
+    '복합형 (다양하게 혼합)': '복합형·혼합',
+  };
+  if (d.lifestyle?.[0] && lifestyleMap[d.lifestyle[0]]) clickRK('g-lifestyle', lifestyleMap[d.lifestyle[0]]);
+
+  // 운동 (exercise) → g-exercise
+  const exerciseMap = {
+    '없음': 'None', '주 1~2회': '1~2회/week',
+    '주 3~4회': '3~4회/week', '주 5회 이상': '5회↑/week',
+  };
+  if (d.exercise && exerciseMap[d.exercise]) clickRK('g-exercise', exerciseMap[d.exercise]);
+
+  // 수면시간 (sleepTime) → g-sleep-time
+  const sleepTimeMap = { '6시간 이상': '6시간↑', '5시간 이하': '5시간↓' };
+  if (d.sleepTime && sleepTimeMap[d.sleepTime]) clickRK('g-sleep-time', sleepTimeMap[d.sleepTime]);
+
+  // 수면유지 (sleepMaint) → g-sleep-maint
+  const sleepMaintMap = {
+    '잘 자는 편': '잘 자는 편', '1~2회 깸': '1~2회 깸',
+    '자주 깸': '자주 깸', '거의 못 잠': '거의 못잠',
+  };
+  if (d.sleepMaint && sleepMaintMap[d.sleepMaint]) clickRK('g-sleep-maint', sleepMaintMap[d.sleepMaint]);
+
+  // 음주 (alcohol) → g-alcohol
+  const alcoholMap = {
+    '없음': 'None', '월 1~2회': '1~2/month',
+    '주 1~2회': '1~2/week', '주 3회 이상': '3↑/week',
+  };
+  if (d.alcohol && alcoholMap[d.alcohol]) clickRK('g-alcohol', alcoholMap[d.alcohol]);
+
+  // 흡연 (smoke) → g-smoke
+  const smokeMap = {
+    '비흡연': 'None', '과거 흡연': 'Ex-smoker',
+    '하루 반 갑 미만': '<1/2 pack/day', '하루 한 갑 이상': '1↑ pack/day',
+  };
+  if (d.smoke && smokeMap[d.smoke]) clickRK('g-smoke', smokeMap[d.smoke]);
+
+  // 지속시간 (duration) → g-duration
+  const durationMap = {
+    '몇 분 이내': '< 30min', '1시간 이내': '30min ~ 1hr',
+    '1~3시간': '1 ~ 3hr', '3~6시간': '3 ~ 6hr',
+    '하루 종일': '6hr 이상', '며칠 이상': '수일 지속',
+  };
+  if (d.duration && durationMap[d.duration]) clickRK('g-duration', durationMap[d.duration]);
+
+  // 지속유무 조건부 표시 업데이트
+  updatePersistVisibility();
+
+  // 피로도 카드 렌더링
+  renderFatigueCard(d.fat1, d.fat2, d.fat3, d.fat4);
+}
+
+function renderFatigueCard(fat1, fat2, fat3, fat4) {
+  const card = document.getElementById('fatigue-card');
+  if (!card) return;
+  const f1 = fat1 ?? null, f2 = fat2 ?? null, f3 = fat3 ?? null, f4 = fat4 ?? null;
+  if (f1 === null && f2 === null && f3 === null && f4 === null) {
+    card.innerHTML = '<span style="color:var(--muted)">설문 데이터 없음</span>';
+    return;
+  }
+  const body = (f1 ?? 0) + (f4 ?? 0);
+  const brain = (f2 ?? 0) + (f3 ?? 0);
+  const total = body + brain;
+  const bodyColor = body >= 6 ? '#c0392b' : body >= 4 ? '#b45309' : '#15803d';
+  const brainColor = brain >= 6 ? '#c0392b' : brain >= 4 ? '#b45309' : '#15803d';
+  const labels = ['없음','매우 가벼운','가벼운','보통','심한','극심한'];
+  card.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+      <div style="background:#fff;border-radius:7px;border:1px solid var(--border);padding:10px;text-align:center">
+        <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px">신체 피로 (걷기+운동)</div>
+        <div style="font-size:24px;font-weight:700;color:${bodyColor}">${body}<span style="font-size:12px;font-weight:400"> / 10</span></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px">걷기 ${f1??'—'} · 운동 ${f4??'—'}</div>
+      </div>
+      <div style="background:#fff;border-radius:7px;border:1px solid var(--border);padding:10px;text-align:center">
+        <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px">뇌 피로 (TV+앉기)</div>
+        <div style="font-size:24px;font-weight:700;color:${brainColor}">${brain}<span style="font-size:12px;font-weight:400"> / 10</span></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px">TV ${f2??'—'} · 앉기 ${f3??'—'}</div>
+      </div>
+    </div>
+    ${body >= 6 || brain >= 6 || total >= 12 ? `<div style="background:#fef3c7;border:1px solid #f4c96a;border-radius:6px;padding:7px 10px;font-size:11px;color:#92400e;line-height:1.7">
+      ${total >= 12 ? '⚠️ <strong>경옥고 + 브레인바디 동시 권장</strong>' : body >= 6 ? '⚠️ <strong>경옥고 안내 권장</strong> (신체 피로 6점↑)' : '⚠️ <strong>브레인바디 검사 권장</strong> (뇌 피로 6점↑)'}
+    </div>` : ''}`;
+}
+
+function autoClass(onset){
+  const map = {'당일':'급성','1주일 이내':'급성','2~4주':'아급성','1~3개월':'아급성~만성','3~5개월':'만성','6개월 이상':'만성','1년 이상':'만성'};
+  return map[onset]||'—';
+}
+
+function showSurveySummary(d){
+  const existing = document.getElementById('survey-summary-card');
+  if(existing) existing.remove();
+
+  const card = document.createElement('div');
+  card.id = 'survey-summary-card';
+  card.style.cssText = 'background:#fff;border-radius:10px;border:2px solid #2e7d8c;margin-bottom:16px;overflow:hidden';
+  card.innerHTML = `
+    <div style="background:#2e7d8c;padding:10px 16px;display:flex;align-items:center;justify-content:space-between">
+      <span style="color:#fff;font-size:12px;font-weight:700">📋 환자 설문 내용 — ${d.name||'환자'} (${d.age||''}세 ${d.gender||''})</span>
+      <span style="color:rgba(255,255,255,.6);font-size:10px">자동 입력됨</span>
+    </div>
+    <div style="padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+      <div><span style="color:#6b7a8d">부위:</span> <strong>${(d.subArea||[]).join(', ')||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">NRS:</span> <strong>${d.nrs||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">시작:</span> <strong>${d.onset||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">원인:</span> <strong>${d.cause||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">통증발생:</span> <strong>${d.painWhen||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">지속:</span> <strong>${d.duration||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">근육성:</span> <strong>${(d.muscle||[]).join(', ')||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">신경성:</span> <strong>${(d.nerve||[]).join(', ')||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">치료력:</span> <strong>${[...(d.ptx||[]),...(d.ktx||[]),...(d.inj||[])].join(', ')||'없음'}</strong></div>
+      <div><span style="color:#6b7a8d">치료효과:</span> <strong>${d.txEffect||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">과거병력:</span> <strong>${(d.pmhx||[]).join(', ')||'없음'}</strong></div>
+      <div><span style="color:#6b7a8d">피로도:</span> <strong>신체 ${(d.fat1||0)+(d.fat4||0)}점 / 뇌 ${(d.fat2||0)+(d.fat3||0)}점</strong></div>
+    </div>`;
+
+  const left = document.querySelector('.left');
+  left.insertBefore(card, left.firstChild);
+}
+let nrsVal = null;
+let soapRaw = '';
+
+// ROM 정의
+const ROM_MOTIONS = {
+  cervical: ['Flexion','Extension','L-Rotation','R-Rotation','L-Lateral Bending','R-Lateral Bending'],
+  lumbar: ['Flexion','Extension','L-Lateral Bending','R-Lateral Bending'],
+  shoulder: ['Flexion','Abduction','IR','ER'],
+  knee: ['Flexion','Extension'],
+  hip: ['Flexion','Extension','IR','ER'],
+  ankle: ['Plantar Flexion','Dorsiflexion','Inversion','Eversion'],
+  wrist: ['Flexion','Extension','Supination','Pronation','Radial Dev','Ulnar Dev'],
+  elbow: ['Flexion','Extension','Supination','Pronation']
+};
+const romState = {};
+
+function updateTag(){
+  const r = document.getElementById('f-region').value;
+  document.getElementById('pt-name-tag').textContent = r||'—';
+}
+
+function toggleSec(id){
+  document.getElementById(id).classList.toggle('closed');
+}
+
+function toggleCond(id, show){
+  const el = document.getElementById(id);
+  if(show) el.classList.add('show');
+  else el.classList.remove('show');
+}
+
+function radio(gId, el, val){
+  document.getElementById(gId).querySelectorAll('.rk').forEach(e=>e.classList.remove('on'));
+  el.classList.add('on');
+  S[gId] = val;
+
+  // 자동 급만성 매핑
+  if(gId==='g-onset-time'){
+    const map = {
+      '당일':'급성','1주일 이내':'급성','2~4주':'아급성',
+      '1~3개월':'아급성~만성','3~5개월':'만성','6개월 이상':'만성','1년 이상':'만성'
+    };
+    document.getElementById('auto-class').textContent = map[val]||'—';
+  }
+}
+
+function chk(el, key, val){
+  el.classList.toggle('on');
+  if(!S[key]) S[key] = new Set();
+  if(el.classList.contains('on')) S[key].add(val);
+  else S[key].delete(val);
+}
+
+function nrsSel(el, val){
+  nrsVal = val;
+  document.querySelectorAll('.nrs-b').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  S['nrs'] = val;
+}
+
+function getC(key){ return S[key] instanceof Set ? Array.from(S[key]).join(', ') : (S[key]||''); }
+function getR(key){ return S[key]||''; }
+
+// ROM
+function showROM(region){
+  S['rom-region'] = region;
+  const motions = ROM_MOTIONS[region]||[];
+  const tbody = document.getElementById('rom-tbody');
+  tbody.innerHTML = '';
+  motions.forEach(m => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="rom-motion">${m}</td>
+      <td><div class="rom-opts">
+        <div class="rom-opt" onclick="romSet(this,'${m}','normal')">정상</div>
+        <div class="rom-opt" onclick="romSet(this,'${m}','limit')">제한</div>
+        <div class="rom-opt" onclick="romSet(this,'${m}','severe')">심한제한</div>
+      </div></td>
+      <td><div class="rom-opts">
+        <div class="pain-opt" onclick="romPain(this,'${m}','있음')">통증↑</div>
+        <div class="pain-opt" onclick="romPain(this,'${m}','없음')">없음</div>
+      </div></td>`;
+    tbody.appendChild(tr);
+    romState[m] = {grade:'', pain:''};
+  });
+}
+
+function romSet(el, motion, grade){
+  el.closest('.rom-opts').querySelectorAll('.rom-opt').forEach(e=>{
+    e.classList.remove('on-normal','on-limit','on-severe');
+  });
+  const cls = grade==='normal'?'on-normal':grade==='limit'?'on-limit':'on-severe';
+  el.classList.add(cls);
+  if(!romState[motion]) romState[motion]={grade:'',pain:''};
+  romState[motion].grade = grade==='normal'?'정상':grade==='limit'?'제한':'심한제한';
+}
+
+function romPain(el, motion, val){
+  el.closest('.rom-opts').querySelectorAll('.pain-opt').forEach(e=>e.classList.remove('on'));
+  el.classList.add('on');
+  if(!romState[motion]) romState[motion]={grade:'',pain:''};
+  romState[motion].pain = val;
+}
+
+function getROMSummary(){
+  const region = S['rom-region']||'';
+  if(!region) return '미시행';
+  const lines = [];
+  Object.entries(romState).forEach(([m,v])=>{
+    if(v.grade) lines.push(`${m}: ${v.grade}${v.pain?'(통증 '+v.pain+')':''}`);
+  });
+  const signs = getC('rom-sign');
+  const note = document.getElementById('f-rom-note').value;
+  let result = region + ' — ' + (lines.length ? lines.join(', ') : '미기록');
+  if(signs) result += ' / 특이소견: '+signs;
+  if(note) result += ' / '+note;
+  return result;
+}
+
+// PRESET
+function applyPreset(type){
+  clearAll();
+  if(type==='acute-lumbar'){
+    document.getElementById('f-region').value='요추'; updateTag();
+    setTimeout(()=>{
+      clickRadio('g-onset-time','1주일 이내');
+      clickRadio('g-progress','점점 악화');
+      clickRadio('g-history','통증부위 첫 발생');
+      clickCheck('g-worsen','기상 시 강직');
+      clickCheck('g-muscle','뻐근'); clickCheck('g-muscle','묵직');
+      clickNRS('5~6');
+      clickRadio('g-persist','간헐적 통증');
+      clickRadio('g-gait','정상 보행');
+      radio(document.getElementById('g-rom-region').querySelector('.rk'), null, '');
+      showROM('lumbar');
+      document.getElementById('g-rom-region').querySelectorAll('.rk').forEach(el=>{
+        if(el.textContent.trim()==='요추'){el.classList.add('on');S['g-rom-region']='요추';}
+      });
+    },50);
+  } else if(type==='chronic-cervical'){
+    document.getElementById('f-region').value='경추'; updateTag();
+    setTimeout(()=>{
+      clickRadio('g-onset-time','6개월 이상');
+      clickRadio('g-progress','반복 재발');
+      clickRadio('g-history','동일부위 재발'); toggleCond('cond-recur',true);
+      clickRadio('g-recur-type','일정기간 유지후 재발');
+      clickCheck('g-muscle','뻐근'); clickCheck('g-muscle','결림');
+      clickNRS('3~4');
+      clickRadio('g-persist','간헐적 통증');
+      showROM('cervical');
+      document.getElementById('g-rom-region').querySelectorAll('.rk').forEach(el=>{
+        if(el.textContent.trim()==='경추'){el.classList.add('on');}
+      });
+    },50);
+  } else if(type==='acute-knee'){
+    document.getElementById('f-region').value='우측 슬관절'; updateTag();
+    setTimeout(()=>{
+      clickRadio('g-onset-time','2~4주');
+      clickRadio('g-progress','변화 없음');
+      clickCheck('g-trigger','특정동작 중 발생');
+      clickCheck('g-worsen','오후 악화');
+      clickCheck('g-muscle','욱씬'); clickCheck('g-muscle','쑤심');
+      clickNRS('5~6');
+      clickCheck('g-func','보행 제한'); toggleCond('cond-walk',true);
+      clickRadio('g-gait','절뚝거림');
+      showROM('knee');
+      document.getElementById('g-rom-region').querySelectorAll('.rk').forEach(el=>{
+        if(el.textContent.trim()==='슬관절'){el.classList.add('on');}
+      });
+    },50);
+  } else if(type==='shoulder-rotator'){
+    document.getElementById('f-region').value='우측 견관절'; updateTag();
+    setTimeout(()=>{
+      clickRadio('g-onset-time','1~3개월');
+      clickCheck('g-trigger','반복사용');
+      clickCheck('g-muscle','당김'); clickCheck('g-muscle','욱씬');
+      clickNRS('5~6');
+      clickCheck('g-func','일상생활 기능 제한');
+      showROM('shoulder');
+      document.getElementById('g-rom-region').querySelectorAll('.rk').forEach(el=>{
+        if(el.textContent.trim()==='견관절'){el.classList.add('on');}
+      });
+    },50);
+  } else if(type==='trauma'){
+    document.getElementById('f-region').value='경추·요추'; updateTag();
+    setTimeout(()=>{
+      clickRadio('g-onset-time','당일');
+      document.getElementById('f-onset-date').value = new Date().toISOString().split('T')[0];
+      clickCheck('g-trigger','외상');
+      clickRadio('g-progress','점점 악화');
+      clickRadio('g-history','통증부위 첫 발생');
+      clickCheck('g-muscle','뻐근'); clickCheck('g-muscle','욱씬');
+      clickNRS('5~6');
+      clickRadio('g-persist','지속성 통증');
+    },50);
+  }
+}
+
+function clickRadio(gId, val){
+  const el = document.getElementById(gId);
+  if(!el) return;
+  el.querySelectorAll('.rk').forEach(e=>{
+    if(e.textContent.trim()===val){ e.click(); }
+  });
+}
+function clickCheck(gId, val){
+  const el = document.getElementById(gId);
+  if(!el) return;
+  el.querySelectorAll('.ck').forEach(e=>{
+    if(e.textContent.trim()===val && !e.classList.contains('on')){ e.click(); }
+  });
+}
+function clickNRS(val){
+  document.querySelectorAll('.nrs-b').forEach(e=>{
+    if(e.dataset.v===val){ nrsSel(e,val); }
+  });
+}
+
+function clearAll(){ location.reload(); }
+
+// SOAP 생성
+async function generateSOAP(){
+  const btn = document.getElementById('gen-btn');
+  const lbl = document.getElementById('gen-label');
+  const dots = document.getElementById('gen-dots');
+  btn.disabled=true; lbl.style.display='none'; dots.style.display='flex';
+
+  const d = {
+    region: document.getElementById('f-region').value||'미기재',
+    side: getR('g-side'),
+    sideDetail: getR('g-side-detail'),
+    onsetTime: getR('g-onset-time'),
+    onsetDate: document.getElementById('f-onset-date').value||'',
+    autoClass: document.getElementById('auto-class').textContent,
+    progress: getR('g-progress'),
+    history: getR('g-history'),
+    recurType: getR('g-recur-type'),
+    historyDetail: document.getElementById('f-history-detail').value||'',
+    trigger: getC('trigger'),
+    triggerDetail: document.getElementById('f-trigger-detail').value||'',
+    provoke: getC('provoke'),
+    provokeFree: document.getElementById('f-provoke-free').value||'',
+    worsen: getC('worsen'),
+    relieve: getC('relieve'),
+    muscle: getC('muscle'),
+    nerve: getC('nerve'),
+    range: getC('range'),
+    muscleLoc: document.getElementById('f-muscle-loc').value||'',
+    nrs: nrsVal ? `NRS ${nrsVal}` : '미기재',
+    duration: getR('g-duration'),
+    persist: getR('g-persist'),
+    funcPerf: getR('g-func-perf'),
+    func: getC('func'),
+    gait: getR('g-gait'),
+    rom: getROMSummary(),
+    imaging: getC('imaging'),
+    ptx: getC('ptx'),
+    ktx: getC('ktx'),
+    inj: getC('inj'),
+    surg: getC('surg'),
+    txEffect: getR('g-tx-effect'),
+    txPersist: getR('g-tx-persist'),
+    pmhx: getC('pmhx'),
+    meds: document.getElementById('f-meds').value||'없음',
+    lifestyle: getR('g-lifestyle'),
+    exercise: getR('g-exercise'),
+    sleepTime: getR('g-sleep-time'),
+    sleepOnset: getR('g-sleep-onset'),
+    sleepMaint: getR('g-sleep-maint'),
+    sleepWake: getR('g-sleep-wake'),
+    alcohol: getR('g-alcohol'),
+    smoke: getR('g-smoke'),
+    planNHI: getC('plan-nhi'),
+    planHerb: getC('plan-herb'),
+    planIns: getC('plan-ins'),
+    memo: document.getElementById('f-memo').value||'없음',
+    fat1: S['fat1'] ?? null,
+    fat2: S['fat2'] ?? null,
+    fat3: S['fat3'] ?? null,
+    fat4: S['fat4'] ?? null,
+  };
+
+  const prompt = `당신은 한의원 통증 클리닉의 의무기록 전문가입니다.
+아래 예진 체크 결과를 바탕으로 아래 지정된 형식에 맞게 SOAP 노트를 작성해주세요.
+반드시 지정된 섹션 구조와 항목 순서를 그대로 따라주세요. 임상적으로 간결하고 전문적으로 작성해 주세요.
+
+[예진 데이터]
+통증부위: ${d.region}${d.side ? ' ' + d.side + (d.side==='RL'&&d.sideDetail?' ('+d.sideDetail+')':'') : ''}
+발생시점: ${d.onsetTime} ${d.onsetDate?'(발병일: '+d.onsetDate+')':''} → ${d.autoClass}
+진행경과: ${d.progress}
+과거력: ${d.history} ${d.recurType?'('+d.recurType+')':''}
+${d.historyDetail?'과거력 상세: '+d.historyDetail:''}
+발생계기: ${d.trigger||'미기재'} ${d.triggerDetail?'/ '+d.triggerDetail:''}
+통증유발: ${d.provoke||'미기재'}${d.provokeFree?' — '+d.provokeFree:''}
+악화요인: ${d.worsen||'미기재'}
+완화요인: ${d.relieve||'미기재'}
+근육성 양상: ${d.muscle||'없음'} / 신경성 양상: ${d.nerve||'없음'}
+통증범위: ${d.range||'미기재'} ${d.muscleLoc?'/ 근육위치: '+d.muscleLoc:''}
+통증강도: ${d.nrs}
+지속시간: ${d.duration||'미기재'}
+지속유무: ${d.persist||'미기재'}
+기능수행: ${d.funcPerf||'미기재'} / 기능제한: ${d.func||'없음'}
+보행: ${d.gait||'미기재'}
+ROM: ${d.rom}
+영상검진: ${d.imaging||'없음'}
+물리치료: ${d.ptx||'없음'} / 한방치료: ${d.ktx||'없음'}
+약물·주사: ${d.inj||'없음'} / 수술: ${d.surg||'없음'}
+치료효과: ${d.txEffect||'미기재'} / 치료지속성: ${d.txPersist||'미기재'}
+과거병력: ${d.pmhx||'없음'} / 복용약: ${d.meds}
+생활패턴: ${d.lifestyle||'미기재'} / 운동: ${d.exercise||'미기재'}
+수면: ${d.sleepTime||''} ${d.sleepOnset||''} ${d.sleepMaint||''} ${d.sleepWake||''}
+음주: ${d.alcohol||'미기재'} / 흡연: ${d.smoke||'미기재'}
+비급여치료계획: ${d.planNHI||'미선택'}
+한약계획: ${d.planHerb||'미선택'}
+건강보험치료: ${d.planIns||'미선택'}
+상담부메모: ${d.memo}
+
+---
+
+아래 형식을 정확히 따라서 작성해주세요. 각 항목은 "- " 로 시작하는 불릿 형식으로 작성합니다.
+항목이 없거나 미기재인 경우 해당 줄에 (-) 로 표기합니다.
+
+S)
+OS )
+- 발생시점: [급성/아급성/만성 + 구체적 시점]
+- 발생계기: [발생계기 내용]
+- 과거력: [첫발생 또는 재발 여부]
+
+CC )
+#1. [통증부위]
+- 범위: [국소/방사/광범위]
+- 유발: [통증유발 요인, 세부동작 포함]
+- 양상: [근육성/신경성 통증 양상]
+- 강도: [NRS 수치]
+- 악화: [악화 요인]
+- 완화: [완화 요인]
+- 지속: [지속성/간헐적]
+
+PI )
+- Imaging: [영상검진 결과]
+- Tx: [치료력 — 물리/한방/약물/수술 + 효과 + 지속성]
+
+HX )
+- OP: [수술력]
+- Antithrombotic: [항응고제 여부]
+- Med: [복용약]
+- [과거병력 목록 — HTN/DM/HL/Hepa/TB/Thyroid 등 (+/-) 형식]
+
+SH )
+- Activity: [생활패턴]
+- Exercise: [운동빈도]
+- Sleep: [수면시간 + 패턴]
+- Alcohol: [음주빈도]
+- Smoke: [흡연여부]
+
+O)
+PE )
+[부위명]
+- [ROM 동작별 결과 — 정상/제한/심한제한 + 통증유발 여부]
+- 기능검사: [정상수행/통증동반수행/수행불가]
+- 보행: [보행상태]
+
+A)
+- 발생시점 분류: [급성/아급성/만성]
+- 통증패턴: [근육성/신경성/혼합 패턴 해석]
+- 평가: [임상 소견 한 줄 요약]
+
+P)
+- 치료계획: [건강보험치료 / 비급여치료 나열]
+- 치료목적: [치료 목적 한 줄 설명]
+- 재평가: [재평가 기준 또는 내원 계획]`;
+
+  try {
+    // ── 더미 생성 (API 연동 전 테스트용) ──
+    await new Promise(r => setTimeout(r, 900));
+
+    const region  = d.region || '미기재';
+    const sideStr = d.side
+      ? (d.side === 'RL' && d.sideDetail ? ` ${d.side} (${d.sideDetail})` : ` ${d.side}`)
+      : '';
+    const regionFull = region + sideStr;
+    const onset   = d.onsetTime || '미기재';
+    const cls     = d.autoClass || '—';
+    const trigger = d.trigger || '원인불명';
+    const hist    = d.history || '첫 발생';
+    const recurT  = d.recurType ? `(${d.recurType})` : '';
+    const muscle  = d.muscle || '';
+    const nerve   = d.nerve || '';
+    const range_  = d.range || '—';
+    const nrs      = d.nrs || '미기재';
+    const duration = d.duration || '—';
+    const persist  = d.persist || '—';
+    const worsen  = d.worsen || '—';
+    const relieve = d.relieve || '—';
+    const provoke = d.provoke || '—';
+    const funcP   = d.funcPerf || '—';
+    const funcL   = d.func || '';
+    const walkT   = document.getElementById('f-walk-time').value;
+    const sitT    = document.getElementById('f-sit-time').value;
+    const standT  = document.getElementById('f-stand-time').value;
+    const gait    = d.gait || '정상 보행';
+    const rom     = d.rom || '미시행';
+    const img     = d.imaging || '없음';
+    const txAll   = [d.ptx,d.ktx,d.inj,d.surg].filter(Boolean).join(' / ') || '없음';
+    const txEff   = d.txEffect || '';
+    const txPer   = d.txPersist || '';
+    const pmhx    = d.pmhx || '없음';
+    const meds_   = d.meds || '없음';
+    const life    = d.lifestyle || '';
+    const exer    = d.exercise || '';
+    const sleep_  = [d.sleepTime,d.sleepOnset,d.sleepMaint,d.sleepWake].filter(Boolean).join(' / ') || '';
+    const alc     = d.alcohol || '';
+    const smk     = d.smoke || '';
+    const planAll = [d.planIns,d.planNHI,d.planHerb].filter(Boolean).join(' / ') || '미선택';
+    const memo_   = d.memo !== '없음' ? d.memo : '';
+
+    // ── 자동 해석 ──
+    const pattern = nerve
+      ? (muscle ? '근육성·신경성 혼합 패턴' : '신경성 패턴 우세')
+      : (muscle ? '근육성 패턴 우세' : '패턴 미확인');
+
+    const txPurpose = cls.includes('급성')
+      ? '급성 염증 및 근긴장 완화, 통증 조기 안정화'
+      : cls.includes('만성')
+      ? '만성 유착·근막긴장 완화 및 기능 회복, 재발 방지'
+      : cls.includes('아급성')
+      ? '회복 지연 방지 및 기능 회복, 만성화 예방'
+      : '통증 완화 및 기능 회복';
+
+    const visitPlan = cls.includes('급성')
+      ? '주 2~3회 / 초반 2주 집중치료'
+      : cls.includes('만성')
+      ? '주 1~2회 / 단계적 조정'
+      : '주 1~2회 / 반응 보고 조정';
+
+    // 환자군 자동 분류
+    const patientClass = (() => {
+      const isHighDifficulty = txPer.includes('재발') || txEff.includes('없음');
+      const isChronic = cls.includes('만성');
+      const isFuncLimit = funcL.includes('중등도') || funcL.includes('중증') || (funcL && funcL.length > 2);
+      if (isHighDifficulty) return 'E군 (고난도·반응저하)';
+      if (isChronic && isFuncLimit) return 'C군 (만성 관리형)';
+      if (isFuncLimit) return 'B군 (기능회복 중심)';
+      if (isChronic) return 'C군 (만성 관리형)';
+      return 'A군 (급성 경증)';
+    })();
+
+    // Level 자동
+    const level = patientClass.includes('E') ? 'Level 3'
+      : patientClass.includes('B') || patientClass.includes('C') ? 'Level 2'
+      : 'Level 1';
+
+    // 임상 해석 자동
+    const clinicalInterp = cls.includes('급성')
+      ? `${trigger} 후 발생한 ${pattern}으로, 초기 염증 및 근긴장 반응으로 판단됨`
+      : cls.includes('만성')
+      ? `장기간 지속된 ${pattern}으로, 근막 유착 및 구조적 불균형 가능성 고려`
+      : `${trigger} 후 발생한 ${pattern}으로, 회복 지연 방지를 위한 적극적 개입 필요`;
+
+    // 기능제한 상세
+    const funcDetail = (() => {
+      const items = [];
+      if (funcL.includes('보행') && walkT) items.push(`보행 제한 (${walkT} 이상 시 통증 유발)`);
+      else if (funcL.includes('보행')) items.push('보행 제한');
+      if (funcL.includes('좌위') && sitT) items.push(`좌위 제한 (${sitT} 이상 시 통증 유발)`);
+      else if (funcL.includes('좌위')) items.push('좌위 제한');
+      if (funcL.includes('기립') && standT) items.push(`기립 제한 (${standT} 이상 시 통증 유발)`);
+      else if (funcL.includes('기립')) items.push('기립 제한');
+      if (funcL.includes('수면')) items.push('수면방해');
+      if (funcL.includes('일상')) items.push('일상생활 제한');
+      if (funcL.includes('사회')) items.push('사회적 역할 제한');
+      if (funcL.includes('체위')) items.push('체위변경 제한');
+      return items.length ? items.join(' / ') : '';
+    })();
+
+    // ── 섹션별 텍스트 생성 ──
+    const osText = `- 발생시점: ${cls} / ${onset}${d.onsetDate ? ' (발병일: '+d.onsetDate+')' : ''}
+- 발생계기: ${trigger}${d.triggerDetail ? ' — ' + d.triggerDetail : ''}
+- 과거력: ${hist} ${recurT}${d.historyDetail ? '\n  └ ' + d.historyDetail : ''}
+- 진행경과: ${d.progress || '—'}`;
+
+    const ccText = `#1. ${regionFull}
+- 범위: ${range_}
+- 유발: ${provoke}${d.provokeFree ? ' — ' + d.provokeFree : ''}
+- 양상: ${[muscle?'근육('+muscle+')':'', nerve?'신경('+nerve+')':''].filter(Boolean).join(' / ') || '—'}
+- 강도: ${nrs}
+- 지속시간: ${duration}
+- 악화: ${worsen}
+- 완화: ${relieve}
+- 지속유무: ${persist}
+- 기능: ${funcDetail || funcP || '제한 없음'}`;
+
+    const piText = `- Imaging: ${img === '없음' ? '(-)' : img}
+- Tx: ${txAll === '없음' ? '(-) 치료력 없음' : txAll}
+- 효과: ${txEff || '—'} → ${txPer || '—'}${(txEff.includes('없음') || txPer.includes('재발')) ? ' ※ 반응저하 패턴' : ''}`;
+
+    const hasAnti = pmhx.includes('Antithrombotic');
+    const pmhxItems = ['HTN','DM','HL','Hepa','TB','Hypo','Hyper','C-spine HNP','C-spine stenosis','L-spine HNP','L-spine stenosis'];
+    const pmhxLine = pmhxItems.map(i => `${i}(${pmhx.includes(i)?'+':'-'})`).join(' / ');
+    const hxText = `- OP: ${pmhx.includes('OP') ? '(+) '+pmhx : '(-)'}
+- Antithrombotic: ${hasAnti ? '(+) ※ 시술 전 확인 필요' : '(-)'}
+- Med: ${meds_ !== '없음' ? meds_ : '(-)'}
+- ${pmhxLine}`;
+
+    const shText = `- Activity: ${life || '(-)'}
+- Exercise: ${exer || '(-)'}
+- Sleep: ${sleep_ || '(-)'}
+- Alcohol: ${alc || '(-)'}
+- Smoke: ${smk || '(-)'}`;
+
+    const peText = `${region}
+${rom !== '미시행' ? rom : '- ROM: 미시행'}
+- 기능검사: ${funcP}${funcDetail ? ' — '+funcDetail : ''}
+- 보행: ${gait}`;
+
+    const aText = `- 발생시점: ${cls} (${onset})
+- 통증패턴: ${pattern}
+- 임상해석: ${clinicalInterp}${memo_ ? '\n  └ '+memo_ : ''}
+- 치료필요도: ${level}
+- 환자군: ${patientClass}`;
+
+    const bodyFat = (d.fat1 ?? 0) + (d.fat4 ?? 0);
+    const brainFat = (d.fat2 ?? 0) + (d.fat3 ?? 0);
+    const totalFat = bodyFat + brainFat;
+    const fatRec = d.fat1 !== null
+      ? (totalFat >= 12
+          ? '※ 경옥고 + 브레인바디 동시 권장 (신체 ' + bodyFat + '점 / 뇌 ' + brainFat + '점)'
+          : bodyFat >= 6
+          ? '※ 경옥고 안내 권장 (신체 피로 ' + bodyFat + '점)'
+          : brainFat >= 6
+          ? '※ 브레인바디 검사 권장 (뇌 피로 ' + brainFat + '점)'
+          : '')
+      : '';
+
+    const pText = `- 치료계획: ${planAll}
+- 치료목적: ${txPurpose}
+- 내원계획: ${visitPlan}
+- 재평가: 3회 후 NRS 및 ROM 재확인, 반응에 따라 치료 구성 및 간격 조정${fatRec ? '\n- 피로도: ' + fatRec : ''}`;
+
+    // 상단 한 줄 요약
+    const oneLiner = `${regionFull} / ${cls} / ${nrs} / ${hist} / Tx ${txAll === '없음' ? '없음' : '있음'} / ${patientClass}`;
+
+    soapRaw = `[요약] ${oneLiner}\n\nS)\nCC )\n${ccText}\n\nOS )\n${osText}\n\nPI )\n${piText}\n\nHX )\n${hxText}\n\nSH )\n${shText}\n\nO)\nPE )\n${peText}\n\nA)\n${aText}\n\nP)\n${pText}`;
+
+    const fmt = (t) => t ? t.replace(/\n/g,'<br>') : '—';
+
+    document.getElementById('soap-output').innerHTML = `
+
+      <!-- 한 줄 요약 -->
+      <div style="background:var(--navy2);border-radius:8px;padding:9px 13px;margin-bottom:12px">
+        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.05em;margin-bottom:4px">SUMMARY</div>
+        <div style="font-size:12px;color:#fff;line-height:1.6">${oneLiner}</div>
+      </div>
+
+      <!-- S -->
+      <div class="soap-blk">
+        <div class="soap-blk-head"><span class="stag s-s">S</span><span class="soap-blk-title">Subjective</span></div>
+        <div class="soap-blk-body" style="padding:0">
+
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border)">
+            <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">CC — 주 호소</div>
+            <div style="font-size:12px;line-height:1.9">${fmt(ccText)}</div>
+          </div>
+
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border)">
+            <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">OS — 발생 정보</div>
+            <div style="font-size:12px;line-height:1.9">${fmt(osText)}</div>
+          </div>
+
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border)">
+            <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">PI — 치료력</div>
+            <div style="font-size:12px;line-height:1.9">${fmt(piText)}</div>
+          </div>
+
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border)">
+            <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">HX — 과거병력</div>
+            <div style="font-size:12px;line-height:1.9">${fmt(hxText)}</div>
+          </div>
+
+          <div style="padding:8px 12px">
+            <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">SH — 생활습관</div>
+            <div style="font-size:12px;line-height:1.9">${fmt(shText)}</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- O -->
+      <div class="soap-blk">
+        <div class="soap-blk-head"><span class="stag s-o">O</span><span class="soap-blk-title">Objective</span></div>
+        <div class="soap-blk-body" style="padding:0">
+          <div style="padding:8px 12px">
+            <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">PE — 신체검사 · ROM</div>
+            <div style="font-size:12px;line-height:1.9">${fmt(peText)}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- A -->
+      <div class="soap-blk">
+        <div class="soap-blk-head"><span class="stag s-a">A</span><span class="soap-blk-title">Assessment</span></div>
+        <div class="soap-blk-body">
+          <div style="font-size:12px;line-height:1.9">${fmt(aText)}</div>
+        </div>
+      </div>
+
+      <!-- P -->
+      <div class="soap-blk">
+        <div class="soap-blk-head"><span class="stag s-p">P</span><span class="soap-blk-title">Plan</span></div>
+        <div class="soap-blk-body">
+          <div style="font-size:12px;line-height:1.9">${fmt(pText)}</div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;padding:10px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">체크 요약</div>
+        <div class="sum-row"><span class="sum-k">통증부위</span><span class="sum-v">${region}</span></div>
+        <div class="sum-row"><span class="sum-k">발생시점</span><span class="sum-v">${onset} (${cls})</span></div>
+        <div class="sum-row"><span class="sum-k">통증강도</span><span class="sum-v">${nrs}</span></div>
+        <div class="sum-row"><span class="sum-k">ROM</span><span class="sum-v">${rom}</span></div>
+        <div class="sum-row"><span class="sum-k">기능제한</span><span class="sum-v">${funcDetail || '없음'}</span></div>
+        <div class="sum-row"><span class="sum-k">환자군</span><span class="sum-v">${patientClass} / ${level}</span></div>
+        <div class="sum-row"><span class="sum-k">치료계획</span><span class="sum-v">${planAll}</span></div>
+      </div>`;
+
+    document.getElementById('copy-btn').style.display='block';
+    document.getElementById('reset-btn2').style.display='block';
+  } catch(e){
+    document.getElementById('soap-output').innerHTML=`<div style="color:var(--red);padding:14px;font-size:12px">오류: ${e.message}</div>`;
+  }
+
+  btn.disabled=false; lbl.style.display='inline'; dots.style.display='none';
+}
+
+function copySOAP(){
+  const text = soapRaw || document.getElementById('soap-output').innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const b = document.getElementById('copy-btn');
+    b.textContent='✓ 복사됨!';
+    setTimeout(()=>b.textContent='📋 복사',2000);
+  });
+}
+</script>
+</body>
+</html>

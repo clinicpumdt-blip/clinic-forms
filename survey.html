@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>PUMDT 초진설문지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+:root{
+  --bg:#FAF8F4;
+  --brand:#DDAB63;
+  --brand-light:#FBF5E8;
+  --brand-dark:#455546;
+  --text:#455546;
+  --muted:#455546;
+  --border:#C5D5DA;
+  --header:#2d3830;
+  --green:#93AA6D;
+  --green-light:#E8EFD9;
+  --coral:#D1745D;
+  --coral-light:#FAE9E4;
+  --beige:#E5DECF;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard',sans-serif;color:var(--text)}
+.app{max-width:900px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+
+.topbar{background:var(--header);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-title{color:#fff;font-size:16px;font-weight:500}
+.topbar-sub{color:rgba(255,255,255,0.6);font-size:12px;margin-top:2px}
+.step-pills{display:flex;gap:5px}
+.sp{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.25);transition:all 0.3s}
+.sp.active{width:26px;border-radius:5px;background:var(--green)}
+.sp.done{background:rgba(147,170,109,0.5)}
+
+.progress-bar{height:4px;background:var(--border)}
+.progress-fill{height:4px;background:var(--brand);transition:width 0.4s ease}
+
+.content{flex:1;padding:32px;padding-bottom:140px}
+
+.step-header{margin-bottom:32px}
+.step-badge{display:inline-block;background:var(--brand-light);color:var(--brand-dark);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;margin-bottom:8px}
+.step-title{font-size:24px;font-weight:700;color:var(--text);line-height:1.3}
+.step-desc{font-size:16px;font-weight:400;color:var(--muted);margin-top:6px;line-height:1.6}
+
+.card{background:#fff;border-radius:20px;border:none;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:28px;margin-bottom:28px}
+.card-label{font-size:15px;font-weight:400;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;display:flex;align-items:center;gap:7px}
+.card-label::before{content:'';width:3px;height:13px;background:var(--brand);border-radius:2px;display:inline-block}
+
+/* TAG BUTTONS */
+.tag-wrap{display:flex;flex-wrap:wrap;gap:12px}
+.tag-btn{border:1px solid #93AA6D;border-radius:30px;padding:14px 24px;background:rgba(255,255,255,0.70);font-size:16px;font-weight:500;color:var(--text);cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif;transition:all 0.12s;user-select:none}
+.tag-btn.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15);color:#455546;font-weight:500}
+
+/* RADIO BUTTONS */
+.radio-wrap{display:flex;flex-direction:column;gap:12px}
+.radio-item{border:1px solid #93AA6D;border-radius:14px;padding:20px 24px;background:rgba(255,255,255,0.70);font-size:18px;font-weight:700;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:12px;transition:all 0.12s;user-select:none}
+.radio-item.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15);color:#455546;font-weight:500}
+.radio-circle{width:20px;height:20px;border-radius:50%;border:1px solid #93AA6D;flex-shrink:0;transition:all 0.12s}
+.radio-item.sel .radio-circle{border-color:#93AA6D;background:#93AA6D;box-shadow:inset 0 0 0 4px #fff}
+.radio-sub{font-size:14px;font-weight:400;color:var(--muted);margin-top:4px}
+
+/* GRID BUTTONS */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.grid-btn{border:1px solid #93AA6D;border-radius:14px;padding:22px;background:rgba(255,255,255,0.70);font-size:16px;font-weight:500;color:var(--text);cursor:pointer;text-align:center;font-family:'Montserrat','Pretendard',sans-serif;transition:all 0.12s;user-select:none}
+.grid-btn.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15);color:#455546}
+
+/* NRS */
+.nrs-wrap{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.nrs-btn{border-radius:10px;border:2px solid var(--border);padding:12px 4px;background:#fff;cursor:pointer;text-align:center;font-size:20px;font-weight:700;transition:all 0.12s;font-family:'Inter','Pretendard',sans-serif;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--text)}
+.nrs-sub{font-size:13px;font-weight:400;color:var(--muted)}
+.nrs-btn.nrs-1{background:var(--green-light);border-color:var(--green)}
+.nrs-btn.nrs-2{background:var(--brand-light);border-color:var(--brand)}
+.nrs-btn.nrs-3{background:#FBF5E8;border-color:#C49340}
+.nrs-btn.nrs-4{background:var(--coral-light);border-color:var(--coral)}
+.nrs-btn.nrs-5{background:var(--coral-light);border-color:#A54038}
+.nrs-btn.sel{box-shadow:0 0 0 3px #93AA6D;transform:scale(1.05)}
+
+/* CAT BUTTONS */
+.cat-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cat-btn{border:1px solid #93AA6D;border-radius:16px;padding:20px 12px;background:rgba(255,255,255,0.70);cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;transition:all 0.15s;user-select:none}
+.cat-btn.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15)}
+.cat-icon{font-size:38px;line-height:1}
+.cat-name{font-size:16px;font-weight:700;color:var(--text)}
+.cat-sub{font-size:12px;color:var(--muted);line-height:1.4}
+.cat-btn.sel .cat-name{color:#455546}
+
+/* SUB AREA */
+.sub-area{margin-top:12px;background:var(--beige);border-radius:10px;padding:12px;border:1px solid var(--border)}
+.sub-area-title{font-size:12px;font-weight:700;color:var(--brand-dark);margin-bottom:8px}
+
+/* FATIGUE */
+.fatigue-card{background:#fff;border:none;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-radius:12px;padding:14px;margin-bottom:10px}
+.fatigue-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px}
+.fatigue-sub{font-size:12px;color:var(--muted);margin-bottom:12px}
+.fatigue-scale{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
+.fatigue-btn{border-radius:8px;border:2px solid var(--border);padding:11px 2px;background:#fff;cursor:pointer;font-size:16px;font-weight:700;font-family:'Inter','Pretendard',sans-serif;transition:all 0.12s;color:var(--muted)}
+.fatigue-btn.f0,.fatigue-btn.f1{border-color:var(--green)}
+.fatigue-btn.f2,.fatigue-btn.f3{border-color:var(--brand)}
+.fatigue-btn.f4,.fatigue-btn.f5{border-color:var(--coral)}
+.fatigue-btn.sel{box-shadow:0 0 0 3px #93AA6D;transform:scale(1.07)}
+.fatigue-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:5px}
+.fatigue-result{margin-top:8px;text-align:center;font-size:12px;font-weight:500}
+
+/* SUMMARY */
+.sum-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:0.5px solid var(--bg);font-size:13px;gap:12px}
+.sum-row:last-child{border-bottom:none}
+.sum-key{color:var(--muted);flex-shrink:0;min-width:80px}
+.sum-val{color:var(--text);font-weight:500;text-align:right}
+
+/* INPUT */
+.text-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;font-family:'Montserrat','Pretendard',sans-serif;color:var(--text);outline:none;transition:border-color 0.2s}
+.text-input:focus{border-color:#93AA6D}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:12px 20px 20px;display:flex;gap:10px;max-width:680px;margin:0 auto}
+.btn-prev{flex:1;padding:14px;border:1.5px solid var(--border);border-radius:12px;background:#fff;font-size:15px;font-weight:500;color:var(--muted);cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif}
+.btn-next{flex:2.5;padding:14px;border:none;border-radius:12px;background:var(--brand);font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif}
+
+.alert-box{background:var(--coral-light);border:1px solid var(--coral);border-radius:10px;padding:12px 14px;margin-top:10px;font-size:13px;color:#455546;line-height:1.6}
+.section-sub{font-size:12px;font-weight:600;color:var(--muted);margin:12px 0 6px}
+
+/* PROVOKE ITEMS */
+.provoke-item{border:1px solid #93AA6D;border-radius:12px;padding:13px 16px;background:rgba(255,255,255,0.70);cursor:pointer;display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;transition:all 0.12s;user-select:none}
+.provoke-item.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15)}
+.p-check{width:20px;height:20px;border-radius:5px;border:1px solid #93AA6D;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;transition:all 0.12s}
+.provoke-item.sel .p-check{background:#93AA6D;border-color:#93AA6D}
+.p-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;flex-shrink:0;white-space:nowrap}
+.badge-move{background:#D8E8EC;color:#455546}
+.badge-rest{background:var(--brand-light);color:var(--brand-dark)}
+.badge-auto{background:var(--coral-light);color:#455546}
+.p-desc{font-size:14px;font-weight:400;color:var(--muted);margin-top:3px;line-height:1.5}
+
+/* UNIFIED SELECTION ITEMS */
+.sel-wrap{display:flex;flex-direction:column;gap:10px}
+.sel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sel-item{border:1px solid #93AA6D;border-radius:12px;padding:16px 20px;background:rgba(255,255,255,0.70);cursor:pointer;display:flex;align-items:center;gap:12px;transition:all 0.12s;user-select:none}
+.sel-item.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15)}
+.sel-box{width:24px;height:24px;border-radius:6px;border:1px solid #93AA6D;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;background:#fff;transition:all 0.12s}
+.sel-item.sel .sel-box{background:#93AA6D;border-color:#93AA6D}
+.sel-name{font-size:16px;font-weight:600;color:var(--text);flex:1;line-height:1.35}
+.sel-item.sel .sel-name{color:#455546}
+.sel-desc{font-size:12px;color:#455546;text-align:right;max-width:280px;white-space:nowrap;flex-shrink:0}
+/* grid item overrides */
+.sel-grid .sel-item{padding:18px 20px;border:1px solid #93AA6D;font-size:16px;font-weight:500}
+.sel-grid .sel-item.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15)}
+.sel-grid .sel-item.sel .sel-name{color:#455546}
+.sel-grid .sel-item.sel .sel-box{background:#93AA6D;border-color:#93AA6D}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">PUMDT 메디컬 클리닉</div>
+      <div class="topbar-sub">통증 초진설문지</div>
+    </div>
+    <div class="step-pills" id="pills"></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+  <div class="content" id="content"></div>
+  <div class="bottom-nav">
+    <button class="btn-prev" id="btn-prev">이전</button>
+    <button class="btn-next" id="btn-next">다음 →</button>
+  </div>
+</div>
+
+<script>
+const STEPS = 10;
+let step = 0;
+const D = {};
+
+// ── 유틸 ──
+function getSet(key){ return D[key] instanceof Set ? Array.from(D[key]) : [] }
+function hasVal(key,v){ return D[key] instanceof Set ? D[key].has(v) : D[key]===v }
+
+function toggleSet(key,v){
+  if(!D[key]) D[key]=new Set();
+  D[key].has(v)?D[key].delete(v):D[key].add(v);
+}
+function setVal(key,v){ D[key]=v; }
+
+// ── 빌더 ──
+function makeTags(containerId, key, values, multi){
+  const wrap = document.getElementById(containerId);
+  if(!wrap) return;
+  wrap.className = 'sel-grid';
+  values.forEach(v=>{
+    const div = document.createElement('div');
+    const on = hasVal(key,v);
+    div.className = 'sel-item'+(on?' sel':'');
+    div.innerHTML = `<div class="sel-box">${on?'✓':''}</div><div class="sel-name">${v}</div>`;
+    div.addEventListener('click',()=>{
+      if(multi){
+        toggleSet(key,v);
+        const now = hasVal(key,v);
+        div.classList.toggle('sel',now);
+        div.querySelector('.sel-box').textContent = now?'✓':'';
+      } else {
+        wrap.querySelectorAll('.sel-item').forEach(x=>{x.classList.remove('sel');x.querySelector('.sel-box').textContent='';});
+        setVal(key,v);
+        div.classList.add('sel');
+        div.querySelector('.sel-box').textContent='✓';
+      }
+    });
+    wrap.appendChild(div);
+  });
+}
+
+function makeRadios(containerId, key, values, withSub, grid){
+  const wrap = document.getElementById(containerId);
+  if(!wrap) return;
+  const hasSub = values.some(item=>typeof item==='object' && item.sub);
+  wrap.className = (grid || !hasSub) ? 'sel-grid' : 'sel-wrap';
+  values.forEach(item=>{
+    const v = typeof item==='object'?item.v:item;
+    const sub = typeof item==='object'?item.sub:'';
+    const on = D[key]===v;
+    const div = document.createElement('div');
+    div.className = 'sel-item'+(on?' sel':'');
+    div.innerHTML = `<div class="sel-box">${on?'✓':''}</div><div class="sel-name">${v}</div>${sub?`<div class="sel-desc">${sub}</div>`:''}`;
+    div.addEventListener('click',()=>{
+      wrap.querySelectorAll('.sel-item').forEach(x=>{x.classList.remove('sel');x.querySelector('.sel-box').textContent='';});
+      setVal(key,v);
+      div.classList.add('sel');
+      div.querySelector('.sel-box').textContent='✓';
+    });
+    wrap.appendChild(div);
+  });
+}
+
+function makeGrid(containerId, key, values, multi){
+  const wrap = document.getElementById(containerId);
+  if(!wrap) return;
+  wrap.className = 'sel-grid';
+  values.forEach(v=>{
+    const on = hasVal(key,v);
+    const div = document.createElement('div');
+    div.className = 'sel-item'+(on?' sel':'');
+    div.innerHTML = `<div class="sel-box">${on?'✓':''}</div><div class="sel-name">${v}</div>`;
+    div.addEventListener('click',()=>{
+      if(multi){
+        toggleSet(key,v);
+        const now = hasVal(key,v);
+        div.classList.toggle('sel',now);
+        div.querySelector('.sel-box').textContent = now?'✓':'';
+      } else {
+        wrap.querySelectorAll('.sel-item').forEach(x=>{x.classList.remove('sel');x.querySelector('.sel-box').textContent='';});
+        setVal(key,v);
+        div.classList.add('sel');
+        div.querySelector('.sel-box').textContent='✓';
+      }
+    });
+    wrap.appendChild(div);
+  });
+}
+
+function makeNRS(containerId){
+  const wrap = document.getElementById(containerId);
+  if(!wrap) return;
+  const items = [
+    {v:'1~2',label:'가벼운',cls:'nrs-1'},
+    {v:'3~4',label:'불편감',cls:'nrs-2'},
+    {v:'5~6',label:'아픈',cls:'nrs-3'},
+    {v:'7~8',label:'심한',cls:'nrs-4'},
+    {v:'9~10',label:'극심한',cls:'nrs-5'},
+  ];
+  items.forEach(item=>{
+    const b = document.createElement('button');
+    b.className = `nrs-btn ${item.cls}`+(D.nrs===item.v?' sel':'');
+    b.innerHTML = `${item.v}<span class="nrs-sub">${item.label}</span>`;
+    b.addEventListener('click',()=>{
+      wrap.querySelectorAll('.nrs-btn').forEach(x=>x.classList.remove('sel'));
+      setVal('nrs',item.v); b.classList.add('sel');
+    });
+    wrap.appendChild(b);
+  });
+}
+
+function makeFatigue(containerId, key){
+  const wrap = document.getElementById(containerId);
+  if(!wrap) return;
+  const labels = ['피로 없음','매우 가벼운','가벼운','보통','심한','극심한'];
+  const result = document.getElementById(containerId+'-result');
+  for(let i=0;i<=5;i++){
+    const b = document.createElement('button');
+    b.className = `fatigue-btn f${i}`+(D[key]===i?' sel':'');
+    b.textContent = i;
+    b.addEventListener('click',()=>{
+      wrap.querySelectorAll('.fatigue-btn').forEach(x=>x.classList.remove('sel'));
+      setVal(key,i); b.classList.add('sel');
+      if(result){
+        const colors=['#1d7a4a','#1d7a4a','#7d5200','#7d5200','#922b21','#922b21'];
+        result.style.color=colors[i];
+        result.textContent=labels[i]+' ('+i+'점)';
+      }
+    });
+    wrap.appendChild(b);
+  }
+  if(result && D[key]!==undefined){
+    const colors=['#1d7a4a','#1d7a4a','#7d5200','#7d5200','#922b21','#922b21'];
+    result.style.color=colors[D[key]];
+    result.textContent=labels[D[key]]+' ('+D[key]+'점)';
+  }
+}
+
+// ── 렌더 ──
+function updateNav(){
+  const pills = document.getElementById('pills');
+  pills.innerHTML='';
+  for(let i=0;i<STEPS;i++){
+    const d=document.createElement('div');
+    d.className='sp'+(i===step?' active':i<step?' done':'');
+    pills.appendChild(d);
+  }
+  document.getElementById('prog').style.width=((step/(STEPS-1))*100)+'%';
+  document.getElementById('btn-prev').style.display=step===0?'none':'block';
+  document.getElementById('btn-next').textContent=step===STEPS-1?'설문 완료 ✓':'다음 →';
+}
+
+function render(){
+  updateNav();
+  const c=document.getElementById('content');
+  const fns=[s0,s1,s2,s3,s4,s5,s5b,s6,s7,s8];
+  fns[step](c);
+  window.scrollTo(0,0);
+}
+
+// ── 스텝 함수 재정의
+function s7(c){ return s8_fatigue(c); }
+function s8(c){ return s9_confirm(c); }
+
+// STEP 0 — 기본정보
+function s0(c){
+  c.innerHTML=`
+    <div class="step-header">
+      <div class="step-badge">STEP 1 / ${STEPS}</div>
+      <div class="step-title">기본 정보를 입력해 주세요</div>
+    </div>
+    <div class="card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div>
+          <div style="font-size:13px;color:#455546;font-weight:500;margin-bottom:5px">성명</div>
+          <input class="text-input" id="inp-name" placeholder="홍길동" value="${D.name||''}">
+        </div>
+        <div>
+          <div style="font-size:13px;color:#455546;font-weight:500;margin-bottom:5px">나이</div>
+          <input class="text-input" id="inp-age" type="number" placeholder="45" value="${D.age||''}">
+        </div>
+      </div>
+      <div style="font-size:13px;color:#455546;font-weight:500;margin-bottom:8px">성별</div>
+      <div class="grid2" id="g-gender"></div>
+    </div>`;
+  document.getElementById('inp-name').addEventListener('input',e=>D.name=e.target.value);
+  document.getElementById('inp-age').addEventListener('input',e=>D.age=e.target.value);
+  makeGrid('g-gender','gender',['남성','여성'],false);
+}
+
+// STEP 1 — 증상부위
+function s1(c){
+  c.innerHTML=`
+    <div class="step-header">
+      <div class="step-badge">STEP 2 / ${STEPS}</div>
+      <div class="step-title">지금 가장 많이 불편한 곳은 어디인가요?</div>
+      <div class="step-desc">여러 곳이 불편하셔도 가장 먼저 치료받고 싶은 부위 하나만 선택해 주세요.<br><br>품듯한의원은 1부위 집중 치료 방식으로 진행됩니다.<br>해당 부위가 호전된 이후, 다른 부위는 동일하게 증상을 다시 확인하여 그에 맞는 치료를 제안드립니다.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">어디가 불편하세요?</div>
+      <div style="display:flex;flex-direction:column;gap:10px" id="cat-main"></div>
+      <div id="sub-spine" style="display:none" class="sub-area">
+        <div class="sub-area-title">척추 — 세부 부위 (다중선택 가능)</div>
+        <div class="tag-wrap" id="sub-spine-tags"></div>
+      </div>
+      <div id="sub-upper" style="display:none" class="sub-area">
+        <div class="sub-area-title">상지 — 세부 부위 (다중선택 가능)</div>
+        <div class="tag-wrap" id="sub-upper-tags"></div>
+      </div>
+      <div id="sub-lower" style="display:none" class="sub-area">
+        <div class="sub-area-title">하지 — 세부 부위 (다중선택 가능)</div>
+        <div class="tag-wrap" id="sub-lower-tags"></div>
+      </div>
+    </div>`;
+
+  const cats = [
+    {v:'척추 — Spine', icon:'🦴', sub:'경추 C-spine · 흉추 T-spine · 요추 L-spine'},
+    {v:'상지 — Upper', icon:'💪', sub:'어깨 · 팔꿈치 · 손목 · 손 · 손가락'},
+    {v:'하지 — Lower', icon:'🦵', sub:'고관절 · 무릎 · 발목 · 발 · 발가락'},
+  ];
+
+  const wrap = document.getElementById('cat-main');
+  cats.forEach(item=>{
+    const div=document.createElement('div');
+    div.className='cat-row'+(D.catMain===item.v?' sel':'');
+    div.style.cssText='border:1px solid #93AA6D;border-radius:12px;padding:14px 16px;background:rgba(255,255,255,0.70);cursor:pointer;display:flex;align-items:center;gap:14px;transition:all 0.12s;user-select:none';
+    if(D.catMain===item.v) div.style.borderColor='#93AA6D', div.style.background='rgba(147,170,109,0.15)';
+    div.innerHTML=`
+      <span style="font-size:28px;flex-shrink:0">${item.icon}</span>
+      <div>
+        <div style="font-size:17px;font-weight:700;color:var(--text)">${item.v}</div>
+        <div style="font-size:14px;font-weight:400;color:var(--muted);margin-top:2px">${item.sub}</div>
+      </div>`;
+    div.addEventListener('click',()=>{
+      wrap.querySelectorAll('.cat-row').forEach(x=>{
+        x.style.borderColor='#93AA6D'; x.style.background='rgba(255,255,255,0.70)';
+      });
+      div.style.borderColor='#93AA6D'; div.style.background='rgba(147,170,109,0.15)';
+      setVal('catMain',item.v);
+      D.subArea=new Set();
+      document.getElementById('sub-spine').style.display='none';
+      document.getElementById('sub-upper').style.display='none';
+      document.getElementById('sub-lower').style.display='none';
+      if(item.v.includes('척추')){
+        document.getElementById('sub-spine').style.display='block';
+        document.getElementById('sub-spine-tags').innerHTML='';
+        makeTags('sub-spine-tags','subArea',['목','등','허리','엉치'],true);
+      } else if(item.v.includes('Upper')){
+        document.getElementById('sub-upper').style.display='block';
+        document.getElementById('sub-upper-tags').innerHTML='';
+        makeTags('sub-upper-tags','subArea',['어깨','팔꿈치','손목','손','손가락'],true);
+      } else if(item.v.includes('Lower')){
+        document.getElementById('sub-lower').style.display='block';
+        document.getElementById('sub-lower-tags').innerHTML='';
+        makeTags('sub-lower-tags','subArea',['고관절','무릎','발목','발','발가락'],true);
+      }
+    });
+    wrap.appendChild(div);
+  });
+
+  // 이전 선택값 복원
+  if(D.catMain){
+    if(D.catMain.includes('척추')){
+      document.getElementById('sub-spine').style.display='block';
+      makeTags('sub-spine-tags','subArea',['목','등','허리','엉치'],true);
+    } else if(D.catMain.includes('Upper')){
+      document.getElementById('sub-upper').style.display='block';
+      makeTags('sub-upper-tags','subArea',['어깨','팔꿈치','손목','손','손가락'],true);
+    } else if(D.catMain.includes('Lower')){
+      document.getElementById('sub-lower').style.display='block';
+      makeTags('sub-lower-tags','subArea',['고관절','무릎','발목','발','발가락'],true);
+    }
+  }
+}
+
+// STEP 2 — 발생 시기 + 원인 (순서 변경)
+function s2(c){
+  c.innerHTML=`
+    <div class="step-header">
+      <div class="step-badge">STEP 3 / ${STEPS}</div>
+      <div class="step-title">언제부터, 어떻게 시작됐나요?</div>
+    </div>
+    <div class="card">
+      <div class="card-label">증상 시작 시기</div>
+      <div class="radio-wrap" id="r-onset"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">발생 원인</div>
+      <div class="radio-wrap" id="r-cause"></div>
+    </div>`;
+  makeRadios('r-onset','onset',[
+    {v:'1주일 이내',sub:'최근 갑자기 시작'},
+    {v:'1개월 전',sub:'한 달 정도 됐어요'},
+    {v:'3개월 전',sub:'서너 달 됐어요'},
+    {v:'6개월 전',sub:'반년 정도 됐어요'},
+    {v:'1년 이상',sub:'오래된 통증이에요'},
+  ]);
+  makeRadios('r-cause','cause',[
+    {v:'특정 동작·활동으로',sub:'잘못된 자세, 무거운 것 들기 등'},
+    {v:'갑자기 원인 없이',sub:'특별한 이유 없이 발생'},
+    {v:'서서히 점진적으로',sub:'조금씩 심해졌어요'},
+    {v:'사고·부상·수술 후',sub:'외상 이후 발생'},
+  ]);
+}
+
+// STEP 3 — 통증 성질 + NRS (순서 변경)
+function s3(c){
+  c.innerHTML=`
+    <div class="step-header">
+      <div class="step-badge">STEP 4 / ${STEPS}</div>
+      <div class="step-title">어떤 통증인가요?</div>
+      <div class="step-desc">해당되는 것을 모두 선택해 주세요.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">근육성 통증</div>
+      <div class="tag-wrap" id="t-muscle"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">신경성 통증</div>
+      <div class="tag-wrap" id="t-nerve"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">통증 강도 (NRS)</div>
+      <div class="nrs-wrap" id="t-nrs"></div>
+      <div id="nrs-val" style="margin-top:8px;text-align:center;font-size:13px;color:#455546;font-weight:500">${D.nrs?'선택됨: NRS '+D.nrs:'선택 안 됨'}</div>
+    </div>`;
+  makeTags('t-muscle','muscle',['쑤시는듯함','뻐근·묵직함','뻣뻣·경직됨','욱씬거림','당기는듯함'],true);
+  makeTags('t-nerve','nerve',['찌르는','조이는','저린감','시린감','화끈거림'],true);
+  makeNRS('t-nrs');
+  document.getElementById('t-nrs').addEventListener('click',()=>{
+    if(D.nrs) document.getElementById('nrs-val').textContent='선택됨: NRS '+D.nrs;
+  });
+}
+
+// STEP 4 — 통증 패턴
+function s4(c){
+  c.innerHTML=`
+    <div class="step-header">
+      <div class="step-badge">STEP 5 / ${STEPS}</div>
+      <div class="step-title">통증 패턴이 어떤가요?</div>
+      <div class="step-desc">해당되는 것을 선택해 주세요.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">통증이 언제 나타나나요? (복수 선택 가능)</div>
+      <div id="r-when"></div>
+    </div>
+    <div id="freq-card" class="card" style="display:none">
+      <div class="card-label">얼마나 자주 나타나나요?</div>
+      <div class="radio-wrap" id="r-freq"></div>
+    </div>
+    <div id="persist-card" class="card" style="display:none">
+      <div class="card-label">통증이 지속되나요?</div>
+      <div class="radio-wrap" id="r-persist"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">통증이 얼마나 지속되나요?</div>
+      <div class="radio-wrap" id="r-duration"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">언제 더 아픈가요? (다중선택 가능)</div>
+      <div class="tag-wrap" id="t-worsen"></div>
+    </div>`;
+
+  const provItems = [
+    {v:'몸을 움직일 때',       badge:'움직임', bc:'badge-move', desc:'걷기, 팔다리 움직임 등 전반적인 동작 시'},
+    {v:'특정 동작을 할 때',    badge:'움직임', bc:'badge-move', desc:'고개 돌리기, 허리 숙이기 등 특정 동작에서만'},
+    {v:'자세를 바꿀 때',       badge:'움직임', bc:'badge-move', desc:'앉았다 일어날 때, 고개를 돌릴 때'},
+    {v:'눕거나 일어날 때',     badge:'움직임', bc:'badge-move', desc:'침대에서 일어날 때, 돌아누울 때'},
+    {v:'가만히 있을 때도 아픔',badge:'안정시', bc:'badge-rest', desc:'앉아있거나 누워있을 때도 통증이 있음'},
+    {v:'때와 상관없이 갑자기 아픔',badge:'자발통',bc:'badge-auto',desc:'특별한 이유 없이 갑자기 통증이 나타남'},
+  ];
+  const freqTriggers = new Set(['가만히 있을 때도 아픔','때와 상관없이 갑자기 아픔']);
+
+  function refreshFreqCard(){
+    const showCond = D.painWhen instanceof Set && [...D.painWhen].some(v=>freqTriggers.has(v));
+
+    // 빈도 카드
+    const freqCard = document.getElementById('freq-card');
+    if(showCond){
+      freqCard.style.display='block';
+      document.getElementById('r-freq').innerHTML='';
+      makeRadios('r-freq','freq',[
+        {v:'가끔 (주 1~2회)',sub:''},
+        {v:'자주 (하루에 여러번)',sub:''},
+        {v:'항상 (하루종일)',sub:''},
+      ]);
+    } else {
+      freqCard.style.display='none';
+      D.freq=undefined;
+    }
+
+    // 지속유무 카드
+    const persistCard = document.getElementById('persist-card');
+    if(showCond){
+      persistCard.style.display='block';
+      document.getElementById('r-persist').innerHTML='';
+      makeRadios('r-persist','persist',[
+        {v:'항상 아파요',sub:'지속성 통증'},
+        {v:'항상 불편해요',sub:'지속성 불편감'},
+        {v:'가끔 아파요',sub:'간헐적 통증'},
+        {v:'가끔 불편해요',sub:'간헐적 불편감'},
+      ]);
+    } else {
+      persistCard.style.display='none';
+      D.persist=undefined;
+    }
+  }
+
+  const whenWrap = document.getElementById('r-when');
+  whenWrap.className = 'sel-wrap';
+  provItems.forEach(item=>{
+    const on = hasVal('painWhen',item.v);
+    const div = document.createElement('div');
+    div.className = 'sel-item'+(on?' sel':'');
+    div.innerHTML = `
+      <div class="sel-box">${on?'✓':''}</div>
+      <div style="flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="sel-name" style="flex:unset">${item.v}</span>
+        <span class="p-badge ${item.bc}">${item.badge}</span>
+      </div>
+      <div class="sel-desc">${item.desc}</div>`;
+    div.addEventListener('click',()=>{
+      toggleSet('painWhen',item.v);
+      const now = hasVal('painWhen',item.v);
+      div.classList.toggle('sel',now);
+      div.querySelector('.sel-box').textContent = now?'✓':'';
+      refreshFreqCard();
+    });
+    whenWrap.appendChild(div);
+  });
+
+  // 이전 선택값 복원 (freq card)
+  refreshFreqCard();
+
+  makeRadios('r-duration','duration',[
+    {v:'몇 분 이내',sub:'금방 사라짐'},
+    {v:'1시간 이내',sub:''},
+    {v:'1~3시간',sub:''},
+    {v:'3~6시간',sub:''},
+    {v:'하루 종일',sub:''},
+    {v:'며칠 이상',sub:''},
+  ], false, true);
+  makeTags('t-worsen','worsen',['아침에 일어날 때 뻣뻣함','오후에 더 심해짐','저녁에 더 심해짐','자다가 통증으로 깸','쉬고 있을 때 더 아픔','날씨가 바뀔 때','시간대와 상관없음'],true);
+}
+
+// STEP 6 — 이전 치료력
+function s5(c){
+  c.innerHTML=`
+    <div class="step-header">
+      <div class="step-badge">STEP 6 / ${STEPS}</div>
+      <div class="step-title">이전에 받으신 치료를 알려주세요</div>
+      <div class="step-desc">해당 증상으로 방문하신 기관과 받으신 치료를 모두 선택해 주세요.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">방문하신 의료기관 (다중선택 가능)</div>
+      <div class="tag-wrap" id="med-hosp"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">받으신 의료검진 (다중선택 가능)</div>
+      <div class="tag-wrap" id="med-exam"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">물리치료 (다중선택 가능)</div>
+      <div class="tag-wrap" id="pi-ptx"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">보존적 치료 (다중선택 가능)</div>
+      <div class="tag-wrap" id="pi-cons"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">한방치료 (다중선택 가능)</div>
+      <div class="tag-wrap" id="pi-ktx"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">주사·약물 (다중선택 가능)</div>
+      <div class="tag-wrap" id="pi-inj"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">시술·수술 (다중선택 가능)</div>
+      <div class="tag-wrap" id="pi-surg"></div>
+    </div>`;
+
+  makeTags('med-hosp','hospital',['한의원','정형외과','통증의학과','신경과','내과','종합병원','없음'],true);
+  makeTags('med-exam','imaging',['X-ray','MRI','CT','초음파','내시경'],true);
+  makeTags('pi-ptx','ptx',['전기치료','체외충격파','도수치료','재활운동','체형교정운동','필라테스·요가','헬스·PT'],true);
+  makeTags('pi-cons','conservative',['마사지','경락','지압'],true);
+  makeTags('pi-ktx','ktx',['침','추나','약침','한약'],true);
+  makeTags('pi-inj','inj',['스테로이드','프롤로','DNA/PDRN','연골','그외 주사치료','경구약'],true);
+  makeTags('pi-surg','surg',['신경차단술','디스크 수술','협착 수술','관절수술','인공관절 수술'],true);
+}
+
+// STEP 7 — 치료 효과
+function s5b(c){
+  c.innerHTML=`
+    <div class="step-header">
+      <div class="step-badge">STEP 7 / ${STEPS}</div>
+      <div class="step-title">치료 효과가 어떠셨나요?</div>
+      <div class="step-desc">이전에 받으신 치료 전반에 대해 선택해 주세요.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">치료 효과</div>
+      <div class="radio-wrap" id="pi-eff"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">치료 후 얼마나 유지됐나요?</div>
+      <div class="radio-wrap" id="pi-per"></div>
+    </div>`;
+
+  makeRadios('pi-eff','txEffect',[
+    {v:'변화 없음',sub:''},
+    {v:'약간 호전 (10~30%)',sub:''},
+    {v:'부분 호전 (40~60%)',sub:''},
+    {v:'많이 호전 (70~80%)',sub:''},
+    {v:'거의 회복 (90% 이상)',sub:''},
+  ]);
+  makeRadios('pi-per','txPersist',[
+    {v:'호전 지속 없음',sub:''},
+    {v:'일시 호전 후 재발',sub:''},
+    {v:'호전 유지',sub:''},
+    {v:'반복 재발',sub:''},
+  ]);
+}
+
+// STEP 8 — 생활습관 (SH)
+function s6(c){
+  c.innerHTML=`
+    <div class="step-header">
+      <div class="step-badge">STEP 8 / ${STEPS}</div>
+      <div class="step-title">생활습관을 알려주세요</div>
+    </div>
+    <div class="card">
+      <div class="card-label">과거 병력 (다중선택 가능)</div>
+      <div class="tag-wrap" id="sh-pmhx"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">생활 패턴 (다중선택 가능)</div>
+      <div class="tag-wrap" id="sh-life"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">운동 빈도</div>
+      <div class="grid2" id="sh-ex"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">수면</div>
+      <div class="section-sub">하루 평균 수면 시간</div>
+      <div class="grid2" id="sh-sltime" style="margin-bottom:12px"></div>
+      <div class="section-sub">수면 유지</div>
+      <div class="grid2" id="sh-slmaint"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">음주</div>
+      <div class="grid2" id="sh-alc"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">흡연</div>
+      <div class="grid2" id="sh-smk"></div>
+    </div>`;
+
+  makeTags('sh-pmhx','pmhx',['고혈압','당뇨','고지혈증','간질환','결핵','경추 디스크','경추 협착증','요추 디스크','요추 협착증','항응고제 복용','갑상선 저하','갑상선 항진','없음'],true);
+  makeTags('sh-life','lifestyle',['정적형 (앉아서 고정 자세)','동적형 (이동이 많은 활동)','반복형 (동일 동작 반복)','복합형 (다양하게 혼합)'],true);
+  makeGrid('sh-ex','exercise',['없음','주 1~2회','주 3~4회','주 5회 이상'],false);
+  makeGrid('sh-sltime','sleepTime',['6시간 이상','5시간 이하'],false);
+  makeGrid('sh-slmaint','sleepMaint',['잘 자는 편','1~2회 깸','자주 깸','거의 못 잠'],false);
+  makeGrid('sh-alc','alcohol',['없음','월 1~2회','주 1~2회','주 3회 이상'],false);
+  makeGrid('sh-smk','smoke',['비흡연','과거 흡연','하루 반 갑 미만','하루 한 갑 이상'],false);
+}
+
+// STEP 7 — 피로도
+function s8_fatigue(c){
+  const items=[
+    {key:'fat1',text:'30분 동안 천천히 걷기',sub:'예) 산책, 편의점 다녀오기'},
+    {key:'fat2',text:'2시간 동안 TV·스마트폰 보기',sub:'예) 유튜브, 드라마 시청'},
+    {key:'fat3',text:'1시간 동안 조용히 앉아 있기',sub:'예) 독서, 업무, 대기'},
+    {key:'fat4',text:'30분 동안 중간 강도 운동',sub:'예) 빠르게 걷기, 가벼운 근력운동'},
+  ];
+  c.innerHTML=`
+    <div class="step-header">
+      <div class="step-badge">STEP 9 / ${STEPS}</div>
+      <div class="step-title">평소 피로도를 알려주세요</div>
+      <div class="step-desc">활동 후 얼마나 피로한지 선택해 주세요.<br>0 = 전혀 피로하지 않음 · 5 = 극심한 피로</div>
+    </div>
+    ${items.map(item=>`
+    <div class="fatigue-card">
+      <div class="fatigue-title">${item.text}</div>
+      <div class="fatigue-sub">${item.sub}</div>
+      <div class="fatigue-scale" id="f-${item.key}"></div>
+      <div class="fatigue-label"><span>전혀 피로하지 않음</span><span>극심한 피로</span></div>
+      <div class="fatigue-result" id="f-${item.key}-result">${D[item.key]!==undefined?['피로 없음','매우 가벼운','가벼운','보통','심한','극심한'][D[item.key]]+' ('+D[item.key]+'점)':''}</div>
+    </div>`).join('')}
+    <div style="background:#f0f4f8;border-radius:10px;padding:12px 14px;font-size:12px;color:#455546;line-height:1.7;margin-top:4px">
+      ※ 피로도 정보는 적합한 치료 안내에 활용됩니다.
+    </div>`;
+  items.forEach(item=>makeFatigue('f-'+item.key,item.key));
+}
+
+// STEP 8 — 확인 (마지막)
+function s9_confirm(c){
+  const subAreas = getSet('subArea').join(', ')||'—';
+  const muscle = getSet('muscle').join(', ')||'—';
+  const nerve = getSet('nerve').join(', ')||'—';
+  const worsen = getSet('worsen').join(', ')||'—';
+  const hospital = getSet('hospital').join(', ')||'—';
+  const imaging = getSet('imaging').join(', ')||'—';
+  const pmhx = getSet('pmhx').join(', ')||'—';
+  const lifestyle = getSet('lifestyle').join(', ')||'—';
+  const txAll = [
+    ...getSet('ptx'),...getSet('conservative'),...getSet('ktx'),...getSet('inj'),...getSet('surg')
+  ].join(', ')||'없음';
+  const bodyS=(D.fat1||0)+(D.fat4||0);
+  const brainS=(D.fat2||0)+(D.fat3||0);
+  const fatAlert = bodyS>=6||brainS>=6
+    ? `<div class="alert-box">※ 피로도 점수가 높게 나타났습니다. 의료진이 추가로 안내드릴 예정입니다.</div>`:'';
+
+  c.innerHTML=`
+    <div class="step-header">
+      <div class="step-badge">STEP 10 / ${STEPS}</div>
+      <div class="step-title">설문 확인</div>
+      <div class="step-desc">내용을 확인하고 완료 버튼을 눌러주세요.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">기본 정보</div>
+      <div class="sum-row"><span class="sum-key">성명</span><span class="sum-val">${D.name||'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">나이/성별</span><span class="sum-val">${D.age||'—'}세 / ${D.gender||'—'}</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">증상 정보</div>
+      <div class="sum-row"><span class="sum-key">부위</span><span class="sum-val">${subAreas}</span></div>
+      <div class="sum-row"><span class="sum-key">근육성</span><span class="sum-val">${muscle}</span></div>
+      <div class="sum-row"><span class="sum-key">신경성</span><span class="sum-val">${nerve}</span></div>
+      <div class="sum-row"><span class="sum-key">NRS</span><span class="sum-val">${D.nrs||'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">시작시기</span><span class="sum-val">${D.onset||'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">발생원인</span><span class="sum-val">${D.cause||'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">통증 발생</span><span class="sum-val">${getSet('painWhen').join(', ')||'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">지속유무</span><span class="sum-val">${D.persist||'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">빈도</span><span class="sum-val">${D.freq||'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">지속시간</span><span class="sum-val">${D.duration||'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">악화요인</span><span class="sum-val">${worsen}</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">의료기관 · 검진</div>
+      <div class="sum-row"><span class="sum-key">방문기관</span><span class="sum-val">${hospital}</span></div>
+      <div class="sum-row"><span class="sum-key">의료검진</span><span class="sum-val">${imaging}</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">치료력</div>
+      <div class="sum-row"><span class="sum-key">치료종류</span><span class="sum-val">${txAll}</span></div>
+      <div class="sum-row"><span class="sum-key">치료효과</span><span class="sum-val">${D.txEffect||'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">호전유지</span><span class="sum-val">${D.txPersist||'—'}</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">생활습관</div>
+      <div class="sum-row"><span class="sum-key">과거병력</span><span class="sum-val">${pmhx}</span></div>
+      <div class="sum-row"><span class="sum-key">생활패턴</span><span class="sum-val">${lifestyle}</span></div>
+      <div class="sum-row"><span class="sum-key">운동</span><span class="sum-val">${D.exercise||'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">수면</span><span class="sum-val">${D.sleepTime||'—'} / ${D.sleepMaint||'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">음주</span><span class="sum-val">${D.alcohol||'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">흡연</span><span class="sum-val">${D.smoke||'—'}</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">피로도</div>
+      <div class="sum-row"><span class="sum-key">천천히 걷기</span><span class="sum-val">${D.fat1!==undefined?D.fat1+'점':'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">TV·집중</span><span class="sum-val">${D.fat2!==undefined?D.fat2+'점':'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">조용히 앉기</span><span class="sum-val">${D.fat3!==undefined?D.fat3+'점':'—'}</span></div>
+      <div class="sum-row"><span class="sum-key">중강도 운동</span><span class="sum-val">${D.fat4!==undefined?D.fat4+'점':'—'}</span></div>
+      ${fatAlert}
+    </div>
+    <div style="font-size:13px;color:#455546;text-align:center;margin-top:8px;line-height:1.7">
+      작성하신 내용은 상담 시 의료진에게 전달됩니다.<br>잘못된 내용이 있으면 이전 버튼으로 수정해 주세요.
+    </div>`;
+}
+
+// ── Supabase 설정 ──
+const SUPABASE_URL = 'https://lxxaqupljilvbtqnnyey.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Wao5CATvkJUs36XD3Lnlxg_5Hvq9TGq';
+
+async function saveSurvey(){
+  const code = Math.floor(1000 + Math.random() * 9000).toString();
+  const payload = {
+    code: code,
+    data: JSON.stringify({
+      name: D.name||'',
+      age: D.age||'',
+      gender: D.gender||'',
+      catMain: D.catMain||'',
+      subArea: getSet('subArea'),
+      muscle: getSet('muscle'),
+      nerve: getSet('nerve'),
+      nrs: D.nrs||'',
+      onset: D.onset||'',
+      cause: D.cause||'',
+      painWhen: getSet('painWhen'),
+      persist: D.persist||'',
+      duration: D.duration||'',
+      freq: D.freq||null,
+      worsen: getSet('worsen'),
+      hospital: getSet('hospital'),
+      imaging: getSet('imaging'),
+      ptx: getSet('ptx'),
+      conservative: getSet('conservative'),
+      ktx: getSet('ktx'),
+      inj: getSet('inj'),
+      surg: getSet('surg'),
+      txEffect: D.txEffect||'',
+      txPersist: D.txPersist||'',
+      pmhx: getSet('pmhx'),
+      lifestyle: getSet('lifestyle'),
+      exercise: D.exercise||'',
+      sleepTime: D.sleepTime||'',
+      sleepMaint: D.sleepMaint||'',
+      alcohol: D.alcohol||'',
+      smoke: D.smoke||'',
+      fat1: D.fat1 !== undefined ? D.fat1 : null,
+      fat2: D.fat2 !== undefined ? D.fat2 : null,
+      fat3: D.fat3 !== undefined ? D.fat3 : null,
+      fat4: D.fat4 !== undefined ? D.fat4 : null,
+    })
+  };
+
+  let res;
+  try {
+    res = await fetch(`${SUPABASE_URL}/rest/v1/surveys`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch(networkErr) {
+    throw new Error('네트워크 오류: ' + networkErr.message);
+  }
+
+  if(res.ok) return { code, saved: true };
+
+  let errDetail = '';
+  try { errDetail = await res.text(); } catch(e){}
+  console.error('Supabase 저장 오류', res.status, errDetail);
+  // 저장 실패해도 코드는 반환 (saved:false 로 표시)
+  return { code, saved: false, errMsg: `HTTP ${res.status}: ${errDetail}` };
+}
+
+// ── 네비게이션 ──
+document.getElementById('btn-next').addEventListener('click', async ()=>{
+  if(step < STEPS-1){
+    step++; render();
+  } else {
+    // 완료 — Supabase 저장
+    const btn = document.getElementById('btn-next');
+    btn.disabled = true;
+    btn.textContent = '저장 중...';
+    try {
+      const { code, saved, errMsg } = await saveSurvey();
+
+      const saveNote = saved
+        ? '작성하신 내용이 저장됐습니다.<br>아래 코드를 상담 데스크에 알려주세요.'
+        : '⚠️ 저장 중 오류가 발생했습니다.<br>아래 코드를 메모해 두고 상담부에 알려주세요.';
+      const saveDetail = saved ? '' : `<div style="margin-top:8px;font-size:11px;color:#f0a07a;word-break:break-all">${errMsg||''}</div>`;
+
+      document.getElementById('content').innerHTML = `
+        <div style="text-align:center;padding:48px 20px">
+          <div style="font-size:56px;margin-bottom:20px">${saved?'✅':'⚠️'}</div>
+          <div style="font-size:22px;font-weight:700;color:#455546;margin-bottom:10px">설문이 완료됐습니다!</div>
+          <div style="font-size:14px;color:#455546;margin-bottom:32px;line-height:1.7">
+            ${saveNote}${saveDetail}
+          </div>
+          <div style="background:#1a3a5c;border-radius:16px;padding:28px;margin:0 auto;max-width:280px">
+            <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:10px;letter-spacing:.06em;text-transform:uppercase">환자 코드</div>
+            <div style="font-size:56px;font-weight:700;color:#DDAB63;letter-spacing:8px;font-family:'Inter',monospace">${code}</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:10px">상담부에 이 번호를 알려주세요</div>
+          </div>
+          <div style="margin-top:24px;font-size:13px;color:#455546;line-height:1.7">
+            상담부에서 이 번호를 입력하면<br>작성하신 내용이 자동으로 불러와집니다.
+          </div>
+        </div>`;
+      document.getElementById('btn-next').style.display='none';
+      document.getElementById('btn-prev').style.display='none';
+    } catch(e) {
+      btn.disabled = false;
+      btn.textContent = '설문 완료 ✓';
+      alert('오류가 발생했습니다.\n' + e.message);
+    }
+  }
+});
+document.getElementById('btn-prev').addEventListener('click',()=>{
+  if(step>0){ step--; render(); }
+});
+
+render();
+</script>
+</body>
+</html>

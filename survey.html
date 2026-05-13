@@ -54,6 +54,7 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .tag-wrap{display:flex;flex-wrap:wrap;gap:12px}
 .tag-btn{border:1px solid #93AA6D;border-radius:30px;padding:14px 24px;background:rgba(255,255,255,0.70);font-size:16px;font-weight:500;color:var(--text);cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif;transition:all 0.12s;user-select:none}
 .tag-btn.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15);color:#455546;font-weight:500}
+#ref-cat .tag-btn.sel{background:rgba(147,170,109,0.8);border-color:#93AA6D;color:#fff}
 
 /* RADIO BUTTONS */
 .radio-wrap{display:flex;flex-direction:column;gap:12px}
@@ -117,9 +118,11 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .text-input:focus{border-color:#93AA6D}
 
 /* BOTTOM NAV */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:12px 20px 20px;display:flex;gap:10px;max-width:680px;margin:0 auto}
-.btn-prev{flex:1;padding:14px;border:1.5px solid var(--border);border-radius:12px;background:#fff;font-size:15px;font-weight:500;color:var(--muted);cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif}
-.btn-next{flex:2.5;padding:14px;border:none;border-radius:12px;background:var(--brand);font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--header);border-top:none;padding:14px 20px;display:flex;gap:10px;max-width:900px;margin:0 auto}
+.btn-prev{flex:1;padding:18px 14px;border:1.5px solid var(--border);border-radius:12px;background:#fff;font-size:15px;font-weight:500;color:var(--text);cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif}
+.btn-prev:active{background:var(--green);border-color:var(--green);color:#fff}
+.btn-next{flex:2.5;padding:18px 14px;border:1.5px solid var(--border);border-radius:12px;background:#fff;font-size:15px;font-weight:700;color:var(--text);cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif}
+.btn-next:active{background:var(--green);border-color:var(--green);color:#fff}
 
 .alert-box{background:var(--coral-light);border:1px solid var(--coral);border-radius:10px;padding:12px 14px;margin-top:10px;font-size:13px;color:#455546;line-height:1.6}
 .section-sub{font-size:12px;font-weight:600;color:var(--muted);margin:12px 0 6px}
@@ -469,10 +472,71 @@ function s0(c){
       </div>
       <div style="font-size:13px;color:#455546;font-weight:500;margin-bottom:8px">성별</div>
       <div class="grid2" id="g-gender"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">내원 경로</div>
+      <div style="font-size:14px;color:#455546;margin-bottom:16px">품듯한의원을 어떤 경로로 알게 되셨나요?</div>
+      <div class="sel-grid" id="ref-cat"></div>
+      <div id="ref-sub" style="margin-top:12px"></div>
     </div>`;
   document.getElementById('inp-name').addEventListener('input',e=>D.name=e.target.value);
   document.getElementById('inp-age').addEventListener('input',e=>D.age=e.target.value);
   makeGrid('g-gender','gender',['남성','여성'],false);
+  buildRefCard();
+}
+
+function buildRefCard(){
+  const catDefs={
+    '검색':    ['네이버 검색','네이버 플레이스','네이버 블로그'],
+    '플랫폼':  ['인스타그램','유튜브'],
+    '리퍼럴':  ['지인 소개'],
+    '오프라인':['외부 간판','지나가다','거주지 근처'],
+  };
+  const catWrap=document.getElementById('ref-cat');
+  const subWrap=document.getElementById('ref-sub');
+  if(!catWrap||!subWrap) return;
+
+  catWrap.className='tag-wrap';
+
+  function renderSub(cat){
+    subWrap.innerHTML='';
+    if(!cat) return;
+    const subs=catDefs[cat];
+    if(!subs) return;
+    const grid=document.createElement('div');
+    grid.className='sel-grid';
+    subs.forEach(sub=>{
+      const on=D.refDetail===sub;
+      const div=document.createElement('div');
+      div.className='sel-item'+(on?' sel':'');
+      div.innerHTML=`<div class="sel-box">${on?'✓':''}</div><div class="sel-name">${sub}</div>`;
+      div.addEventListener('click',()=>{
+        grid.querySelectorAll('.sel-item').forEach(x=>{x.classList.remove('sel');x.querySelector('.sel-box').textContent='';});
+        D.refDetail=sub;
+        div.classList.add('sel');
+        div.querySelector('.sel-box').textContent='✓';
+      });
+      grid.appendChild(div);
+    });
+    subWrap.appendChild(grid);
+  }
+
+  Object.keys(catDefs).forEach(cat=>{
+    const on=D.refCat===cat;
+    const btn=document.createElement('button');
+    btn.className='tag-btn'+(on?' sel':'');
+    btn.textContent=cat;
+    btn.addEventListener('click',()=>{
+      catWrap.querySelectorAll('.tag-btn').forEach(x=>x.classList.remove('sel'));
+      D.refCat=cat;
+      D.refDetail='';
+      btn.classList.add('sel');
+      renderSub(cat);
+    });
+    catWrap.appendChild(btn);
+  });
+
+  if(D.refCat) renderSub(D.refCat);
 }
 
 // STEP 1 — 증상부위
@@ -1005,6 +1069,10 @@ async function saveSurvey(){
 // ── 네비게이션 ──
 document.getElementById('btn-next').addEventListener('click', async ()=>{
   if(step < STEPS-1){
+    if(step===0){
+      if(!D.refCat){alert('내원 경로를 선택해 주세요.');return;}
+      if(!D.refDetail){alert('세부 항목을 선택해 주세요.');return;}
+    }
     step++; render();
   } else {
     // 완료 — Supabase 저장

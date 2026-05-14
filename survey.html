@@ -43,11 +43,11 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 
 .step-header{margin-bottom:32px}
 .step-badge{display:inline-block;background:var(--brand-light);color:var(--brand-dark);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;margin-bottom:8px}
-.step-title{font-size:24px;font-weight:700;color:var(--text);line-height:1.3}
-.step-desc{font-size:16px;font-weight:400;color:var(--muted);margin-top:6px;line-height:1.6}
+.step-title{font-size:25px;font-weight:700;color:var(--text);line-height:1.3}
+.step-desc{font-size:15px;font-weight:400;color:var(--muted);margin-top:6px;line-height:1.6}
 
 .card{background:#fff;border-radius:20px;border:none;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:28px 32px;margin-bottom:28px}
-.card-label{font-size:15px;font-weight:400;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;display:flex;align-items:center;gap:7px}
+.card-label{font-size:18px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;display:flex;align-items:center;gap:7px}
 .card-label::before{content:'';width:3px;height:13px;background:var(--brand);border-radius:2px;display:inline-block}
 
 /* TAG BUTTONS */
@@ -132,7 +132,7 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .provoke-item.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15)}
 .p-check{width:20px;height:20px;border-radius:5px;border:1px solid #93AA6D;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;transition:all 0.12s}
 .provoke-item.sel .p-check{background:#93AA6D;border-color:#93AA6D}
-.p-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;flex-shrink:0;white-space:nowrap}
+.p-badge{font-size:10px;font-weight:400;padding:2px 7px;border-radius:20px;flex-shrink:0;white-space:nowrap}
 .badge-move{background:#D8E8EC;color:#455546}
 .badge-rest{background:var(--brand-light);color:var(--brand-dark)}
 .badge-auto{background:var(--coral-light);color:#455546}
@@ -145,11 +145,12 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .sel-item.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15)}
 .sel-box{width:24px;height:24px;border-radius:6px;border:1px solid #93AA6D;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;background:#fff;transition:all 0.12s}
 .sel-item.sel .sel-box{background:#93AA6D;border-color:#93AA6D}
-.sel-name{font-size:16px;font-weight:600;color:var(--text);flex:1;line-height:1.35}
+.sel-name{font-size:18px;font-weight:600;color:var(--text);flex:1;line-height:1.35}
 .sel-item.sel .sel-name{color:#455546}
-.sel-desc{font-size:12px;color:#455546;text-align:right;max-width:280px;white-space:nowrap;flex-shrink:0}
+.sel-desc{font-size:15px;color:#455546;text-align:right;max-width:280px;white-space:nowrap;flex-shrink:0}
 /* grid item overrides */
-.sel-grid .sel-item{padding:18px 20px;border:1px solid #93AA6D;font-size:16px;font-weight:500}
+.sel-grid .sel-item{padding:18px 20px;border:1px solid #93AA6D;font-size:16px;font-weight:700}
+.sel-grid .sel-item .sel-name{font-size:16px;font-weight:700}
 .sel-grid .sel-item.sel{border-color:#93AA6D;background:rgba(147,170,109,0.15)}
 .sel-grid .sel-item.sel .sel-name{color:#455546}
 .sel-grid .sel-item.sel .sel-box{background:#93AA6D;border-color:#93AA6D}
@@ -170,14 +171,14 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .pb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 @media(max-width:520px){.pb-grid{grid-template-columns:repeat(2,1fr)}}
 .pb-cell{display:flex;flex-direction:column;gap:6px}
-.pb-item{width:100%;background:#ffffff;border:1px solid #e8e2d9;border-radius:14px;padding:18px 20px;font-size:16px;font-weight:600;color:#455546;cursor:pointer;font-family:'Pretendard',sans-serif;transition:all 0.12s;user-select:none;display:flex;align-items:center;gap:10px}
-.pb-item.on{background:#e8f0eb;border-color:#93AA6D;color:#455546}
+.pb-item{width:100%;background:#ffffff;border:1px solid var(--green);border-radius:14px;padding:18px 20px;font-size:16px;font-weight:600;color:#455546;font-family:'Pretendard',sans-serif;transition:all 0.12s;user-select:none;display:flex;flex-direction:column;gap:0}
+.pb-item.on{background:#e8f0eb;border-color:var(--brand-dark);color:#455546}
 .pb-check{width:20px;height:20px;border-radius:5px;border:1px solid #93AA6D;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;background:#fff;transition:all 0.12s}
 .pb-item.on .pb-check{background:#93AA6D;border-color:#93AA6D}
-.pb-toggles{display:none;justify-content:center;gap:4px;flex-wrap:wrap}
-.pb-toggles.vis{display:flex}
-.pb-btn{background:#fff;border:1px solid #C8BFB0;border-radius:6px;padding:3px 10px;font-size:12px;color:#888;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all 0.12s;user-select:none}
-.pb-btn.on{background:#93AA6D;border-color:#93AA6D;color:#fff;font-weight:600}
+.pb-toggles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;overflow:hidden;max-height:0;margin-top:0;transition:max-height 0.25s ease,margin-top 0.25s ease}
+.pb-toggles.vis{max-height:100px;margin-top:8px}
+.pb-btn{background:#fff;border:1px solid #C8BFB0;border-radius:6px;padding:10px;font-size:16px;font-weight:400;color:var(--brand-dark);cursor:pointer;font-family:'Montserrat',sans-serif;transition:all 0.12s;user-select:none;text-align:center}
+.pb-btn.on{background:var(--brand-dark);border-color:var(--brand-dark);color:#fff;font-weight:600}
 .body-sel-box{background:#f5f5f0;border-radius:12px;padding:.9rem 1.1rem;min-height:52px;margin-top:1rem}
 .sel-title{font-size:12px;color:#888;margin-bottom:7px}
 .tags{display:flex;flex-wrap:wrap;gap:5px}
@@ -376,9 +377,9 @@ function togPart(name){
 function togSide(name,side){
   if(!bodyS[name]) return;
   const s=bodyS[name];
-  if(side==='rl'){s.rl=!s.rl;if(s.rl){s.rt=false;s.lt=false;}}
-  else if(side==='rt'){s.rt=!s.rt;if(s.rt)s.rl=false;}
-  else if(side==='lt'){s.lt=!s.lt;if(s.lt)s.rl=false;}
+  const wasOn=s[side];
+  s.rt=false; s.lt=false; s.rl=false;
+  if(!wasOn) s[side]=true;
   const cell=document.querySelector('[data-area="'+name+'"]');
   if(cell){
     const tg=cell.querySelector('.pb-toggles');
@@ -393,7 +394,7 @@ function buildSubArea(){
   const arr=[];
   Object.entries(bodyS).forEach(([nm,s])=>{
     if(s.solo){arr.push(nm);}
-    else{const p=[];if(s.rl)p.push('RL');else{if(s.rt)p.push('Rt.');if(s.lt)p.push('Lt.');}if(p.length)arr.push(nm+' '+p.join(' '));}
+    else{const p=[];if(s.rl)p.push('양측');else{if(s.rt)p.push('우측');if(s.lt)p.push('좌측');}if(p.length)arr.push(nm+' '+p.join(' '));}
   });
   return new Set(arr);
 }
@@ -487,7 +488,7 @@ function s0(c){
 
 function buildRefCard(){
   const catDefs={
-    '검색':    ['네이버 검색','네이버 플레이스','네이버 블로그'],
+    '검색':    ['네이버 검색','네이버 플레이스','네이버 블로그','기타'],
     '플랫폼':  ['인스타그램','유튜브'],
     '리퍼럴':  ['지인 소개'],
     '오프라인':['외부 간판','지나가다','거주지 근처'],
@@ -572,11 +573,13 @@ function s1(c){
       const isOn=isSolo?!!s.solo:!!(s.open||s.rt||s.lt||s.rl);
       const cell=document.createElement('div');
       cell.className='pb-cell';cell.dataset.area=nm;
-      const btn=document.createElement('button');
-      btn.className='pb-item'+(isOn?' on':'');
-      btn.innerHTML=`<span class="pb-check">${isOn?'✓':''}</span><span>${nm}</span>`;
-      btn.addEventListener('click',()=>togPart(nm));
-      cell.appendChild(btn);
+      const card=document.createElement('div');
+      card.className='pb-item'+(isOn?' on':'');
+      const row=document.createElement('div');
+      row.style.cssText='display:flex;align-items:center;gap:10px;cursor:pointer;width:100%';
+      row.innerHTML=`<span class="pb-check">${isOn?'✓':''}</span><span>${nm}</span>`;
+      row.addEventListener('click',()=>togPart(nm));
+      card.appendChild(row);
       if(!isSolo){
         const tg=document.createElement('div');
         tg.className='pb-toggles'+(isOn?' vis':'');
@@ -584,12 +587,13 @@ function s1(c){
           const b=document.createElement('button');
           b.className='pb-btn'+((s[side])?' on':'');
           b.dataset.side=side;
-          b.textContent=side==='rt'?'Rt.':side==='lt'?'Lt.':'RL';
+          b.textContent=side==='rt'?'우측':side==='lt'?'좌측':'양측';
           b.addEventListener('click',e=>{e.stopPropagation();togSide(nm,side);});
           tg.appendChild(b);
         });
-        cell.appendChild(tg);
+        card.appendChild(tg);
       }
+      cell.appendChild(card);
       container.appendChild(cell);
     });
   }

@@ -576,6 +576,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'imaging','MRI')"><div class="dot"></div>MRI</div>
         <div class="ck" onclick="chk(this,'imaging','CT')"><div class="dot"></div>CT</div>
         <div class="ck" onclick="chk(this,'imaging','Ultrasound')"><div class="dot"></div>Ultrasound</div>
+        <div class="ck" onclick="chk(this,'imaging','내시경')"><div class="dot"></div>내시경</div>
       </div>
     </div>
     <hr class="f-divider-solid">
@@ -587,6 +588,19 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'ptx','체외충격파')"><div class="dot"></div>체외충격파</div>
         <div class="ck" onclick="chk(this,'ptx','도수치료')"><div class="dot"></div>도수치료</div>
         <div class="ck" onclick="chk(this,'ptx','재활운동')"><div class="dot"></div>재활운동</div>
+        <div class="ck" onclick="chk(this,'ptx','체형교정운동')"><div class="dot"></div>체형교정운동</div>
+        <div class="ck" onclick="chk(this,'ptx','필라테스·요가')"><div class="dot"></div>필라테스·요가</div>
+        <div class="ck" onclick="chk(this,'ptx','헬스·PT')"><div class="dot"></div>헬스·PT</div>
+      </div>
+    </div>
+    <hr class="f-divider-solid">
+
+    <div class="field">
+      <div class="f-label">17-1. 보존적치료</div>
+      <div class="ck-wrap">
+        <div class="ck" onclick="chk(this,'conservative','마사지')"><div class="dot"></div>마사지</div>
+        <div class="ck" onclick="chk(this,'conservative','경락')"><div class="dot"></div>경락</div>
+        <div class="ck" onclick="chk(this,'conservative','지압')"><div class="dot"></div>지압</div>
       </div>
     </div>
     <hr class="f-divider-solid">
@@ -608,18 +622,22 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'inj','경구약')"><div class="dot"></div>경구약</div>
         <div class="ck" onclick="chk(this,'inj','스테로이드')"><div class="dot"></div>스테로이드</div>
         <div class="ck" onclick="chk(this,'inj','프롤로')"><div class="dot"></div>프롤로</div>
-        <div class="ck" onclick="chk(this,'inj','신경차단술')"><div class="dot"></div>신경차단술</div>
-        <div class="ck" onclick="chk(this,'inj','주사치료(종류불명)')"><div class="dot"></div>주사(종류불명)</div>
+        <div class="ck" onclick="chk(this,'inj','DNA/PDRN')"><div class="dot"></div>DNA/PDRN</div>
+        <div class="ck" onclick="chk(this,'inj','연골')"><div class="dot"></div>연골</div>
+        <div class="ck" onclick="chk(this,'inj','그외 주사치료')"><div class="dot"></div>그외 주사치료</div>
       </div>
       <div style="margin-top:8px"><textarea class="t-area" id="f-inj-detail" placeholder="약물·주사 상세내용..."></textarea></div>
     </div>
     <hr class="f-divider-solid">
 
     <div class="field">
-      <div class="f-label">20. 수술·기타</div>
+      <div class="f-label">20. 시술·수술·기타</div>
       <div class="ck-wrap">
+        <div class="ck" onclick="chk(this,'surg','신경차단술')"><div class="dot"></div>신경차단술</div>
         <div class="ck" onclick="chk(this,'surg','디스크 수술')"><div class="dot"></div>디스크 수술</div>
         <div class="ck" onclick="chk(this,'surg','협착 수술')"><div class="dot"></div>협착 수술</div>
+        <div class="ck" onclick="chk(this,'surg','관절수술')"><div class="dot"></div>관절수술</div>
+        <div class="ck" onclick="chk(this,'surg','인공관절 수술')"><div class="dot"></div>인공관절 수술</div>
         <div class="ck" onclick="chk(this,'surg','보조기 착용')"><div class="dot"></div>보조기 착용</div>
       </div>
     </div>
@@ -1057,7 +1075,7 @@ function applyToUI(d) {
   });
 
   // 영상검진 (imaging)
-  const imagingMap = { 'X-ray': 'X-ray', 'MRI': 'MRI', 'CT': 'CT', '초음파': 'Ultrasound' };
+  const imagingMap = { 'X-ray': 'X-ray', 'MRI': 'MRI', 'CT': 'CT', '초음파': 'Ultrasound', '내시경': '내시경' };
   (d.imaging || []).forEach(v => { if (imagingMap[v]) clickCK('imaging', imagingMap[v]); });
 
   // 물리치료 (ptx)
@@ -1066,8 +1084,15 @@ function applyToUI(d) {
     '체외충격파': '체외충격파',
     '도수치료': '도수치료',
     '재활운동': '재활운동',
+    '체형교정운동': '체형교정운동',
+    '필라테스·요가': '필라테스·요가',
+    '헬스·PT': '헬스·PT',
   };
   (d.ptx || []).forEach(v => { if (ptxMap[v]) clickCK('ptx', ptxMap[v]); });
+
+  // 보존적치료 (conservative)
+  const conservativeMap = { '마사지': '마사지', '경락': '경락', '지압': '지압' };
+  (d.conservative || []).forEach(v => { if (conservativeMap[v]) clickCK('conservative', conservativeMap[v]); });
 
   // 한방치료 (ktx) — 값 동일
   (d.ktx || []).forEach(v => clickCK('ktx', v));
@@ -1077,14 +1102,20 @@ function applyToUI(d) {
     '스테로이드': '스테로이드',
     '프롤로': '프롤로',
     '경구약': '경구약',
-    'DNA/PDRN': '주사치료(종류불명)',
-    '연골': '주사치료(종류불명)',
-    '그외 주사치료': '주사치료(종류불명)',
+    'DNA/PDRN': 'DNA/PDRN',
+    '연골': '연골',
+    '그외 주사치료': '그외 주사치료',
   };
   (d.inj || []).forEach(v => { if (injMap[v]) clickCK('inj', injMap[v]); });
 
-  // 수술 (surg)
-  const surgMap = { '디스크 수술': '디스크 수술', '협착 수술': '협착 수술' };
+  // 시술·수술 (surg)
+  const surgMap = {
+    '신경차단술': '신경차단술',
+    '디스크 수술': '디스크 수술',
+    '협착 수술': '협착 수술',
+    '관절수술': '관절수술',
+    '인공관절 수술': '인공관절 수술',
+  };
   (d.surg || []).forEach(v => { if (surgMap[v]) clickCK('surg', surgMap[v]); });
 
   // 치료효과 (txEffect) → g-tx-effect

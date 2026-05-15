@@ -45,7 +45,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
 .code-input{border:1.5px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:18px;font-weight:700;font-family:'Inter',monospace;background:rgba(255,255,255,.1);color:#fff;width:100px;text-align:center;letter-spacing:4px;outline:none}
 .code-input::placeholder{color:rgba(255,255,255,.3);letter-spacing:2px}
 .code-input:focus{border-color:#DDAB63}
-.code-btn{background:#DDAB63;color:#455546;border:none;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif}
+.code-btn{background:#DDAB63;color:#455546;border:none;border-radius:8px;padding:7px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif}
 .code-status{font-size:12px;font-weight:500}
 
 /* LEFT */
@@ -55,7 +55,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
 .preset-bar{background:#fff;border-radius:10px;border:1px solid var(--border);padding:14px 16px;margin-bottom:16px}
 .preset-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
 .preset-btns{display:flex;flex-wrap:wrap;gap:7px}
-.preset-btn{border:1.5px solid var(--border);border-radius:8px;padding:6px 13px;background:#fff;font-size:12px;font-weight:500;cursor:pointer;color:var(--text);font-family:'Montserrat','Pretendard',sans-serif;transition:all .15s}
+.preset-btn{border:1.5px solid var(--border);border-radius:8px;padding:6px 13px;background:#fff;font-size:14px;font-weight:500;cursor:pointer;color:var(--text);font-family:'Montserrat','Pretendard',sans-serif;transition:all .15s}
 .preset-btn:hover{border-color:var(--teal);background:var(--teal-light);color:var(--teal)}
 
 /* SECTION */
@@ -67,7 +67,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
 .arr{color:rgba(255,255,255,.4);font-size:11px;transition:transform .2s}
 .sec.closed .arr{transform:rotate(-90deg)}
 .sec.closed .sec-body{display:none}
-.sec-body{padding:14px 16px}
+.sec-body{padding:20px 20px}
 
 /* GROUP HEADER */
 .grp-head{background:var(--bg);border-radius:8px;padding:8px 12px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
@@ -75,15 +75,16 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
 .grp-title{font-size:12px;font-weight:700;color:var(--navy2)}
 
 /* FIELD */
-.field{margin-bottom:13px}
+.field{margin-bottom:24px}
 .field:last-child{margin-bottom:0}
-.f-label{font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;display:flex;align-items:center;gap:5px}
-.f-label::before{content:'';width:2px;height:12px;background:var(--teal);border-radius:2px;display:inline-block}
-.f-divider{border:none;border-top:1px dashed var(--border);margin:12px 0}
+.f-label{font-size:13px;font-weight:700;color:#455546;text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.f-label::before{content:'';width:3px;height:14px;background:#DDAB63;border-radius:2px;display:inline-block}
+.f-divider{border:none;border-top:1px dashed #455546;margin:12px 0}
+.f-divider-solid{border:none;border-top:1px solid #455546;margin:16px 0}
 
 /* CHECK / RADIO */
-.ck-wrap{display:flex;flex-wrap:wrap;gap:6px}
-.ck,.rk{display:flex;align-items:center;gap:5px;border:1.5px solid var(--border);border-radius:7px;padding:6px 11px;cursor:pointer;user-select:none;font-size:12px;background:#fff;transition:all .12s;color:var(--text)}
+.ck-wrap{display:flex;flex-wrap:wrap;gap:12px}
+.ck,.rk{display:flex;align-items:center;gap:5px;border:1.5px solid var(--border);border-radius:7px;padding:6px 11px;cursor:pointer;user-select:none;font-size:14px;background:#fff;transition:all .12s;color:var(--text)}
 .ck:hover,.rk:hover{border-color:var(--teal);background:var(--teal-light)}
 .ck.on{border-color:var(--teal);background:var(--teal-light);color:var(--teal);font-weight:500}
 .rk.on{border-color:var(--teal);background:var(--teal-light);color:var(--teal);font-weight:500}
@@ -113,18 +114,18 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
 .rom-table tr:last-child td{border-bottom:none}
 .rom-motion{font-weight:500;color:var(--navy)}
 .rom-opts{display:flex;gap:5px}
-.rom-opt{border:1.5px solid var(--border);border-radius:6px;padding:4px 9px;cursor:pointer;font-size:11px;font-weight:500;background:#fff;transition:all .12s;font-family:'Montserrat','Pretendard',sans-serif;color:var(--muted)}
+.rom-opt{border:1.5px solid var(--border);border-radius:6px;padding:4px 9px;cursor:pointer;font-size:14px;font-weight:500;background:#fff;transition:all .12s;font-family:'Montserrat','Pretendard',sans-serif;color:var(--muted)}
 .rom-opt:hover{border-color:var(--teal)}
 .rom-opt.on-normal{border-color:var(--green);background:var(--green-bg);color:var(--green)}
 .rom-opt.on-limit{border-color:var(--amber);background:var(--amber-bg);color:var(--amber)}
 .rom-opt.on-severe{border-color:var(--red);background:var(--red-bg);color:var(--red)}
-.pain-opt{border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:10px;background:#fff;transition:all .12s;font-family:'Montserrat','Pretendard',sans-serif;color:var(--muted)}
+.pain-opt{border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:14px;background:#fff;transition:all .12s;font-family:'Montserrat','Pretendard',sans-serif;color:var(--muted)}
 .pain-opt.on{border-color:#e07070;background:#fdf0ee;color:var(--red);font-weight:500}
 
 /* TEXT / DATE INPUT */
-.t-input,.d-input{width:100%;border:1px solid var(--border);border-radius:7px;padding:7px 10px;font-size:12px;font-family:'Montserrat','Pretendard',sans-serif;color:var(--text);outline:none;background:#fff;transition:border-color .2s}
+.t-input,.d-input{width:100%;border:1.5px solid var(--red);border-radius:7px;padding:7px 10px;font-size:14px;font-family:'Montserrat','Pretendard',sans-serif;color:var(--text);outline:none;background:#fff;transition:border-color .2s}
 .t-input:focus,.d-input:focus{border-color:var(--teal)}
-.t-area{width:100%;border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:12px;font-family:'Montserrat','Pretendard',sans-serif;color:var(--text);outline:none;resize:vertical;min-height:52px;background:#fff;transition:border-color .2s}
+.t-area{width:100%;border:1.5px solid var(--red);border-radius:7px;padding:8px 10px;font-size:14px;font-family:'Montserrat','Pretendard',sans-serif;color:var(--text);outline:none;resize:vertical;min-height:52px;background:#fff;transition:border-color .2s}
 .t-area:focus{border-color:var(--teal)}
 .cond-field{display:none;margin-top:8px;padding:10px 12px;background:var(--bg);border-radius:7px;border-left:3px solid var(--teal)}
 .cond-field.show{display:block}
@@ -152,6 +153,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
 .r-head-title{font-size:13px;font-weight:700;color:var(--navy)}
 .r-head-sub{font-size:11px;color:var(--muted);margin-top:2px}
 .r-body{flex:1;overflow-y:auto;padding:14px}
+.r-summary{padding:10px 14px;border-bottom:1px solid var(--border);background:#fff;flex-shrink:0;display:none}
 .r-foot{padding:10px 14px;border-top:1px solid var(--border);background:#fff;display:flex;gap:7px;flex-shrink:0}
 
 /* SOAP BLOCKS */
@@ -163,7 +165,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
 .s-a{background:#FBF5E8;color:#C49340}
 .s-p{background:#EDE8DF;color:#455546}
 .soap-blk-title{font-size:11px;font-weight:700;color:var(--text)}
-.soap-blk-body{padding:10px 12px;font-size:12px;line-height:1.8;color:var(--text);white-space:pre-wrap;min-height:44px}
+.soap-blk-body{padding:10px 12px;font-size:14px;line-height:1.8;color:var(--text);white-space:pre-wrap;min-height:44px}
 
 .class-badge{display:inline-flex;align-items:center;padding:5px 10px;border-radius:7px;font-size:11px;font-weight:700}
 .cl-A{background:#E8EFD9;color:#6B8550}
@@ -175,14 +177,14 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
 
 .strat-card{background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:8px;padding:10px 13px;margin-bottom:10px}
 .strat-title{font-size:10px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
-.strat-body{font-size:12px;color:var(--navy2);line-height:1.6}
+.strat-body{font-size:14px;color:var(--navy2);line-height:1.6}
 
 .sum-row{display:flex;gap:6px;padding:4px 0;border-bottom:.5px solid #FAF8F4;font-size:11px}
 .sum-row:last-child{border:none}
 .sum-k{color:var(--muted);min-width:72px;flex-shrink:0}
 .sum-v{color:var(--text);font-weight:500}
 
-.copy-btn,.reset-btn{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px 14px;font-size:11px;cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif;color:var(--muted);transition:all .15s}
+.copy-btn,.reset-btn{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px 14px;font-size:14px;cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif;color:var(--muted);transition:all .15s}
 .copy-btn:hover,.reset-btn:hover{color:var(--teal);border-color:var(--teal)}
 
 .empty{text-align:center;padding:40px 16px;color:var(--muted)}
@@ -191,7 +193,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
 /* 2-col info grid */
 .info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
 .i-field label{display:block;font-size:10px;color:var(--muted);font-weight:500;margin-bottom:3px}
-.i-field input,.i-field select{width:100%;border:1px solid var(--border);border-radius:7px;padding:7px 9px;font-size:12px;font-family:'Montserrat','Pretendard',sans-serif;color:var(--text);outline:none;background:#fff;transition:border-color .2s}
+.i-field input,.i-field select{width:100%;border:1.5px solid var(--red);border-radius:7px;padding:7px 9px;font-size:14px;font-family:'Montserrat','Pretendard',sans-serif;color:var(--text);outline:none;background:#fff;transition:border-color .2s}
 .i-field input:focus,.i-field select:focus{border-color:var(--teal)}
 
 /* LAYOUT */
@@ -246,7 +248,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
     <!-- 1. 통증부위 -->
     <div class="field">
       <div class="f-label">1. 통증부위</div>
-      <input type="text" class="t-input" id="f-region" placeholder="예: 요추, 경추, 승모근" oninput="updateTag()">
+      <textarea class="t-area" id="f-region" placeholder="예: 요추, 경추, 승모근" oninput="updateTag()"></textarea>
       <div class="ck-wrap" id="g-side" style="margin-top:8px">
         <div class="rk" onclick="radio('g-side',this,'Rt.');toggleCond('cond-side-detail',false)"><div class="rdot"></div>Rt.</div>
         <div class="rk" onclick="radio('g-side',this,'Lt.');toggleCond('cond-side-detail',false)"><div class="rdot"></div>Lt.</div>
@@ -261,7 +263,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         </div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <!-- 2. 발생시점 -->
     <div class="field">
@@ -298,7 +300,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="rk" onclick="radio('g-progress',this,'반복 재발')"><div class="rdot"></div>반복 재발</div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <!-- 3. 과거력 -->
     <div class="field">
@@ -318,7 +320,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <textarea class="t-area" id="f-history-detail" placeholder="과거력 세부내용 (이전 치료, 진단명 등)..."></textarea>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <!-- 4. 발생계기 -->
     <div class="field">
@@ -337,7 +339,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <textarea class="t-area" id="f-trigger-detail" placeholder="발생계기 세부내용..."></textarea>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <!-- 5. 통증유발 -->
     <div class="field">
@@ -358,7 +360,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <textarea class="t-area" id="f-provoke-free" placeholder="세부 동작 입력 (예: 허리 숙일 때, 팔 들어올릴 때...)"></textarea>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <!-- 6. 통증악화 -->
     <div class="field">
@@ -373,7 +375,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'worsen','시간대 일정 없음')"><div class="dot"></div>시간대 일정 없음</div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <!-- 7. 통증완화 -->
     <div class="field">
@@ -388,7 +390,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <input class="t-input" id="f-relieve-detail" placeholder="동작·자세변화 상세...">
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <!-- 8. 통증양상 -->
     <div class="field">
@@ -410,7 +412,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'nerve','감각이상')"><div class="dot"></div>감각이상</div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <!-- 9. 범위 -->
     <div class="field">
@@ -423,10 +425,10 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'range','광범위 압통')"><div class="dot"></div>광범위 압통</div>
       </div>
       <div style="margin-top:8px">
-        <input class="t-input" id="f-muscle-loc" placeholder="통증발생 근육위치...">
+        <textarea class="t-area" id="f-muscle-loc" placeholder="통증발생 근육위치..."></textarea>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <!-- 10. NRS -->
     <div class="field">
@@ -439,7 +441,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="nrs-b" data-v="9~10" onclick="nrsSel(this,'9~10')">9~10<span class="nrs-sub">극심</span></div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <!-- 11. 지속시간 -->
     <div class="field">
@@ -453,7 +455,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="rk" onclick="radio('g-duration',this,'수일 지속')"><div class="rdot"></div>수일 지속</div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <!-- 12. 지속유무 (조건부: 휴식 시 발생 또는 자발통 선택 시에만 표시) -->
     <div id="wrap-persist" style="display:none">
@@ -466,7 +468,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
           <div class="rk" onclick="radio('g-persist',this,'간헐적 불편감')"><div class="rdot"></div>간헐적 불편감</div>
         </div>
       </div>
-      <hr class="f-divider">
+      <hr class="f-divider-solid">
     </div>
 
     <!-- 13. 기능제한 -->
@@ -517,7 +519,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="rk" onclick="radio('g-gait',this,'도움 보행')"><div class="rdot"></div>도움 보행</div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <!-- 14. ROM -->
     <div class="field">
@@ -548,7 +550,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
           <div class="ck" onclick="chk(this,'rom-sign','Edema(부종)')"><div class="dot"></div>부종</div>
           <div class="ck" onclick="chk(this,'rom-sign','Erythema(발적)')"><div class="dot"></div>발적</div>
         </div>
-        <input class="t-input" id="f-rom-note" placeholder="ROM 특이사항...">
+        <textarea class="t-area" id="f-rom-note" placeholder="ROM 특이사항..."></textarea>
       </div>
     </div>
 
@@ -574,7 +576,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'imaging','Ultrasound')"><div class="dot"></div>Ultrasound</div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <div class="field">
       <div class="f-label">17. 물리치료</div>
@@ -585,7 +587,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'ptx','재활운동')"><div class="dot"></div>재활운동</div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <div class="field">
       <div class="f-label">18. 한방치료</div>
@@ -596,7 +598,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'ktx','한약')"><div class="dot"></div>한약</div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <div class="field">
       <div class="f-label">19. 약물·주사</div>
@@ -607,9 +609,9 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'inj','신경차단술')"><div class="dot"></div>신경차단술</div>
         <div class="ck" onclick="chk(this,'inj','주사치료(종류불명)')"><div class="dot"></div>주사(종류불명)</div>
       </div>
-      <div style="margin-top:8px"><input class="t-input" id="f-inj-detail" placeholder="약물·주사 상세내용..."></div>
+      <div style="margin-top:8px"><textarea class="t-area" id="f-inj-detail" placeholder="약물·주사 상세내용..."></textarea></div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <div class="field">
       <div class="f-label">20. 수술·기타</div>
@@ -619,7 +621,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'surg','보조기 착용')"><div class="dot"></div>보조기 착용</div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <div class="field">
       <div class="f-label">20. 치료효과 · 지속성</div>
@@ -668,9 +670,9 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'pmhx','Hypo')"><div class="dot"></div>Hypo</div>
         <div class="ck" onclick="chk(this,'pmhx','Hyper')"><div class="dot"></div>Hyper</div>
       </div>
-      <div style="margin-top:8px"><input class="t-input" id="f-meds" placeholder="복용약 상세..."></div>
+      <div style="margin-top:8px"><textarea class="t-area" id="f-meds" placeholder="복용약 상세..."></textarea></div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <div class="field">
       <div class="f-label">22. 생활패턴</div>
@@ -681,7 +683,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="rk" onclick="radio('g-lifestyle',this,'복합형·혼합')"><div class="rdot"></div>복합형·혼합</div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <div class="field">
       <div class="f-label">23. 운동</div>
@@ -692,7 +694,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="rk" onclick="radio('g-exercise',this,'5회↑/week')"><div class="rdot"></div>5회↑/week</div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <div class="field">
       <div class="f-label">24. 수면</div>
@@ -731,7 +733,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         </div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <div class="field" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <div>
@@ -786,7 +788,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'plan-nhi','PEMF 전자기장 온열')"><div class="dot"></div>PEMF 온열</div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <div class="field">
       <div class="f-label">28. 한약</div>
@@ -795,7 +797,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
         <div class="ck" onclick="chk(this,'plan-herb','MD 한약')"><div class="dot"></div>MD 한약</div>
       </div>
     </div>
-    <hr class="f-divider">
+    <hr class="f-divider-solid">
 
     <div class="field">
       <div class="f-label">29. 건강보험 치료</div>
@@ -828,6 +830,7 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
     <div class="r-head-title">SOAP 요약 노트</div>
     <div class="r-head-sub">체크 완료 후 자동 생성</div>
   </div>
+  <div class="r-summary" id="soap-summary"></div>
   <div class="r-body" id="soap-output">
     <div class="empty">
       <div class="empty-icon">📋</div>
@@ -1779,42 +1782,41 @@ ${rom !== '미시행' ? rom : '- ROM: 미시행'}
 
     const fmt = (t) => t ? t.replace(/\n/g,'<br>') : '—';
 
-    document.getElementById('soap-output').innerHTML = `
-
-      <!-- 한 줄 요약 -->
-      <div style="background:var(--navy2);border-radius:8px;padding:9px 13px;margin-bottom:12px">
+    document.getElementById('soap-summary').innerHTML = `
+      <div style="background:var(--navy2);border-radius:8px;padding:9px 13px">
         <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.05em;margin-bottom:4px">SUMMARY</div>
-        <div style="font-size:12px;color:#fff;line-height:1.6">${oneLiner}</div>
-      </div>
+        <div style="font-size:14px;color:#fff;line-height:1.6">${oneLiner}</div>
+      </div>`;
+    document.getElementById('soap-summary').style.display = 'block';
 
-      <!-- S -->
+    document.getElementById('soap-output').innerHTML = `
       <div class="soap-blk">
         <div class="soap-blk-head"><span class="stag s-s">S</span><span class="soap-blk-title">Subjective</span></div>
         <div class="soap-blk-body" style="padding:0">
 
           <div style="padding:8px 12px;border-bottom:1px solid var(--border)">
             <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">CC — 주 호소</div>
-            <div style="font-size:12px;line-height:1.9">${fmt(ccText)}</div>
+            <div style="font-size:14px;line-height:1.9">${fmt(ccText)}</div>
           </div>
 
           <div style="padding:8px 12px;border-bottom:1px solid var(--border)">
             <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">OS — 발생 정보</div>
-            <div style="font-size:12px;line-height:1.9">${fmt(osText)}</div>
+            <div style="font-size:14px;line-height:1.9">${fmt(osText)}</div>
           </div>
 
           <div style="padding:8px 12px;border-bottom:1px solid var(--border)">
             <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">PI — 치료력</div>
-            <div style="font-size:12px;line-height:1.9">${fmt(piText)}</div>
+            <div style="font-size:14px;line-height:1.9">${fmt(piText)}</div>
           </div>
 
           <div style="padding:8px 12px;border-bottom:1px solid var(--border)">
             <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">HX — 과거병력</div>
-            <div style="font-size:12px;line-height:1.9">${fmt(hxText)}</div>
+            <div style="font-size:14px;line-height:1.9">${fmt(hxText)}</div>
           </div>
 
           <div style="padding:8px 12px">
             <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">SH — 생활습관</div>
-            <div style="font-size:12px;line-height:1.9">${fmt(shText)}</div>
+            <div style="font-size:14px;line-height:1.9">${fmt(shText)}</div>
           </div>
 
         </div>
@@ -1826,7 +1828,7 @@ ${rom !== '미시행' ? rom : '- ROM: 미시행'}
         <div class="soap-blk-body" style="padding:0">
           <div style="padding:8px 12px">
             <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">PE — 신체검사 · ROM</div>
-            <div style="font-size:12px;line-height:1.9">${fmt(peText)}</div>
+            <div style="font-size:14px;line-height:1.9">${fmt(peText)}</div>
           </div>
         </div>
       </div>
@@ -1835,7 +1837,7 @@ ${rom !== '미시행' ? rom : '- ROM: 미시행'}
       <div class="soap-blk">
         <div class="soap-blk-head"><span class="stag s-a">A</span><span class="soap-blk-title">Assessment</span></div>
         <div class="soap-blk-body">
-          <div style="font-size:12px;line-height:1.9">${fmt(aText)}</div>
+          <div style="font-size:14px;line-height:1.9">${fmt(aText)}</div>
         </div>
       </div>
 
@@ -1843,7 +1845,7 @@ ${rom !== '미시행' ? rom : '- ROM: 미시행'}
       <div class="soap-blk">
         <div class="soap-blk-head"><span class="stag s-p">P</span><span class="soap-blk-title">Plan</span></div>
         <div class="soap-blk-body">
-          <div style="font-size:12px;line-height:1.9">${fmt(pText)}</div>
+          <div style="font-size:14px;line-height:1.9">${fmt(pText)}</div>
         </div>
       </div>
 

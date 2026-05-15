@@ -135,10 +135,11 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .text-input:focus{border-color:#455546}
 
 /* BOTTOM NAV */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--header);border-top:none;padding:24px 24px 28px;display:flex;flex-direction:column;gap:16px;max-width:900px;margin:0 auto}
-.btn-prev{width:100%;min-height:48px;padding:28px 20px;border:none;border-radius:16px;background:transparent;font-size:14px;font-weight:500;color:#93AA6D;cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--header);border-top:none;padding:20px 24px 28px;display:grid;grid-template-columns:1fr 2fr;gap:12px;max-width:900px;margin:0 auto}
+.bottom-nav.first-step{grid-template-columns:1fr}
+.btn-prev{width:100%;min-height:56px;padding:16px 20px;border:1px solid rgba(255,255,255,0.6);border-radius:16px;background:transparent;font-size:15px;font-weight:500;color:#fff;cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif}
 .btn-prev:active{background:var(--green);border-color:var(--green);color:#fff}
-.btn-next{width:100%;min-height:64px;padding:28px 20px;border:1px solid #93AA6D;border-radius:16px;background:#fff;font-size:16px;font-weight:700;color:var(--text);cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif}
+.btn-next{width:100%;min-height:56px;padding:16px 20px;border:1px solid #93AA6D;border-radius:16px;background:#fff;font-size:16px;font-weight:700;color:var(--text);cursor:pointer;font-family:'Montserrat','Pretendard',sans-serif}
 .btn-next:active{background:var(--green);border-color:var(--green);color:#fff}
 
 .alert-box{background:var(--coral-light);border:1px solid var(--coral);border-radius:10px;padding:12px 14px;margin-top:10px;font-size:13px;color:#455546;line-height:1.6}
@@ -208,6 +209,15 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .tag-x{font-size:11px;color:#93AA6D;font-weight:bold}
 .empty-t{font-size:13px;color:#aaa;font-style:italic}
 .reset-b{margin-top:9px;font-size:12px;color:#aaa;cursor:pointer;background:none;border:none;padding:0;text-decoration:underline}
+/* SCROLL INDICATOR */
+@keyframes si-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+#scroll-indicator{position:fixed;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:100;opacity:0;transition:opacity 0.3s}
+#scroll-indicator.visible{opacity:1}
+#scroll-track{width:8px;height:140px;background:rgba(69,85,70,0.12);border-radius:6px;position:relative;overflow:hidden}
+#scroll-thumb{width:8px;background:#93AA6D;border-radius:6px;position:absolute;top:0;min-height:28px;transition:top 0.1s,height 0.1s}
+.scroll-arrows{display:flex;flex-direction:column;align-items:center;gap:1px}
+.si-arrow{color:#93AA6D;font-size:14px;line-height:1;animation:si-bounce 1.2s ease-in-out infinite}
+.si-arrow:nth-child(2){animation-delay:0.2s}
 </style>
 </head>
 <body>
@@ -221,9 +231,18 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
   </div>
   <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
   <div class="content" id="content"></div>
-  <div class="bottom-nav">
+  <div class="bottom-nav" id="bottom-nav">
+    <button class="btn-prev" id="btn-prev">← 이전</button>
     <button class="btn-next" id="btn-next">다음 →</button>
-    <button class="btn-prev" id="btn-prev">이전</button>
+  </div>
+</div>
+<div id="scroll-indicator">
+  <div id="scroll-track">
+    <div id="scroll-thumb"></div>
+  </div>
+  <div class="scroll-arrows">
+    <div class="si-arrow">▾</div>
+    <div class="si-arrow" style="opacity:0.5">▾</div>
   </div>
 </div>
 
@@ -369,7 +388,7 @@ function makeFatigue(containerId, key){
 }
 
 // ── 신체 부위 선택 ──
-const SOLO_PARTS=new Set(['허리','등','두통','흉부','복부','안면']);
+const SOLO_PARTS=new Set(['등','두통','흉부','복부','안면']);
 const romMapping={'목':'경추','허리':'요추','등':'흉추','골반':'골반','어깨':'견관절','팔꿈치':'주관절','손목':'수관절','손':'수관절','손가락':'수관절','엉치':'천골','엉덩이':'고관절','무릎':'슬관절','발목':'족관절','발':'족관절','발가락':'족관절','안면':'경추','두통':'경추','턱관절':'턱관절','흉부':'흉추','복부':'요추'};
 // {partName: {solo?:true} | {open:bool,rt:bool,lt:bool,rl:bool}}
 const bodyS={};
@@ -461,7 +480,15 @@ function updateNav(){
     pills.appendChild(d);
   }
   document.getElementById('prog').style.width=((step/(STEPS-1))*100)+'%';
-  document.getElementById('btn-prev').style.display=step===0?'none':'block';
+  const prevBtn = document.getElementById('btn-prev');
+  const nav = document.getElementById('bottom-nav');
+  if(step===0){
+    prevBtn.style.display='none';
+    nav.style.gridTemplateColumns='1fr';
+  } else {
+    prevBtn.style.display='block';
+    nav.style.gridTemplateColumns='1fr 2fr';
+  }
   document.getElementById('btn-next').textContent=step===STEPS-1?'설문 완료 ✓':'다음 →';
 }
 
@@ -510,6 +537,42 @@ function render(){
   numberCardLabels();
   numberSectionTitles();
   window.scrollTo(0,0);
+  updateScrollIndicator();
+}
+
+// ── 스크롤 인디케이터 ──
+function updateScrollIndicator(){
+  const indicator=document.getElementById('scroll-indicator');
+  const thumb=document.getElementById('scroll-thumb');
+  const arrows=document.querySelector('.scroll-arrows');
+  if(!indicator||!thumb) return;
+
+  function update(){
+    const scrollTop=window.scrollY;
+    const docHeight=document.documentElement.scrollHeight;
+    const winHeight=window.innerHeight;
+    const scrollable=docHeight-winHeight;
+
+    if(scrollable<=10){
+      indicator.classList.remove('visible');
+      return;
+    }
+    indicator.classList.add('visible');
+
+    const trackHeight=140;
+    const thumbHeight=Math.max(28,(winHeight/docHeight)*trackHeight);
+    const thumbTop=(scrollTop/scrollable)*(trackHeight-thumbHeight);
+
+    thumb.style.height=thumbHeight+'px';
+    thumb.style.top=thumbTop+'px';
+
+    const atBottom=scrollTop+winHeight>=docHeight-8;
+    if(arrows){arrows.style.opacity=atBottom?'0':'1';arrows.style.transition='opacity 0.3s';}
+  }
+
+  window.removeEventListener('scroll',update);
+  window.addEventListener('scroll',update);
+  update();
 }
 
 // ── 스텝 함수 재정의

@@ -473,6 +473,17 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
       <hr class="f-divider-solid">
     </div>
 
+    <!-- 12-1. 통증 빈도 (설문 자동입력: 가만히/자발통 선택 시) -->
+    <div class="field">
+      <div class="f-label">12-1. 통증 빈도 <span style="font-size:10px;font-weight:400;color:var(--muted);letter-spacing:0;text-transform:none">— 설문에서 자동입력</span></div>
+      <div class="ck-wrap" id="g-freq">
+        <div class="rk" onclick="radio('g-freq',this,'가끔 (주 1~2회)')"><div class="rdot"></div>가끔 (주 1~2회)</div>
+        <div class="rk" onclick="radio('g-freq',this,'자주 (하루에 여러번)')"><div class="rdot"></div>자주 (하루에 여러번)</div>
+        <div class="rk" onclick="radio('g-freq',this,'항상 (하루종일)')"><div class="rdot"></div>항상 (하루종일)</div>
+      </div>
+    </div>
+    <hr class="f-divider-solid">
+
     <!-- 13. 기능제한 -->
     <div class="field">
       <div class="f-label">13. 기능 수행</div>
@@ -568,6 +579,20 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
     <span class="arr">▾</span>
   </div>
   <div class="sec-body">
+
+    <div class="field">
+      <div class="f-label">15-1. 방문 의료기관</div>
+      <div class="ck-wrap" id="g-hospital">
+        <div class="ck" onclick="chk(this,'hospital','한의원')"><div class="dot"></div>한의원</div>
+        <div class="ck" onclick="chk(this,'hospital','정형외과')"><div class="dot"></div>정형외과</div>
+        <div class="ck" onclick="chk(this,'hospital','통증의학과')"><div class="dot"></div>통증의학과</div>
+        <div class="ck" onclick="chk(this,'hospital','신경과')"><div class="dot"></div>신경과</div>
+        <div class="ck" onclick="chk(this,'hospital','내과')"><div class="dot"></div>내과</div>
+        <div class="ck" onclick="chk(this,'hospital','종합병원')"><div class="dot"></div>종합병원</div>
+        <div class="ck" onclick="chk(this,'hospital','없음')"><div class="dot"></div>없음</div>
+      </div>
+    </div>
+    <hr class="f-divider-solid">
 
     <div class="field">
       <div class="f-label">16. 영상검진</div>
@@ -911,13 +936,29 @@ async function loadSurvey(){
     if(d.hospital?.length) S['hospital'] = new Set(d.hospital);
     if(d.imaging?.length) S['imaging'] = new Set(d.imaging);
     if(d.ptx?.length) S['ptx'] = new Set(d.ptx);
+    if(d.conservative?.length) S['conservative'] = new Set(d.conservative);
     if(d.ktx?.length) S['ktx'] = new Set(d.ktx);
     if(d.inj?.length) S['inj'] = new Set(d.inj);
     if(d.surg?.length) S['surg'] = new Set(d.surg);
     if(d.txEffect) S['g-tx-effect'] = d.txEffect;
     if(d.txPersist) S['g-tx-persist'] = d.txPersist;
+    if(d.persist) S['g-persist'] = d.persist;
     if(d.pmhx?.length) S['pmhx'] = new Set(d.pmhx);
-    if(d.lifestyle?.length) S['g-lifestyle'] = d.lifestyle[0];
+    // lifestyle: survey는 Set['정적형','동적형',...] 으로 저장 → 첫 번째 값 사용
+    if(d.lifestyle?.length) {
+      const lifestyleRawMap = {
+        '정적형': '정적형·고정자세',
+        '동적형': '동적형·이동중심',
+        '반복형': '반복형·반복작업',
+        '복합형': '복합형·혼합',
+        // 구버전 긴 텍스트 호환
+        '정적형 (앉아서 고정 자세)': '정적형·고정자세',
+        '동적형 (이동이 많은 활동)': '동적형·이동중심',
+        '반복형 (동일 동작 반복)': '반복형·반복작업',
+        '복합형 (다양하게 혼합)': '복합형·혼합',
+      };
+      S['g-lifestyle'] = lifestyleRawMap[d.lifestyle[0]] || d.lifestyle[0];
+    }
     if(d.exercise) S['g-exercise'] = d.exercise;
     if(d.sleepTime) S['g-sleep-time'] = d.sleepTime;
     if(d.sleepMaint) S['g-sleep-maint'] = d.sleepMaint;
@@ -1074,6 +1115,13 @@ function applyToUI(d) {
     (nerveMap[n] || []).forEach(v => clickCK('nerve', v));
   });
 
+  // 방문 의료기관 (hospital)
+  const hospitalMap = {
+    '한의원': '한의원', '정형외과': '정형외과', '통증의학과': '통증의학과',
+    '신경과': '신경과', '내과': '내과', '종합병원': '종합병원', '없음': '없음',
+  };
+  (d.hospital || []).forEach(v => { if (hospitalMap[v]) clickCK('hospital', hospitalMap[v]); });
+
   // 영상검진 (imaging)
   const imagingMap = { 'X-ray': 'X-ray', 'MRI': 'MRI', 'CT': 'CT', '초음파': 'Ultrasound', '내시경': '내시경' };
   (d.imaging || []).forEach(v => { if (imagingMap[v]) clickCK('imaging', imagingMap[v]); });
@@ -1137,9 +1185,13 @@ function applyToUI(d) {
   };
   if (d.txPersist && txPersistMap[d.txPersist]) clickRK('g-tx-persist', txPersistMap[d.txPersist]);
 
-  // 과거병력 (pmhx)
+  // 과거병력 (pmhx) — survey 저장값과 예진 버튼 값 매핑
   const pmhxMap = {
     '고혈압': 'HTN', '당뇨': 'DM', '고지혈증': 'HL', '간질환': 'Hepa', '결핵': 'TB',
+    // survey 저장값 (makeTags 레이블 기준)
+    '목 디스크': 'C-spine HNP', '목 협착증': 'C-spine stenosis',
+    '허리 디스크': 'L-spine HNP', '허리 협착증': 'L-spine stenosis',
+    // 구버전 긴 텍스트 호환
     '경추 디스크': 'C-spine HNP', '경추 협착증': 'C-spine stenosis',
     '요추 디스크': 'L-spine HNP', '요추 협착증': 'L-spine stenosis',
     '항응고제 복용': 'Antithrombotic', '갑상선 저하': 'Hypo', '갑상선 항진': 'Hyper',
@@ -1147,13 +1199,22 @@ function applyToUI(d) {
   (d.pmhx || []).forEach(v => { if (pmhxMap[v]) clickCK('pmhx', pmhxMap[v]); });
 
   // 생활패턴 (lifestyle) → g-lifestyle
+  // survey는 Set['정적형','동적형',...] 으로 저장하므로 짧은 값도 처리
   const lifestyleMap = {
+    '정적형': '정적형·고정자세',
+    '동적형': '동적형·이동중심',
+    '반복형': '반복형·반복작업',
+    '복합형': '복합형·혼합',
+    // 구버전 긴 텍스트 호환
     '정적형 (앉아서 고정 자세)': '정적형·고정자세',
     '동적형 (이동이 많은 활동)': '동적형·이동중심',
     '반복형 (동일 동작 반복)': '반복형·반복작업',
     '복합형 (다양하게 혼합)': '복합형·혼합',
   };
-  if (d.lifestyle?.[0] && lifestyleMap[d.lifestyle[0]]) clickRK('g-lifestyle', lifestyleMap[d.lifestyle[0]]);
+  if (d.lifestyle?.[0]) {
+    const mappedLife = lifestyleMap[d.lifestyle[0]] || d.lifestyle[0];
+    clickRK('g-lifestyle', mappedLife);
+  }
 
   // 운동 (exercise) → g-exercise
   const exerciseMap = {
@@ -1161,6 +1222,10 @@ function applyToUI(d) {
     '주 3~4회': '3~4회/week', '주 5회 이상': '5회↑/week',
   };
   if (d.exercise && exerciseMap[d.exercise]) clickRK('g-exercise', exerciseMap[d.exercise]);
+
+  // 통증 빈도 (freq) → g-freq
+  // survey 저장값: '가끔 (주 1~2회)', '자주 (하루에 여러번)', '항상 (하루종일)'
+  if (d.freq) clickRK('g-freq', d.freq);
 
   // 수면시간 (sleepTime) → g-sleep-time
   const sleepTimeMap = { '6시간 이상': '6시간↑', '5시간 이하': '5시간↓' };
@@ -1195,8 +1260,20 @@ function applyToUI(d) {
   };
   if (d.duration && durationMap[d.duration]) clickRK('g-duration', durationMap[d.duration]);
 
-  // 지속유무 조건부 표시 업데이트
+  // 지속유무 조건부 표시 업데이트 (provoke 클릭 후 실행)
   updatePersistVisibility();
+
+  // persist가 있으면 wrap-persist를 강제 표시 후 클릭 (조건부 hidden 우회)
+  if (d.persist) {
+    document.getElementById('wrap-persist').style.display = '';
+    const persistMap2 = {
+      '항상 아파요':   '지속성 통증',
+      '항상 불편해요': '지속성 불편감',
+      '가끔 아파요':   '간헐적 통증',
+      '가끔 불편해요': '간헐적 불편감',
+    };
+    if (persistMap2[d.persist]) clickRK('g-persist', persistMap2[d.persist]);
+  }
 
   // 피로도 카드 렌더링
   renderFatigueCard(d.fat1, d.fat2, d.fat3, d.fat4);
@@ -1251,13 +1328,20 @@ function showSurveySummary(d){
       <div><span style="color:#6b7a8d">NRS:</span> <strong>${d.nrs||'—'}</strong></div>
       <div><span style="color:#6b7a8d">시작:</span> <strong>${d.onset||'—'}</strong></div>
       <div><span style="color:#6b7a8d">원인:</span> <strong>${d.cause||'—'}</strong></div>
-      <div><span style="color:#6b7a8d">통증발생:</span> <strong>${d.painWhen||'—'}</strong></div>
-      <div><span style="color:#6b7a8d">지속:</span> <strong>${d.duration||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">통증발생:</span> <strong>${Array.isArray(d.painWhen)?(d.painWhen.join(', ')||'—'):(d.painWhen||'—')}</strong></div>
+      <div><span style="color:#6b7a8d">지속시간:</span> <strong>${d.duration||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">지속유무:</span> <strong>${d.persist||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">빈도:</span> <strong>${d.freq||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">악화요인:</span> <strong>${(d.worsen||[]).join(', ')||'—'}</strong></div>
       <div><span style="color:#6b7a8d">근육성:</span> <strong>${(d.muscle||[]).join(', ')||'—'}</strong></div>
       <div><span style="color:#6b7a8d">신경성:</span> <strong>${(d.nerve||[]).join(', ')||'—'}</strong></div>
-      <div><span style="color:#6b7a8d">치료력:</span> <strong>${[...(d.ptx||[]),...(d.ktx||[]),...(d.inj||[])].join(', ')||'없음'}</strong></div>
-      <div><span style="color:#6b7a8d">치료효과:</span> <strong>${d.txEffect||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">방문기관:</span> <strong>${(d.hospital||[]).join(', ')||'없음'}</strong></div>
+      <div><span style="color:#6b7a8d">치료력:</span> <strong>${[...(d.ptx||[]),...(d.conservative||[]),...(d.ktx||[]),...(d.inj||[]),...(d.surg||[])].join(', ')||'없음'}</strong></div>
+      <div><span style="color:#6b7a8d">치료효과:</span> <strong>${d.txEffect||'—'} / ${d.txPersist||'—'}</strong></div>
       <div><span style="color:#6b7a8d">과거병력:</span> <strong>${(d.pmhx||[]).join(', ')||'없음'}</strong></div>
+      <div><span style="color:#6b7a8d">생활패턴:</span> <strong>${(d.lifestyle||[]).join(', ')||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">운동/수면:</span> <strong>${d.exercise||'—'} / ${d.sleepTime||'—'}</strong></div>
+      <div><span style="color:#6b7a8d">음주/흡연:</span> <strong>${d.alcohol||'—'} / ${d.smoke||'—'}</strong></div>
       <div><span style="color:#6b7a8d">피로도:</span> <strong>신체 ${(d.fat1||0)+(d.fat4||0)}점 / 뇌 ${(d.fat2||0)+(d.fat3||0)}점</strong></div>
     </div>`;
   fixedBar.style.display = 'block';
@@ -1517,11 +1601,14 @@ async function generateSOAP(){
     func: getC('func'),
     gait: getR('g-gait'),
     rom: getROMSummary(),
+    hospital: getC('hospital'),
     imaging: getC('imaging'),
     ptx: getC('ptx'),
+    conservative: getC('conservative'),
     ktx: getC('ktx'),
     inj: getC('inj'),
     surg: getC('surg'),
+    freq: getR('g-freq'),
     txEffect: getR('g-tx-effect'),
     txPersist: getR('g-tx-persist'),
     pmhx: getC('pmhx'),
@@ -1563,11 +1650,13 @@ ${d.historyDetail?'과거력 상세: '+d.historyDetail:''}
 통증강도: ${d.nrs}
 지속시간: ${d.duration||'미기재'}
 지속유무: ${d.persist||'미기재'}
+통증빈도: ${d.freq||'미기재'}
 기능수행: ${d.funcPerf||'미기재'} / 기능제한: ${d.func||'없음'}
 보행: ${d.gait||'미기재'}
 ROM: ${d.rom}
+방문기관: ${d.hospital||'없음'}
 영상검진: ${d.imaging||'없음'}
-물리치료: ${d.ptx||'없음'} / 한방치료: ${d.ktx||'없음'}
+물리치료: ${d.ptx||'없음'} / 보존적치료: ${d.conservative||'없음'} / 한방치료: ${d.ktx||'없음'}
 약물·주사: ${d.inj||'없음'} / 수술: ${d.surg||'없음'}
 치료효과: ${d.txEffect||'미기재'} / 치료지속성: ${d.txPersist||'미기재'}
 과거병력: ${d.pmhx||'없음'} / 복용약: ${d.meds}
@@ -1665,7 +1754,9 @@ P)
     const gait    = d.gait || '정상 보행';
     const rom     = d.rom || '미시행';
     const img     = d.imaging || '없음';
-    const txAll   = [d.ptx,d.ktx,d.inj,d.surg].filter(Boolean).join(' / ') || '없음';
+    const hosp    = d.hospital || '없음';
+    const txAll   = [d.ptx,d.conservative,d.ktx,d.inj,d.surg].filter(Boolean).join(' / ') || '없음';
+    const freq_   = d.freq || '';
     const txEff   = d.txEffect || '';
     const txPer   = d.txPersist || '';
     const pmhx    = d.pmhx || '없음';
@@ -1751,10 +1842,11 @@ P)
 - 지속시간: ${duration}
 - 악화: ${worsen}
 - 완화: ${relieve}
-- 지속유무: ${persist}
+- 지속유무: ${persist}${freq_ ? ' / 빈도: ' + freq_ : ''}
 - 기능: ${funcDetail || funcP || '제한 없음'}`;
 
-    const piText = `- Imaging: ${img === '없음' ? '(-)' : img}
+    const piText = `- 방문기관: ${hosp === '없음' ? '(-)' : hosp}
+- Imaging: ${img === '없음' ? '(-)' : img}
 - Tx: ${txAll === '없음' ? '(-) 치료력 없음' : txAll}
 - 효과: ${txEff || '—'} → ${txPer || '—'}${(txEff.includes('없음') || txPer.includes('재발')) ? ' ※ 반응저하 패턴' : ''}`;
 

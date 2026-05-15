@@ -219,6 +219,8 @@ body{font-family:'Montserrat','Pretendard',sans-serif;background:var(--bg);color
   <span class="code-status" id="code-status" style="color:rgba(255,255,255,.6)">환자가 설문 완료 후 받은 4자리 코드를 입력하세요</span>
 </div>
 
+<div id="survey-fixed-bar" style="display:none;background:#fff;border-bottom:2px solid #2e7d8c;position:sticky;top:52px;z-index:150"></div>
+
 <div class="layout">
 <div class="left">
 
@@ -1207,18 +1209,13 @@ function autoClass(onset){
 }
 
 function showSurveySummary(d){
-  const existing = document.getElementById('survey-summary-card');
-  if(existing) existing.remove();
-
-  const card = document.createElement('div');
-  card.id = 'survey-summary-card';
-  card.style.cssText = 'background:#fff;border-radius:10px;border:2px solid #2e7d8c;margin-bottom:16px;overflow:hidden';
-  card.innerHTML = `
-    <div style="background:#2e7d8c;padding:10px 16px;display:flex;align-items:center;justify-content:space-between">
+  const fixedBar = document.getElementById('survey-fixed-bar');
+  fixedBar.innerHTML = `
+    <div style="background:#2e7d8c;padding:8px 20px;display:flex;align-items:center;justify-content:space-between">
       <span style="color:#fff;font-size:12px;font-weight:700">📋 환자 설문 내용 — ${d.name||'환자'} (${d.age||''}세 ${d.gender||''})</span>
       <span style="color:rgba(255,255,255,.6);font-size:10px">자동 입력됨</span>
     </div>
-    <div style="padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+    <div style="padding:10px 20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px 16px;font-size:12px">
       <div><span style="color:#6b7a8d">부위:</span> <strong>${(d.subArea||[]).join(', ')||'—'}</strong></div>
       <div><span style="color:#6b7a8d">NRS:</span> <strong>${d.nrs||'—'}</strong></div>
       <div><span style="color:#6b7a8d">시작:</span> <strong>${d.onset||'—'}</strong></div>
@@ -1232,9 +1229,7 @@ function showSurveySummary(d){
       <div><span style="color:#6b7a8d">과거병력:</span> <strong>${(d.pmhx||[]).join(', ')||'없음'}</strong></div>
       <div><span style="color:#6b7a8d">피로도:</span> <strong>신체 ${(d.fat1||0)+(d.fat4||0)}점 / 뇌 ${(d.fat2||0)+(d.fat3||0)}점</strong></div>
     </div>`;
-
-  const left = document.querySelector('.left');
-  left.insertBefore(card, left.firstChild);
+  fixedBar.style.display = 'block';
 }
 let nrsVal = null;
 let soapRaw = '';

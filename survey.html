@@ -39,7 +39,7 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .progress-bar{height:4px;background:var(--border)}
 .progress-fill{height:4px;background:var(--brand);transition:width 0.4s ease}
 
-.content{flex:1;padding:36px 32px;padding-bottom:140px}
+.content{flex:1;padding:36px 24px;padding-bottom:140px}
 
 .step-header{margin-bottom:32px}
 .step-badge{display:inline-block;background:var(--brand-light);color:var(--brand-dark);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;margin-bottom:8px}
@@ -48,6 +48,10 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .step-desc{font-size:15px;font-weight:400;color:var(--muted);line-height:1.6;white-space:nowrap;flex-shrink:0}
 
 .card{background:#fff;border-radius:20px;border:none;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:28px 32px;margin-bottom:28px}
+.notice-card{background:rgba(147,170,109,0.08);border-radius:20px;border:none;box-shadow:none;padding:32px 40px;margin-bottom:28px;max-width:100%}
+.notice-card p{margin:0 0 8px;font-size:18px;color:#455546;line-height:1.5;letter-spacing:-0.03em}
+.notice-card p:last-child{margin-bottom:0}
+.notice-card strong{color:var(--brand-dark);font-weight:700}
 .card-label{font-size:18px;font-weight:400;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:24px;display:flex;align-items:center;gap:10px}
 .card-label-num{width:26px;height:26px;border-radius:50%;background:#455546;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .card-label-text{font-size:18px;font-weight:400;color:var(--muted)}
@@ -60,6 +64,14 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 
 /* RADIO BUTTONS */
 .radio-wrap{display:flex;flex-direction:column;gap:20px}
+#r-duration .sel-content,#pi-eff .sel-content,#sh-life .sel-content{flex-direction:row;align-items:center;justify-content:space-between}
+#ins-docs .sel-content,#med-check .sel-content{flex-direction:row;align-items:center;justify-content:space-between;width:100%}
+#ins-carrier{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+#ins-carrier .sel-item{display:flex !important;flex-direction:column !important;align-items:stretch !important;cursor:pointer}
+#ins-carrier .sel-item > div:first-child{display:flex;align-items:center;gap:12px}
+#ins-carrier .sel-content{flex:1}
+#r-duration .sel-desc,#pi-eff .sel-desc,#sh-life .sel-desc{margin-top:0;text-align:right;flex-shrink:0}
+#ins-docs .sel-desc,#med-check .sel-desc{margin-top:0;font-size:15px;color:#455546;font-weight:400}
 .radio-item{border:1px solid #93AA6D;border-radius:14px;padding:20px 24px;background:rgba(255,255,255,0.70);font-size:18px;font-weight:700;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:12px;transition:all 0.12s;user-select:none}
 .radio-item.sel{border:2px solid #455546;background:rgba(147,170,109,0.15);color:#455546;font-weight:500}
 .radio-circle{width:20px;height:20px;border-radius:50%;border:1px solid #93AA6D;flex-shrink:0;transition:all 0.12s}
@@ -100,12 +112,15 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .fatigue-card{background:#fff;border:none;border-radius:16px;padding:36px 32px;margin-bottom:44px}
 .fatigue-title{font-size:18px;font-weight:400;color:var(--text);margin-bottom:24px;display:flex;align-items:center;gap:10px}
 .fatigue-sub{font-size:13px;color:var(--muted);margin-top:4px;margin-bottom:20px}
-.fatigue-scale{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
-.fatigue-btn{border-radius:8px;border:2px solid var(--border);padding:11px 2px;background:#fff;cursor:pointer;font-size:16px;font-weight:700;font-family:'Inter','Pretendard',sans-serif;transition:all 0.12s;color:var(--muted)}
+.fatigue-scale{display:grid;grid-template-columns:repeat(6,1fr);gap:20px}
+.fatigue-btn{border-radius:8px;border:2px solid var(--border);padding:24px 2px;background:#fff;cursor:pointer;font-size:16px;font-weight:700;font-family:'Inter','Pretendard',sans-serif;transition:all 0.12s;color:var(--muted)}
 .fatigue-btn.f0,.fatigue-btn.f1{border-color:var(--green)}
 .fatigue-btn.f2,.fatigue-btn.f3{border-color:var(--brand)}
 .fatigue-btn.f4,.fatigue-btn.f5{border-color:var(--coral)}
-.fatigue-btn.sel{box-shadow:0 0 0 3px #93AA6D;transform:scale(1.07)}
+.fatigue-btn.sel{border-width:3px;transform:scale(1.07)}
+.fatigue-btn.f0.sel,.fatigue-btn.f1.sel{background:rgba(147,170,109,0.15)}
+.fatigue-btn.f2.sel,.fatigue-btn.f3.sel{background:rgba(221,171,99,0.15)}
+.fatigue-btn.f4.sel,.fatigue-btn.f5.sel{background:rgba(209,116,93,0.15)}
 .fatigue-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:5px}
 .fatigue-result{margin-top:8px;text-align:center;font-size:12px;font-weight:500}
 
@@ -181,8 +196,10 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 .pb-check{width:20px;height:20px;border-radius:5px;border:1px solid #93AA6D;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;background:#fff;transition:all 0.12s}
 .pb-item.on .pb-check{background:#93AA6D;border-color:#93AA6D}
 .pb-toggles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;overflow:hidden;max-height:0;margin-top:0;transition:max-height 0.25s ease,margin-top 0.25s ease}
-.pb-toggles.vis{max-height:100px;margin-top:8px}
-.pb-btn{background:#fff;border:1px solid #C8BFB0;border-radius:6px;padding:10px;font-size:16px;font-weight:400;color:var(--brand-dark);cursor:pointer;font-family:'Montserrat',sans-serif;transition:all 0.12s;user-select:none;text-align:center}
+.pb-toggles.vis{max-height:300px;margin-top:8px}
+.slide-wrap{overflow:hidden;max-height:0;margin-top:0;transition:max-height 0.35s ease,margin-top 0.35s ease}
+.slide-wrap.vis{max-height:600px;margin-top:20px}
+.pb-btn{background:#fff;border:1px solid #93AA6D;border-radius:6px;padding:10px;font-size:16px;font-weight:400;color:var(--brand-dark);cursor:pointer;font-family:'Montserrat',sans-serif;transition:all 0.12s;user-select:none;text-align:center}
 .pb-btn.on{background:var(--brand-dark);border-color:var(--brand-dark);color:#fff;font-weight:600}
 .body-sel-box{background:#f5f5f0;border-radius:12px;padding:.9rem 1.1rem;min-height:52px;margin-top:1rem}
 .sel-title{font-size:12px;color:#888;margin-bottom:7px}
@@ -211,7 +228,7 @@ html,body{height:100%;background:var(--bg);font-family:'Montserrat','Pretendard'
 </div>
 
 <script>
-const STEPS = 10;
+const STEPS = 12;
 let step = 0;
 const D = {medCheck: new Set()};
 
@@ -458,6 +475,7 @@ function numberCardLabels(){
   });
   let idx=0;
   document.querySelectorAll('.card-label').forEach(el=>{
+    if(el.hasAttribute('data-no-num')) return;
     const card=el.closest('.card');
     if(card&&getComputedStyle(card).display==='none') return;
     const text=el.innerHTML;
@@ -487,7 +505,7 @@ function numberSectionTitles(){
 function render(){
   updateNav();
   const c=document.getElementById('content');
-  const fns=[s0,s1,s2,s3,s4,s5,s5b,s6,s7,s8];
+  const fns=[s0,s0b,s1,s2,s3,s4,s5,s5b,s6,s7,s_insurance,s8];
   fns[step](c);
   numberCardLabels();
   numberSectionTitles();
@@ -498,7 +516,133 @@ function render(){
 function s7(c){ return s8_fatigue(c); }
 function s8(c){ return s9_confirm(c); }
 
-// STEP 0 — 기본정보
+// STEP 11 — 실손보험 안내
+function s_insurance(c){
+  c.innerHTML=`
+    <div class="step-header">
+      <div class="step-badge">STEP 11 / ${STEPS}</div>
+      <div class="step-title">실손보험 조회 서비스를 안내드립니다.</div>
+    </div>
+    <div class="notice-card">
+      <p>한의원 진료의 실손보험 적용 여부 및 보장 범위는 가입하신 보험 상품의 종류와 약관에 따라 달라질 수 있으며, 일반적인 병·의원 진료와는 보장 기준에 일부 차이가 있을 수 있습니다.</p>
+      <hr style="border:none;border-top:1px solid #C5D5C0;margin:14px 0">
+      <p>현재 가입하신 실손보험의 적용 가능 여부와 보장 범위를 보다 편하게 확인하실 수 있도록 조회 서비스를 제공해드리고 있으니, 필요하신 경우 아래에서 조회를 진행해주시기 바랍니다.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">실손보험 조회를 원하십니까?</div>
+      <div class="sel-grid" id="ins-yn"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">진료 후 필요한 서류를 체크해주세요</div>
+      <div class="sel-wrap" id="ins-docs"></div>
+    </div>`;
+
+  const carriers=['SKT','KT','LG U+','SKT알뜰폰','KT알뜰폰','LG U+알뜰폰'];
+  const ynWrap=document.getElementById('ins-yn');
+
+  // 예 카드 — 안쪽에 통신사 pb-toggles 포함
+  const yesOn=D.insYn==='예';
+  const yesItem=document.createElement('div');
+  yesItem.className='pb-item'+(yesOn?' on':'');
+
+  const yesRow=document.createElement('div');
+  yesRow.style.cssText='display:flex;align-items:center;gap:10px;cursor:pointer;width:100%;justify-content:space-between';
+  const yesCheck=document.createElement('span');
+  yesCheck.className='pb-check';
+  yesCheck.textContent=yesOn?'✓':'';
+  const yesLabel=document.createElement('span');
+  yesLabel.textContent='예';
+  const yesSubLabel=document.createElement('span');
+  yesSubLabel.style.cssText='font-size:14px;color:#455546;font-weight:400;margin-left:auto';
+  yesSubLabel.textContent='조회링크 문자발송';
+  const yesLeft=document.createElement('div');
+  yesLeft.style.cssText='display:flex;align-items:center;gap:10px';
+  yesLeft.appendChild(yesCheck);
+  yesLeft.appendChild(yesLabel);
+  yesRow.appendChild(yesLeft);
+  yesRow.appendChild(yesSubLabel);
+
+  const carrierToggles=document.createElement('div');
+  carrierToggles.className='pb-toggles'+(yesOn?' vis':'');
+  carrierToggles.style.cssText='grid-template-columns:1fr 1fr 1fr;border-top:none;padding-top:0;margin-top:0;transition:all 0.25s';
+  carriers.forEach(v=>{
+    const btn=document.createElement('button');
+    btn.className='pb-btn'+(D.insCarrier===v?' on':'');
+    btn.style.cssText='font-size:13px;padding:8px 4px;word-break:keep-all';
+    btn.textContent=v;
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      carrierToggles.querySelectorAll('.pb-btn').forEach(b=>b.classList.remove('on'));
+      D.insCarrier=v;
+      btn.classList.add('on');
+    });
+    carrierToggles.appendChild(btn);
+  });
+
+  yesRow.addEventListener('click',()=>{
+    if(D.insYn==='예') return;
+    D.insYn='예';
+    // 아니오 카드 초기화
+    noItem.classList.remove('on');
+    noCheck.textContent='';
+    // 예 카드 활성화
+    yesItem.classList.add('on');
+    yesCheck.textContent='✓';
+    carrierToggles.classList.add('vis');
+    carrierToggles.style.borderTop='1px solid #C5D5C0';
+    carrierToggles.style.paddingTop='14px';
+    carrierToggles.style.marginTop='14px';
+  });
+
+  yesItem.appendChild(yesRow);
+  yesItem.appendChild(carrierToggles);
+
+  // 아니오 카드
+  const noOn=D.insYn==='아니오';
+  const noItem=document.createElement('div');
+  noItem.className='pb-item'+(noOn?' on':'');
+
+  const noRow=document.createElement('div');
+  noRow.style.cssText='display:flex;align-items:center;gap:10px;cursor:pointer;width:100%';
+  const noCheck=document.createElement('span');
+  noCheck.className='pb-check';
+  noCheck.textContent=noOn?'✓':'';
+  const noLabel=document.createElement('span');
+  noLabel.textContent='아니오';
+  noRow.appendChild(noCheck);
+  noRow.appendChild(noLabel);
+
+  noRow.addEventListener('click',()=>{
+    if(D.insYn==='아니오') return;
+    D.insYn='아니오';
+    D.insCarrier=undefined;
+    // 예 카드 초기화
+    yesItem.classList.remove('on');
+    yesCheck.textContent='';
+    carrierToggles.classList.remove('vis');
+    carrierToggles.querySelectorAll('.pb-btn').forEach(b=>b.classList.remove('on'));
+    carrierToggles.style.borderTop='none';
+    carrierToggles.style.paddingTop='0';
+    carrierToggles.style.marginTop='0';
+    // 아니오 카드 활성화
+    noItem.classList.add('on');
+    noCheck.textContent='✓';
+  });
+
+  noItem.appendChild(noRow);
+
+  ynWrap.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:flex-start';
+  ynWrap.appendChild(yesItem);
+  ynWrap.appendChild(noItem);
+
+  makeGrid('ins-docs','insDocs',[
+    {v:'진료비 수납영수증', sub:''},
+    {v:'진료비 세부내역서', sub:''},
+    {v:'진료확인서', sub:'3,000원'},
+  ], true);
+}
+
+// STEP 0 — 기본정보 + 의료검진
 function s0(c){
   c.innerHTML=`
     <div class="step-header">
@@ -520,13 +664,8 @@ function s0(c){
       <div class="grid2" id="g-gender"></div>
     </div>
     <div class="card">
-      <div class="card-label">의료검진</div>
+      <div class="card-label" data-no-num>의료검진 <span style="font-size:18px;font-weight:300;color:var(--muted)">(의료진 선택란)</span></div>
       <div class="sel-grid" id="med-check"></div>
-    </div>
-    <div class="card">
-      <div class="card-label">품듯한의원을 어떤 경로로 알게 되셨나요?</div>
-      <div class="sel-grid" id="ref-cat"></div>
-      <div id="ref-sub" style="margin-top:12px"></div>
     </div>`;
   document.getElementById('inp-name').addEventListener('input',e=>D.name=e.target.value);
   document.getElementById('inp-age').addEventListener('input',e=>D.age=e.target.value);
@@ -537,6 +676,30 @@ function s0(c){
     {v:'체성분',     sub:'InBody'},
     {v:'혈액검사',   sub:'Exdia PT10'},
   ], true);
+}
+
+// STEP 0b — 진료 안내 + 내원 경로
+function s0b(c){
+  c.innerHTML=`
+    <div class="step-header">
+      <div class="step-badge">STEP 2 / ${STEPS}</div>
+      <div class="step-title">진료 안내</div>
+    </div>
+    <div class="notice-card">
+      <div style="display:inline-block;background:var(--brand-dark);color:#fff;font-size:18px;font-weight:400;padding:4px 12px;border-radius:20px;letter-spacing:0.06em;margin-bottom:16px">품듯한의원 진료 진행 안내</div>
+      <hr style="border:none;border-top:1px solid #C5D5C0;margin:14px 0">
+      <p>품듯한의원은 <strong>한 부위</strong>에 집중하여 보다 정밀하고 깊이 있는 치료를 제공하는 진료 방향을 기준으로 하고 있습니다.</p>
+      <hr style="border:none;border-top:1px solid #C5D5C0;margin:14px 0">
+      <p>설문 작성 시에는 <strong>금일 가장 불편하시거나 우선 치료를 희망하시는 부위 한 곳만</strong> 기재해 주시기 바랍니다.</p>
+      <hr style="border:none;border-top:1px solid #C5D5C0;margin:14px 0">
+      <p>그 외 증상 부위는 치료를 원하실 경우, 별도 상태 확인 및 설문 진행하여 증상에 적합한 치료 방향으로 안내드립니다.</p>
+      <hr style="border:none;border-top:1px solid #C5D5C0;margin:14px 0">
+    </div>
+    <div class="card">
+      <div class="card-label">품듯한의원을 어떤 경로로 알게 되셨나요?</div>
+      <div id="ref-cat"></div>
+      <div id="ref-sub" style="margin-top:12px"></div>
+    </div>`;
   buildRefCard();
 }
 
@@ -550,48 +713,75 @@ function buildRefCard(){
   const catWrap=document.getElementById('ref-cat');
   const subWrap=document.getElementById('ref-sub');
   if(!catWrap||!subWrap) return;
+  subWrap.style.display='none';
 
-  catWrap.className='tag-wrap';
-
-  function renderSub(cat){
-    subWrap.innerHTML='';
-    if(!cat) return;
-    const subs=catDefs[cat];
-    if(!subs) return;
-    const grid=document.createElement('div');
-    grid.className='sel-grid';
-    subs.forEach(sub=>{
-      const on=D.refDetail===sub;
-      const div=document.createElement('div');
-      div.className='sel-item'+(on?' sel':'');
-      div.innerHTML=`<div class="sel-box">${on?'✓':''}</div><div class="sel-content"><div class="sel-name">${sub}</div></div>`;
-      div.addEventListener('click',()=>{
-        grid.querySelectorAll('.sel-item').forEach(x=>{x.classList.remove('sel');x.querySelector('.sel-box').textContent='';});
-        D.refDetail=sub;
-        div.classList.add('sel');
-        div.querySelector('.sel-box').textContent='✓';
-      });
-      grid.appendChild(div);
-    });
-    subWrap.appendChild(grid);
-  }
+  catWrap.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;';
 
   Object.keys(catDefs).forEach(cat=>{
     const on=D.refCat===cat;
-    const btn=document.createElement('button');
-    btn.className='tag-btn'+(on?' sel':'');
-    btn.textContent=cat;
-    btn.addEventListener('click',()=>{
-      catWrap.querySelectorAll('.tag-btn').forEach(x=>x.classList.remove('sel'));
+    const subs=catDefs[cat];
+
+    const item=document.createElement('div');
+    item.className='pb-item'+(on?' on':'');
+    item.style.cssText='cursor:pointer;';
+
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:10px;';
+    const check=document.createElement('span');
+    check.className='pb-check';
+    check.textContent=on?'✓':'';
+    const label=document.createElement('span');
+    label.style.cssText='font-size:18px;font-weight:600;color:#455546;';
+    label.textContent=cat;
+    row.appendChild(check);
+    row.appendChild(label);
+
+    const toggles=document.createElement('div');
+    toggles.className='pb-toggles'+(on?' vis':'');
+    toggles.style.cssText='grid-template-columns:1fr 1fr;border-top:'+(on?'1px solid #C5D5C0':'none')+';padding-top:'+(on?'14px':'0')+';margin-top:'+(on?'14px':'0')+';transition:all 0.25s;';
+
+    subs.forEach(sub=>{
+      const bon=D.refDetail===sub;
+      const btn=document.createElement('button');
+      btn.className='pb-btn'+(bon?' on':'');
+      btn.textContent=sub;
+      btn.addEventListener('click',e=>{
+        e.stopPropagation();
+        toggles.querySelectorAll('.pb-btn').forEach(b=>b.classList.remove('on'));
+        D.refDetail=sub;
+        btn.classList.add('on');
+      });
+      toggles.appendChild(btn);
+    });
+
+    item.appendChild(row);
+    item.appendChild(toggles);
+
+    row.addEventListener('click',()=>{
+      if(D.refCat===cat) return;
+      catWrap.querySelectorAll('.pb-item').forEach(x=>{
+        x.classList.remove('on');
+        const ch=x.querySelector('.pb-check');if(ch)ch.textContent='';
+        const tg=x.querySelector('.pb-toggles');if(tg){
+          tg.classList.remove('vis');
+          tg.style.borderTop='none';
+          tg.style.paddingTop='0';
+          tg.style.marginTop='0';
+          tg.querySelectorAll('.pb-btn').forEach(b=>b.classList.remove('on'));
+        }
+      });
       D.refCat=cat;
       D.refDetail='';
-      btn.classList.add('sel');
-      renderSub(cat);
+      item.classList.add('on');
+      check.textContent='✓';
+      toggles.classList.add('vis');
+      toggles.style.borderTop='1px solid #C5D5C0';
+      toggles.style.paddingTop='14px';
+      toggles.style.marginTop='14px';
     });
-    catWrap.appendChild(btn);
-  });
 
-  if(D.refCat) renderSub(D.refCat);
+    catWrap.appendChild(item);
+  });
 }
 
 // STEP 1 — 증상부위
@@ -605,7 +795,7 @@ function s1(c){
 
   c.innerHTML=`
     <div class="step-header">
-      <div class="step-badge">STEP 2 / ${STEPS}</div>
+      <div class="step-badge">STEP 3 / ${STEPS}</div>
       <div class="step-title-row"><div class="step-title">지금 가장 많이 불편한 곳은 어디인가요?</div><div class="step-desc">불편한 부위를 선택하면 좌우 방향을 지정할 수 있습니다.</div></div>
     </div>
     ${sections.map(sec=>`
@@ -659,7 +849,7 @@ function s1(c){
 function s2(c){
   c.innerHTML=`
     <div class="step-header">
-      <div class="step-badge">STEP 3 / ${STEPS}</div>
+      <div class="step-badge">STEP 4 / ${STEPS}</div>
       <div class="step-title">언제부터, 어떻게 시작됐나요?</div>
     </div>
     <div class="card">
@@ -677,19 +867,42 @@ function s2(c){
     {v:'6개월 전',sub:'반년 정도 됐어요'},
     {v:'1년 이상',sub:'오래된 통증이에요'},
   ], true, true);
-  makeRadios('r-cause','cause',[
-    {v:'특정 동작·활동으로',sub:'잘못된 자세, 무거운 것 들기 등'},
-    {v:'갑자기 원인 없이',sub:'특별한 이유 없이 발생'},
-    {v:'서서히 점진적으로',sub:'조금씩 심해졌어요'},
-    {v:'사고·부상·수술 후',sub:'외상 이후 발생'},
-  ], true, true);
+  const causeItems=[
+    {v:'사고·부상·수술 후',  sub:'외상 이후 발생',              badge:'S 상해',bc:'badge-auto'},
+    {v:'특정 동작·활동으로', sub:'잘못된 자세, 무거운 것 들기 등',badge:'M 질병',bc:'badge-move'},
+    {v:'갑자기 원인 없이',   sub:'특별한 이유 없이 발생',        badge:'M 질병',bc:'badge-move'},
+    {v:'서서히 점진적으로',  sub:'조금씩 심해졌어요',            badge:'M 질병',bc:'badge-move'},
+  ];
+  const causeWrap=document.getElementById('r-cause');
+  causeWrap.className='sel-grid';
+  causeItems.forEach(item=>{
+    const on=D.cause===item.v;
+    const div=document.createElement('div');
+    div.className='sel-item'+(on?' sel':'');
+    div.innerHTML=`
+      <div class="sel-box">${on?'✓':''}</div>
+      <div class="sel-content">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span class="sel-name" style="flex:unset">${item.v}</span>
+          <span class="p-badge ${item.bc}"><strong>${item.badge[0]}</strong>${item.badge.slice(1)}</span>
+        </div>
+        <div class="sel-desc">${item.sub}</div>
+      </div>`;
+    div.addEventListener('click',()=>{
+      causeWrap.querySelectorAll('.sel-item').forEach(x=>{x.classList.remove('sel');x.querySelector('.sel-box').textContent='';});
+      setVal('cause',item.v);
+      div.classList.add('sel');
+      div.querySelector('.sel-box').textContent='✓';
+    });
+    causeWrap.appendChild(div);
+  });
 }
 
 // STEP 3 — 통증 성질 + NRS (순서 변경)
 function s3(c){
   c.innerHTML=`
     <div class="step-header">
-      <div class="step-badge">STEP 4 / ${STEPS}</div>
+      <div class="step-badge">STEP 5 / ${STEPS}</div>
       <div class="step-title-row"><div class="step-title">어떤 통증인가요?</div><div class="step-desc">해당되는 것을 모두 선택해 주세요.</div></div>
     </div>
     <div class="card">
@@ -717,11 +930,11 @@ function s3(c){
 function s4(c){
   c.innerHTML=`
     <div class="step-header">
-      <div class="step-badge">STEP 5 / ${STEPS}</div>
+      <div class="step-badge">STEP 6 / ${STEPS}</div>
       <div class="step-title-row"><div class="step-title">통증 패턴이 어떤가요?</div><div class="step-desc">해당되는 것을 선택해 주세요.</div></div>
     </div>
     <div class="card">
-      <div class="card-label">통증이 언제 나타나나요? (복수 선택 가능)</div>
+      <div class="card-label">통증이 언제 나타나나요? (다중선택 가능)</div>
       <div id="r-when"></div>
     </div>
     <div id="freq-card" class="card" style="display:none">
@@ -829,7 +1042,7 @@ function s4(c){
 function s5(c){
   c.innerHTML=`
     <div class="step-header">
-      <div class="step-badge">STEP 6 / ${STEPS}</div>
+      <div class="step-badge">STEP 7 / ${STEPS}</div>
       <div class="step-title-row"><div class="step-title">이전에 받으신 치료를 알려주세요</div><div class="step-desc">해당 증상으로 방문하신 기관과 받으신 치료를 모두 선택해 주세요.</div></div>
     </div>
     <div class="card">
@@ -874,7 +1087,7 @@ function s5(c){
 function s5b(c){
   c.innerHTML=`
     <div class="step-header">
-      <div class="step-badge">STEP 7 / ${STEPS}</div>
+      <div class="step-badge">STEP 8 / ${STEPS}</div>
       <div class="step-title-row"><div class="step-title">치료 효과가 어떠셨나요?</div><div class="step-desc">이전에 받으신 치료 전반에 대해 선택해 주세요.</div></div>
     </div>
     <div class="card">
@@ -888,9 +1101,9 @@ function s5b(c){
 
   makeRadios('pi-eff','txEffect',[
     {v:'변화 없음',sub:''},
-    {v:'약간 호전',sub:'10~30%'},
-    {v:'부분 호전',sub:'40~60%'},
-    {v:'많이 호전',sub:'70~80%'},
+    {v:'약간 호전',sub:'10 ~ 30%'},
+    {v:'부분 호전',sub:'40 ~ 60%'},
+    {v:'많이 호전',sub:'70 ~ 80%'},
     {v:'거의 회복',sub:'90% 이상'},
   ], true, true);
   makeRadios('pi-per','txPersist',[
@@ -905,7 +1118,7 @@ function s5b(c){
 function s6(c){
   c.innerHTML=`
     <div class="step-header">
-      <div class="step-badge">STEP 8 / ${STEPS}</div>
+      <div class="step-badge">STEP 9 / ${STEPS}</div>
       <div class="step-title">생활습관을 알려주세요</div>
     </div>
     <div class="card">
@@ -936,7 +1149,7 @@ function s6(c){
       <div class="grid2" id="sh-smk"></div>
     </div>`;
 
-  makeTags('sh-pmhx','pmhx',['고혈압','당뇨','고지혈증','간질환','결핵','경추 디스크','경추 협착증','요추 디스크','요추 협착증','항응고제 복용','갑상선 저하','갑상선 항진','없음'],true);
+  makeTags('sh-pmhx','pmhx',['고혈압','당뇨','고지혈증','간질환','결핵','목 디스크','목 협착증','허리 디스크','허리 협착증','항응고제 복용','갑상선 저하','갑상선 항진','없음'],true);
   makeGrid('sh-life','lifestyle',[
     {v:'정적형',sub:'앉아서 고정 자세'},
     {v:'동적형',sub:'이동이 많은 활동'},
@@ -960,7 +1173,7 @@ function s8_fatigue(c){
   ];
   c.innerHTML=`
     <div class="step-header">
-      <div class="step-badge">STEP 9 / ${STEPS}</div>
+      <div class="step-badge">STEP 10 / ${STEPS}</div>
       <div class="step-title-row"><div class="step-title">평소 피로도를 알려주세요</div><div class="step-desc">활동 후 얼마나 피로한지 선택해 주세요. 0 = 전혀 피로하지 않음 · 5 = 극심한 피로</div></div>
     </div>
     ${items.map((item,index)=>`
@@ -1000,7 +1213,7 @@ function s9_confirm(c){
 
   c.innerHTML=`
     <div class="step-header">
-      <div class="step-badge">STEP 10 / ${STEPS}</div>
+      <div class="step-badge">STEP 12 / ${STEPS}</div>
       <div class="step-title-row"><div class="step-title">설문 확인</div><div class="step-desc">내용을 확인하고 완료 버튼을 눌러주세요.</div></div>
     </div>
     <div class="card">
@@ -1130,7 +1343,7 @@ async function saveSurvey(){
 // ── 네비게이션 ──
 document.getElementById('btn-next').addEventListener('click', async ()=>{
   if(step < STEPS-1){
-    if(step===0){
+    if(step===1){
       if(!D.refCat){alert('내원 경로를 선택해 주세요.');return;}
       if(!D.refDetail){alert('세부 항목을 선택해 주세요.');return;}
     }
